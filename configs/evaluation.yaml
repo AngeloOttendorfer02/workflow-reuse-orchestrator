@@ -1,0 +1,14 @@
+schema_version: workflow-evaluation-v1
+status: draft
+protocol_frozen: false
+scoring:
+  hotpotqa: null
+  drop: null
+  finqa: null
+correctness_loss_margins: null
+final_population: null
+sampling: null
+statistics: null
+repetitions: null
+human_assessment: null
+cache_and_method_order: null

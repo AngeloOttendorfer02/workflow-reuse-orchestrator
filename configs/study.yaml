@@ -1,0 +1,24 @@
+schema_version: workflow-study-v1
+profile: workflow_reuse
+seed: 2609
+datasets:
+  - hotpotqa
+  - drop
+  - finqa
+methods:
+  - single-agent
+  - fixed-workflow
+  - per-question-planning
+  - similarity-reuse
+  - prediction-reuse-mlp
+datasets_config: configs/datasets.yaml
+learning_config: configs/learning.yaml
+evaluation_config: configs/evaluation.yaml
+
+# Bind measured values when the runtime foundations are implemented.
+runtime:
+  model: null
+  encoder: null
+  inference: null
+  prompts: null
+  request_limits: null

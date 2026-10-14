@@ -1,0 +1,18 @@
+schema_version: workflow-datasets-v1
+status: draft
+datasets:
+  hotpotqa:
+    variant: distractor
+    release: null
+    source_checksum: null
+  drop:
+    release: null
+    source_checksum: null
+  finqa:
+    release: null
+    source_checksum: null
+snapshot_id: null
+partitions:
+  grouping: connected_source_groups
+  assignment_version: null
+  final_evaluation_frozen: false

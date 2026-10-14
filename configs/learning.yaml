@@ -1,0 +1,20 @@
+schema_version: workflow-learning-v1
+status: draft
+features:
+  task_representation: 64
+  workflow_representation: 64
+  task_metadata: 4
+  graph_metadata: 6
+  compatibility: 2
+  total: 140
+predictors:
+  - logistic_regression
+  - gradient_boosted_trees
+  - mlp
+mlp:
+  hidden_layers: 2
+  hidden_sizes: null
+fitting_scope: development_only
+calibration: null
+selection_thresholds: null
+development_cost_estimates: null

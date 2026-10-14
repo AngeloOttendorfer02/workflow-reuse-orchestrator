@@ -9,7 +9,7 @@ This document defines the fixed structure for the new workflow-reuse repository.
 
 The predecessor reviewed for reusable engineering components is the repository uploaded as `complexity-aware-orchestrator(20261013-084800).zip` and the latest proposal, `Proposal-Task-Adaptive Multi-Agent Reasoning(1).docx`. The older planning PDF and allocation implementation provide background and reusable engineering components. The latest proposal defines the active research scope.
 
-The first commit implements the package/version, CLI, configuration loader, and offline `pipeline check`/`pipeline plan` commands. The 44-module structure and nine notebook outlines are present. Workflow execution, runtime verification, storage, training, plots, and scientific evaluation remain pending. APIs labeled as targets below are future work.
+Commit 01 established the structure and offline configuration CLI. Commit 02 implements the document/reference and graph contracts, typed model controls, shared budget tracker, Ollama metadata/generation adapter, bounded calculator, checksummed SQLite store, and a recorded single-call infrastructure pilot. The 44-module structure and nine notebook outlines remain fixed. Dataset preparation, scoring, role agents, graph execution, library reuse, learning, plots, and protected evaluation remain pending. APIs labeled as targets below are future work.
 
 ## 1. Fixed decisions
 
@@ -32,7 +32,7 @@ The project will be one local Python research application, with one execution pi
 | Results | SQLite receipts, a compact HTML report, and a metrics CSV. |
 | Deployment scope | A local reproducible prototype and an inspectable report. |
 
-The new repository and package use workflow-reuse names. A web service, a general agent framework, and a separate model-routing subsystem are outside the baseline. Python, uv, Ollama, SQLite, Pydantic, NumPy, pandas, scikit-learn, and notebook plotting tools cover the planned scope. The starter installs only configuration and development dependencies; add other dependencies when their work package requires them.
+The new repository and package use workflow-reuse names. A web service, a general agent framework, and a separate model-routing subsystem are outside the baseline. Python, uv, Ollama, SQLite, Pydantic, NumPy, pandas, scikit-learn, and notebook plotting tools cover the planned scope. The current environment installs configuration, HTTP transport, and development dependencies; add other dependencies when their work package requires them.
 
 ## 2. What the predecessor repository tells us
 
@@ -102,7 +102,7 @@ Selectively adapted predecessor helpers may remain separate temporarily during m
 | `domain` | Python and Pydantic; no other project area. |
 | `config`, `storage` | Domain contracts and infrastructure libraries; no workflow fitting or experiment scheduling. |
 | `data` | Domain/configuration/storage; dataset integrations loaded when acquisition is requested. |
-| `runtime` | Domain/configuration; optional encoder integration loaded when encoding is requested. |
+| `runtime` | Domain/configuration and pure checksum helpers from storage; persistence stays in the pipeline. Optional encoder integration loads when requested. |
 | `workflows` | Domain/runtime contracts and supplied components; no gold scorer or model fitting. |
 | `learning` | Domain/runtime/storage for representation, recorded examples, training, and frozen prediction. |
 | `evaluation` | Domain and read-only scoring inputs; no agent execution or fitting. |
@@ -359,7 +359,7 @@ The executor checks remaining allowances before each effect, reserves call/outpu
 
 ### 9.3 Prototype interface
 
-The `orchestrator` CLI remains the user entry point. The starter currently implements only help/version and offline configuration checking/planning. Target operations cover configuration checking/planning, a model check, development stage/full runs, release freezing, protected planning/execution, task inspection, and report regeneration. Implement them through `cli.py` calling the pipeline, rather than duplicating orchestration per command.
+The `orchestrator` CLI remains the user entry point. The current CLI implements help/version, offline checking/planning, model listing/inspection, and a recorded one-call runtime check. Target operations cover configuration checking/planning, a model check, development stage/full runs, release freezing, protected planning/execution, task inspection, and report regeneration. Implement them through `cli.py` calling the pipeline, rather than duplicating orchestration per command.
 
 The report shows a selected question's graph, node outputs/evidence, answer, candidate scores, selection/rejection/fallback events, and costs. This provides the proposal's inspectable interface within the existing local application.
 
@@ -411,7 +411,7 @@ Dates follow the latest proposal and are target windows. Expensive-stage feasibi
 
 ### Package 01 — Bootstrap architecture and foundations
 
-Work in reviewable commits: (a) initialize this new repository with its structure, lockfile, offline configuration CLI, notebook outlines, and documentation; (b) adapt reusable provider/storage/domain/accounting/tool foundations and tests; (c) add relevant notebook APIs without copying allocation algorithms. Commit (a) is supplied by the starter; the remaining foundations are subsequent work.
+Work in reviewable commits: (a) initialize this new repository with its structure, lockfile, offline configuration CLI, notebook outlines, and documentation; (b) adapt reusable provider/storage/domain/accounting/tool foundations and tests; (c) add relevant notebook APIs without copying allocation algorithms. Commits 01/02 implement the bootstrap and foundations. The offline tests cover input isolation, graph validity, provider drift, missing telemetry, shared budgets, restricted arithmetic, SQLite integrity, and pilot interruption/resume behavior. A real-machine infrastructure pilot remains a separate local verification.
 
 **Complete when:** the CLI checks/plans the active workflow study; its migrated model check verifies the actual runtime; package imports and relevant tests pass; no active entry point dispatches to the allocation study; the architecture file and README agree with the actual paths. Existing completed runtime receipts remain historical records. Workflow execution is still an explicit subsequent feature, not implied by a successful configuration check.
 
@@ -498,7 +498,7 @@ Use Ruff, mypy, pytest, and the new repository's generated uv lockfile. Test reu
 
 Run a small mock end-to-end development study without external services. Each notebook receives a deterministic local fixture/small recorded run for an independent smoke check; all expensive generation remains gated. A real PC development smoke run verifies the provider integration before long stages. Final study metrics require real measured executions, not those fixtures.
 
-Current supported starter checks are:
+Current supported repository checks are:
 
 ```powershell
 uv run --locked --group dev ruff check .
@@ -509,12 +509,12 @@ uv run --locked orchestrator pipeline check --config configs/study.yaml
 uv run --locked orchestrator pipeline plan --config configs/study.yaml
 ```
 
-These starter checks cover configuration loading and CLI inspection only. A successful check reports `scaffold_ready` and `workflow_execution_available: false`. The linked YAML files are drafts; runtime verification and full scientific validation are subsequent work. New stage APIs and notebook content are implemented in their designated packages.
+A successful offline check reports `foundations_ready`, `runtime_check_available: true`, and `workflow_execution_available: false`. Current tests cover the implemented foundation components and recorded infrastructure pilot, using mock HTTP and real SQLite. The linked scientific YAML files remain drafts. Hardware verification is an explicit local pilot; full scientific validation, role execution, and notebook narratives follow in their designated work packages.
 
 The thesis prototype is complete when the same frozen pipeline supports all principal methods, all three datasets, bounded/inspectable workflow execution, a validated library, the three success predictors, registered supplementary experiments, compact results, and nine independently understandable notebooks. Outcomes may show benefits, no benefit, or a correctness/resource trade-off; the implementation's success is reproducible evidence.
 
 ## 14. Immediate next step
 
-Commit the new starter as the first part of **Package 01: architecture and foundations**. Then adapt tested runtime, domain, accounting, tools, and storage foundations from the predecessor in small commits. Keep the old repository and its backups available throughout.
+Commit the tested foundations as commit 02 and perform the optional real-machine infrastructure check. Continue with canonical dataset preparation, verified scoring, and source-separated scientific roles for **Package 02**, alongside notebooks 01/02. Keep the predecessor repository and its backups available.
 
 Then implement data/scoring and notebooks 01/02 together. Keep this document as the one architecture/roadmap reference in `docs/architecture.md`, with README linking to it and `docs/operations.md` owning executable commands. Fold existing workflow evaluation prose into the scientific sections here while keeping executable evaluation settings in their own YAML. Update implementation status here when a work package passes its completion conditions.

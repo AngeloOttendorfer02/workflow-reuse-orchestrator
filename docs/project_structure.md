@@ -1,14 +1,15 @@
 # Complete project structure
 
-This is the new `workflow-reuse-orchestrator` repository. The 44 Python files
-show the agreed source ownership. The package version, CLI, configuration
-loader, and offline experiment checks are implemented. Other modules remain
-empty until their work package begins. The nine notebooks are valid narrative
-outlines; plots and live execution are pending.
+The fixed source layout contains 44 Python modules. Commit 02 implements the
+CLI/configuration foundation, domain document/reference and graph contracts,
+model/inference/usage contracts, Ollama adapter, shared request accounting,
+calculator, SQLite integrity, and an infrastructure-pilot pipeline.
 
-The four YAML files contain starter declarations. Runtime bindings and
-scientific settings marked `null` require measured development work. Active
-tests cover the configuration loader and CLI only; other test files are empty.
+Other modules and scientific stage implementations remain pending. The nine
+notebooks are valid outlines; their narratives, execution cells, and plots will
+be completed alongside the corresponding work packages. The YAML declarations
+remain drafts, and `null` runtime bindings require measured development work.
+The document example is synthetic and illustrates the input contract only.
 
 ## Source package
 
@@ -136,6 +137,8 @@ tests cover the configuration loader and CLI only; other test files are empty.
 | --- | --- |
 | `tests/contract/test_workflow_architecture.py` | Import boundaries and reference isolation. |
 | `tests/unit/test_configuration_loading.py` | Implemented configuration/path failure checks. |
+| `tests/conftest.py` | Local model/inference/budget and HTTP fixtures. |
+| `tests/unit/test_runtime_tools.py` | Bounded arithmetic and unsupported-expression rejection. |
 | `tests/unit/test_document_preparation.py` | Canonical passages/tables and source provenance. |
 | `tests/unit/test_source_partition_contract.py` | Connected source groups and partition isolation. |
 | `tests/unit/test_workflow_graph_contract.py` | Graph validation and declared node bindings. |
@@ -156,7 +159,7 @@ tests cover the configuration loader and CLI only; other test files are empty.
 
 | File | Purpose |
 | --- | --- |
-| `examples/document_question.json` | Reference-free demonstration input placeholder. |
+| `examples/document_question.json` | Synthetic reference-free document/table input; not experimental data. |
 | `docs/architecture.md` | The complete architecture and implementation plan. |
 | `docs/operations.md` | Operating instructions for the implemented pipeline. |
 | `docs/project_structure.md` | Complete file-by-file target structure overview. |
@@ -170,7 +173,7 @@ tests cover the configuration loader and CLI only; other test files are empty.
 | `.env.example` | Example runtime environment settings. |
 | `.gitignore` | Ignore generated data, caches, run outputs, and local settings. |
 | `README.md` | Scope, current status, and documentation entry point. |
-| `SETUP.md` | Initial PowerShell setup, checks, first commit, and GitHub steps. |
+| `SETUP.md` | Installation and verification for an existing or fresh checkout. |
 | `.python-version` | Python 3.12 selection for uv. |
 
 ## Generated-data and output folders

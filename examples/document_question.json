@@ -1,1 +1,20 @@
-{}
+{
+  "task_id": "synthetic-financial-demonstration",
+  "dataset_id": "finqa",
+  "question": "What is the percentage increase in sales from 2024 to 2025?",
+  "passages": [
+    {
+      "source_id": "synthetic-report",
+      "passage_id": "report-note",
+      "title": "Synthetic input example",
+      "sentences": ["The following table reports sales in millions of euros."]
+    }
+  ],
+  "tables": [
+    {
+      "source_id": "synthetic-report",
+      "table_id": "sales-table",
+      "rows": [["Year", "Sales"], ["2024", "100"], ["2025", "120"]]
+    }
+  ]
+}

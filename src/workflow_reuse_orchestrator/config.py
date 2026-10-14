@@ -1,13 +1,17 @@
 """Load the starter study declarations and project-relative configuration files."""
 
+import os
 import tomllib
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Literal, Self
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-DatasetId = Literal["hotpotqa", "drop", "finqa"]
+from workflow_reuse_orchestrator.domain.budgets import RequestBudget
+from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ModelBinding
+from workflow_reuse_orchestrator.domain.tasks import DatasetId
+
 MethodId = Literal[
     "single-agent",
     "fixed-workflow",
@@ -18,15 +22,34 @@ MethodId = Literal[
 
 
 class RuntimeBindings(BaseModel):
-    """Reserved bindings; runtime verification is a subsequent implementation step."""
+    """Typed model/inference/request limits; encoder and prompts remain reserved."""
 
     model_config = ConfigDict(extra="forbid")
 
-    model: dict[str, Any] | None = None
+    model: ModelBinding | None = None
     encoder: dict[str, Any] | None = None
-    inference: dict[str, Any] | None = None
+    inference: InferenceProfile | None = None
     prompts: dict[str, Any] | None = None
-    request_limits: dict[str, Any] | None = None
+    request_limits: RequestBudget | None = None
+
+    @model_validator(mode="after")
+    def validate_limits(self) -> Self:
+        if (
+            self.model is not None
+            and self.inference is not None
+            and self.inference.num_ctx > self.model.native_context_tokens
+        ):
+            raise ValueError("Inference context exceeds the bound model's native context.")
+        if (
+            self.inference is not None
+            and self.request_limits is not None
+            and (
+                self.request_limits.max_input_tokens < self.inference.num_ctx
+                or self.request_limits.max_output_tokens < self.inference.num_predict
+            )
+        ):
+            raise ValueError("Request limits must permit at least one bounded generation.")
+        return self
 
 
 class StudyConfig(BaseModel):
@@ -79,7 +102,7 @@ def resolve_project_path(root: Path, relative_path: Path) -> Path:
 
 
 def read_yaml_mapping(path: Path) -> dict[str, Any]:
-    """Read a nonempty YAML mapping and report syntax errors with its filename."""
+    """Read a YAML mapping and report syntax errors with its filename."""
     try:
         document = yaml.safe_load(path.read_text(encoding="utf-8"))
     except yaml.YAMLError as exc:
@@ -117,3 +140,8 @@ def load_study(path: Path | None = None) -> StudyConfig:
         if document.get("schema_version") != expected_version:
             raise ValueError(f"Expected schema_version {expected_version!r} in {linked_path}.")
     return study
+
+
+def ollama_base_url(override: str | None = None) -> str:
+    """Use an explicit endpoint, its environment setting, or the local default."""
+    return override or os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")

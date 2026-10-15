@@ -157,8 +157,15 @@ tests cover the configuration loader and CLI only; other test files are empty.
 | File | Purpose |
 | --- | --- |
 | `examples/document_question.json` | Reference-free demonstration input placeholder. |
-| `docs/architecture.md` | The complete architecture and implementation plan. |
-| `docs/operations.md` | Operating instructions for the implemented pipeline. |
+| `docs/README.md` | Documentation reading order and ownership. |
+| `docs/research_plan.md` | Research questions, scope, hypotheses, and deliverables. |
+| `docs/architecture.md` | Components, contracts, execution, persistence, and releases. |
+| `docs/data.md` | Dataset sources, preparation, source groups, and partitions. |
+| `docs/methods.md` | Baselines, library construction, features, training, and selection. |
+| `docs/evaluation.md` | Experiment families, metrics, statistical rules, and reporting. |
+| `docs/implementation_plan.md` | Work packages, acceptance criteria, and notebook deliverables. |
+| `docs/decisions.md` | Baseline decisions, unresolved settings, risks, and freeze requirements. |
+| `docs/operations.md` | Commands supported by the implemented scaffold. |
 | `docs/project_structure.md` | Complete file-by-file target structure overview. |
 
 ## Root files

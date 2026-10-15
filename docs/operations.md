@@ -1,6 +1,9 @@
-# Operations
+# Operations and current capabilities
 
-Run commands from the project root. This starter uses Python 3.12 and uv.
+Run commands from the project root with Python 3.12 and uv. Only the commands
+below are currently implemented. Dataset preparation, model verification, workflow
+execution, training, freezing, final evaluation, and report generation are planned.
+See the [implementation plan](implementation_plan.md) for their acceptance gates.
 
 ## Install the locked environment
 
@@ -23,7 +26,7 @@ uv run --locked orchestrator pipeline plan --config configs/study.yaml
 Both pipeline commands are offline. A successful check reports
 `status: scaffold_ready` and `workflow_execution_available: false`. The model,
 encoder, inference, prompts, and request-limit bindings are initially pending.
-This is the expected first-commit state. The linked configuration files contain
+This is the current scaffold state. The linked configuration files contain
 draft declarations; their full scientific schemas belong to later work packages.
 
 The plan lists the nine intended stages with `status: pending`. No stage can
@@ -53,3 +56,15 @@ uv run --locked --group dev ruff format .
 Review the changed files and repeat the verification commands after applying
 fixes. Dataset acquisition, model calls, fitting, and generated outputs remain
 explicit later operations.
+
+## Planned operational behavior
+
+Future stage commands will require explicit run/snapshot/release identities and
+scientific scope. Final execution must verify an immutable release and cannot fit
+predictors, tune thresholds, or update a library. Resume must preserve completed
+records and distinguish unknown external effects from safe-to-run jobs.
+
+Long stages will display stage/subphase, scope/fold, method/task/role,
+completed/failed/unknown counts, elapsed time, and available usage. The report will
+provide compact summaries and selected trace inspection from SQLite records. These
+are target requirements; command syntax will be documented when implemented.

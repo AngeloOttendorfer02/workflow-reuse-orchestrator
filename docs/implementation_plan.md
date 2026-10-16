@@ -1,24 +1,23 @@
 # Implementation plan
 
-The next phase implements the planning baseline in reviewable work packages. The
-current repository completes only the scaffold portion of WP01. All other packages
-are pending. Dates are provisional sequencing targets, not a claim that the final
-workload already fits the available hardware.
+The project implements the baseline in reviewable work packages. C01 integrates the
+shared runtime/domain/storage foundations of WP01. Full workflow execution, study
+configuration and later packages remain pending.
 
 ## Work packages and acceptance gates
 
-| Package | Target window | Work and dependencies | Complete when |
-| --- | --- | --- | --- |
-| WP01 Foundations | 13-25 Oct 2026 | Finalize planning; implement typed inputs/graphs/budgets/providers, model adapter, storage, tools. | Offline checks remain valid; real runtime identity is verified; transactions, accounting, and reference isolation have meaningful tests. |
-| WP02 Data and scoring | 26 Oct-8 Nov | Acquire pinned releases, normalize sources/tables, verify scorers, audit connected groups and assign roles. Depends on contracts/storage. | Snapshot counts/exclusions reconcile; no forbidden source overlap; scorer fixtures pass; model inputs exclude references; notebooks 01/02 inspect persisted data. |
-| WP03 Agents and baselines | 9-22 Nov | Implement roles, validated graph executor, cumulative limits, single-agent and fixed workflows. | Invalid graphs fail before effects; tools use current evidence; failures retain costs; representative real baseline traces exist; notebooks 03/04 begin. |
-| WP04 Planning and library | 23 Nov-6 Dec | Add fresh planning/repair, discovery, generalization, independent validation, canonicalization, admission, shared retrieval. | Templates contain no copied answers/evidence; changed-evidence tests pass; admitted main/transfer libraries are frozen; all discovery costs retained; notebooks 04/05 complete. |
-| WP05 Candidate evidence/features | 7-20 Dec | Collect matched candidate outcomes; implement named 140-feature interface and fitting-only transformations. | Candidate IDs and attempt lineage reconcile; negatives/all-zero sets retained; unknowns distinct; training and request-time feature construction agree; notebook 06 begins. |
-| WP06 Selector-data audit | 21 Dec-3 Jan 2027 | Audit roles, labels, duplicates, feature leakage, rank/support, calibration/threshold scope; lock fitting plan. | A checksummed training-ready population passes audits; one-class/rank limitations have declared resolutions; notebook 06 completes. |
-| WP07 Predictor fitting | 4-17 Jan | Fit LR/GBT/two-layer MLP, calibrate, tune thresholds/cost estimates, refit ablations, build transfer selectors. | Persisted and in-memory predictions agree; comparisons/calibration are measured; all fitted state has allowed lineage; notebook 07 completes. |
-| WP08 Integration and freeze | 18-24 Jan | Integrate all five policies/fallback, required experiment scopes, statistics/report views, representative workload pilot, immutable releases. | No gold controls execution; all attempts share limits; protected mode rejects mutable/incomplete assets; workload/precision plan is feasible; notebook 08 completes. |
-| WP09 Protected study | 25 Jan-7 Feb | Execute registered main, transfer, ablation, volume, repetition, and human-assessment work. | Every planned job has explicit state; unknowns/completeness disclosed; releases unchanged; paired outcomes reconcile; notebook 09 begins read-only analysis. |
-| WP10 Analysis and release | 8-21 Feb | Compute registered effects/intervals, interpret errors, finish report/demo, reproduce notebooks/artifacts. | Numbers derive from named queries; correctness gates limit claims; independent assessment agreement is retained; clean-checkout reproduction succeeds; notebook 09 completes. |
+| Package | Work and dependencies | Complete when |
+| --- | --- | --- |
+| WP01 Foundations | Finalize planning; implement typed inputs/graphs/budgets/providers, model adapter, storage, tools. | Offline checks remain valid; real runtime identity is verified; transactions, accounting, and reference isolation have meaningful tests. |
+| WP02 Data and scoring | Acquire pinned releases, normalize sources/tables, verify scorers, audit connected groups and assign roles. Depends on contracts/storage. | Snapshot counts/exclusions reconcile; no forbidden source overlap; scorer fixtures pass; model inputs exclude references; notebooks 01/02 inspect persisted data. |
+| WP03 Agents and baselines | Implement roles, validated graph executor, cumulative limits, single-agent and fixed workflows. | Invalid graphs fail before effects; tools use current evidence; failures retain costs; representative real baseline traces exist; notebooks 03/04 begin. |
+| WP04 Planning and library | Add fresh planning/repair, discovery, generalization, independent validation, canonicalization, admission, shared retrieval. | Templates contain no copied answers/evidence; changed-evidence tests pass; admitted main/transfer libraries are frozen; all discovery costs retained; notebooks 04/05 complete. |
+| WP05 Candidate evidence/features | Collect matched candidate outcomes; implement named 140-feature interface and fitting-only transformations. | Candidate IDs and attempt lineage reconcile; negatives/all-zero sets retained; unknowns distinct; training and request-time feature construction agree; notebook 06 begins. |
+| WP06 Selector-data audit | Audit roles, labels, duplicates, feature leakage, rank/support, calibration/threshold scope; lock fitting plan. | A checksummed training-ready population passes audits; one-class/rank limitations have declared resolutions; notebook 06 completes. |
+| WP07 Predictor fitting | Fit LR/GBT/two-layer MLP, calibrate, tune thresholds/cost estimates, refit ablations, build transfer selectors. | Persisted and in-memory predictions agree; comparisons/calibration are measured; all fitted state has allowed lineage; notebook 07 completes. |
+| WP08 Integration and freeze | Integrate all five policies/fallback, required experiment scopes, statistics/report views, representative workload pilot, immutable releases. | No gold controls execution; all attempts share limits; protected mode rejects mutable/incomplete assets; workload/precision plan is feasible; notebook 08 completes. |
+| WP09 Protected study | Execute registered main, transfer, ablation, volume, repetition, and human-assessment work. | Every planned job has explicit state; unknowns/completeness disclosed; releases unchanged; paired outcomes reconcile; notebook 09 begins read-only analysis. |
+| WP10 Analysis and release | Compute registered effects/intervals, interpret errors, finish report/demo, reproduce notebooks/artifacts. | Numbers derive from named queries; correctness gates limit claims; independent assessment agreement is retained; clean-checkout reproduction succeeds; notebook 09 completes. |
 
 Transfer scope is implemented with library discovery and collection, not added at
 the final stage. Each held-out dataset requires its own library and fitted release.

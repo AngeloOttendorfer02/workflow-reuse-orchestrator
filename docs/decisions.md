@@ -85,4 +85,5 @@ retain the prior release, create a new one, and document timing and impact.
 
 | Date | Change | Impact |
 | --- | --- | --- |
-| 15 Oct 2026 | Consolidated the current workflow-reuse baseline into focused research, architecture, data, methods, evaluation, and work-package documents. | Documentation only. Runtime code, configurations, prompts, and study results remain unchanged. |
+| 15 Oct 2026 | Consolidated the workflow-reuse planning baseline into focused documents. | Established scope and ownership before further implementation. |
+| 16 Oct 2026 | C01 integrates existing shared runtime foundations, adds the timetable-aligned commit plan, and excludes local PyCharm settings from tracking. | Runtime inspection and a bounded infrastructure pilot are available; scientific stages remain pending. C02 owns the proposal/predictor alignment. |

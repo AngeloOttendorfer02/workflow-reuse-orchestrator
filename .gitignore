@@ -20,3 +20,6 @@ artifacts/*
 build/
 dist/
 *.egg-info/
+
+# Local PyCharm settings
+.idea/

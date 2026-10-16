@@ -2,8 +2,8 @@
 
 This documentation defines the planning baseline for Workflow Reuse Orchestrator.
 It describes the target system and the work needed to reach it. Unless explicitly
-marked **implemented**, behavior is planned. The implementation remains a starter
-scaffold with offline configuration inspection.
+marked **implemented**, behavior is planned. The implementation provides shared runtime/domain/storage foundations and an
+optional single-call infrastructure pilot. Scientific execution remains pending.
 
 ## Reading order and ownership
 
@@ -15,7 +15,8 @@ scaffold with offline configuration inspection.
 | 4 | [Methods](methods.md) | Workflow construction, comparison policies, features, and fitting. |
 | 5 | [Evaluation](evaluation.md) | Measurement, experiment families, statistical rules, and analysis. |
 | 6 | [Implementation plan](implementation_plan.md) | Dependencies, acceptance criteria, and notebook deliverables. |
-| 7 | [Decisions](decisions.md) | Open settings, resolution gates, risks, and change control. |
+| 7 | [Complete commit plan](commit_plan.md) | Detailed commit order, institutional timetable and delivery checkpoints. |
+| 8 | [Decisions](decisions.md) | Open settings, resolution gates, risks, and change control. |
 | Reference | [Project structure](project_structure.md) | Existing paths and intended module ownership. |
 | Reference | [Operations](operations.md) | Commands that work in the current implementation. |
 

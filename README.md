@@ -1,6 +1,6 @@
 # Workflow Reuse Orchestrator
 
-**Task-Adaptive Multi-Agent Reasoning: Workflow Reuse for Reliable and Efficient Problem Solving**  
+**Task-Adaptive Multi-Agent Reasoning: Workflow Reuse for Reliable and Efficient Problem Solving**\
 Master thesis project · Angelo Ottendorfer · Planning baseline: October 2026
 
 Workflow Reuse Orchestrator is a planned local research application for answering
@@ -55,37 +55,6 @@ The prototype is a local Python application with CLI and notebook entry points.
 External web retrieval, multi-model routing, online learning during final evaluation,
 and a hosted multi-user platform are outside the core scope.
 
-## Current implementation status
-
-The repository is a **starter scaffold**, not an executable workflow experiment.
-
-| Area | Verified state in the supplied code |
-| --- | --- |
-| Package, CLI, configuration loader | Implemented. |
-| Offline `pipeline check` and `pipeline plan` | Implemented. |
-| Configuration and CLI tests | Implemented. |
-| Dataset, runtime, workflow, learning, scoring, storage, reporting modules | Placeholders; implementation pending. |
-| Nine notebooks | Narrative outlines; execution and measured figures pending. |
-| Dataset/model bindings and experimental settings | Draft declarations; several values are `null`. |
-
-A successful configuration check means `scaffold_ready`. It reports
-`workflow_execution_available: false`; it does not certify model availability,
-data separation, scorer validity, or final-study readiness.
-
-## Start here
-
-From the repository root, with Python 3.12 and uv:
-
-```powershell
-uv sync --locked --group dev
-uv run --locked orchestrator pipeline check --config configs/study.yaml
-uv run --locked orchestrator pipeline plan --config configs/study.yaml
-```
-
-These commands are offline and require neither Ollama nor downloaded datasets.
-See [operations](docs/operations.md) for supported commands and development checks.
-There is currently no command that executes the planned study.
-
 ## Planning documentation
 
 | Document | Contents |
@@ -96,7 +65,8 @@ There is currently no command that executes the planned study.
 | [Data plan](docs/data.md) | Dataset preparation, source grouping, partitions, scoring inputs, and provenance. |
 | [Methods](docs/methods.md) | Baselines, library construction, features, predictors, selection, and fallback. |
 | [Evaluation protocol](docs/evaluation.md) | Experiments, metrics, statistical analysis, workload, and reporting. |
-| [Implementation plan](docs/implementation_plan.md) | Ordered work packages, acceptance gates, notebooks, and completion criteria. |
+| [Implementation plan](docs/implementation_plan.md) | Work packages, acceptance gates, notebooks, and completion criteria. |
+| [Commit plan](docs/commit_plan.md) | All 60 commits and the October 2026-June 2027 academic timetable. |
 | [Decisions](docs/decisions.md) | Baseline choices, open values, risks, and freeze requirements. |
 | [Project structure](docs/project_structure.md) | File-level implementation ownership. |
 
@@ -125,8 +95,3 @@ uv run --locked --group dev ruff format --check .
 uv run --locked --group dev mypy src
 uv run --locked --group dev pytest -q
 ```
-
-At present these checks cover the configuration/CLI foundation. Empty modules and
-test files do not establish coverage of future functionality. The next work is to
-complete the planning gates in [the implementation plan](docs/implementation_plan.md)
-before extending the executable system.

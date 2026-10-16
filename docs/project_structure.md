@@ -1,15 +1,5 @@
 # Complete project structure
 
-This is the new `workflow-reuse-orchestrator` repository. The 44 Python files
-show the agreed source ownership. The package version, CLI, configuration
-loader, and offline experiment checks are implemented. Other modules remain
-empty until their work package begins. The nine notebooks are valid narrative
-outlines; plots and live execution are pending.
-
-The four YAML files contain starter declarations. Runtime bindings and
-scientific settings marked `null` require measured development work. Active
-tests cover the configuration loader and CLI only; other test files are empty.
-
 ## Source package
 
 ### Package root
@@ -135,7 +125,9 @@ tests cover the configuration loader and CLI only; other test files are empty.
 | File | Purpose |
 | --- | --- |
 | `tests/contract/test_workflow_architecture.py` | Import boundaries and reference isolation. |
-| `tests/unit/test_configuration_loading.py` | Implemented configuration/path failure checks. |
+| `tests/unit/test_configuration_loading.py` | Implemented configuration/path and typed-binding failure checks. |
+| `tests/unit/test_runtime_tools.py` | Implemented supplied-source search and restricted arithmetic checks. |
+| `tests/conftest.py` | Offline model, inference, budget and mock Ollama fixtures. |
 | `tests/unit/test_document_preparation.py` | Canonical passages/tables and source provenance. |
 | `tests/unit/test_source_partition_contract.py` | Connected source groups and partition isolation. |
 | `tests/unit/test_workflow_graph_contract.py` | Graph validation and declared node bindings. |
@@ -164,6 +156,7 @@ tests cover the configuration loader and CLI only; other test files are empty.
 | `docs/methods.md` | Baselines, library construction, features, training, and selection. |
 | `docs/evaluation.md` | Experiment families, metrics, statistical rules, and reporting. |
 | `docs/implementation_plan.md` | Work packages, acceptance criteria, and notebook deliverables. |
+| `docs/commit_plan.md` | The 60-commit plan and governing academic timetable. |
 | `docs/decisions.md` | Baseline decisions, unresolved settings, risks, and freeze requirements. |
 | `docs/operations.md` | Commands supported by the implemented scaffold. |
 | `docs/project_structure.md` | Complete file-by-file target structure overview. |
@@ -175,7 +168,7 @@ tests cover the configuration loader and CLI only; other test files are empty.
 | `pyproject.toml` | Application/dev dependencies, tools, and the new CLI entry point. |
 | `uv.lock` | Generated dependency lock for this new project. |
 | `.env.example` | Example runtime environment settings. |
-| `.gitignore` | Ignore generated data, caches, run outputs, and local settings. |
+| `.gitignore` | Ignore generated data, caches, run outputs, environments, and local `.idea/` settings. |
 | `README.md` | Scope, current status, and documentation entry point. |
 | `SETUP.md` | Initial PowerShell setup, checks, first commit, and GitHub steps. |
 | `.python-version` | Python 3.12 selection for uv. |
@@ -190,5 +183,3 @@ tests cover the configuration loader and CLI only; other test files are empty.
 | `runs/` | Per-run SQLite results, metrics CSV, and HTML report. |
 | `artifacts/` | Explicit frozen-release exports. |
 | `tests/fixtures/` | Small deterministic input and receipt fixtures. |
-
-Generated folders contain tracked `.gitkeep` files so the layout survives a Git clone. Their data and run outputs are ignored.

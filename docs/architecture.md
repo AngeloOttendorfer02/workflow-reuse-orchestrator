@@ -1,8 +1,10 @@
 # System architecture
 
 The target is one local Python research application. CLI commands and notebooks
-share the package implementation. All components below are planned except the
-package identity, configuration loader, and offline CLI check/plan commands.
+share the package implementation. The package identity, typed configuration/CLI,
+domain contracts, Ollama adapter, cumulative budget tracker, basic supplied-source tools and SQLite receipt store
+are implemented. Full agent/workflow execution and the scientific stages below
+remain planned. The optional runtime pilot makes one bounded model call.
 
 ## Component design
 
@@ -50,7 +52,10 @@ training orchestration. The existing module paths are listed in
 
 ## Core contracts
 
-These are target contracts; placeholder files do not yet implement them.
+The foundation implements `TaskInput`, `EvaluationReference`, `Workflow`,
+`WorkflowNode`, `RequestBudget`, `ResourceUsage`, model/provider bindings and generic
+receipts. Rich role outputs, execution traces, selection decisions and frozen study
+releases below are target extensions, not completed workflow functionality.
 
 | Contract | Required contents |
 | --- | --- |
@@ -167,16 +172,3 @@ Long stages show phase/subphase, scope/fold, current method/task/role,
 planned/completed/failed/unknown counts, elapsed time, and available usage. Training
 shows fitting, validation, calibration, and threshold selection separately. Cached
 records are labeled as reused; they are not newly measured live executions.
-
-## Technology and interface
-
-Python 3.12, uv, Pydantic, YAML, and the offline CLI are present. Planned additions
-include Ollama integration, a pinned text-encoder integration, NumPy/pandas,
-scikit-learn, SQLite persistence, and Matplotlib/notebook tooling. Add dependencies
-with the work that needs them and regenerate the lockfile deliberately.
-
-The CLI will eventually support measured runtime checks, development stages,
-release freeze, protected execution, task inspection, and report regeneration.
-Only commands listed in [operations](operations.md) are currently supported. The
-HTML report supplies the local inspection interface; a separate web service is
-not required for the prototype.

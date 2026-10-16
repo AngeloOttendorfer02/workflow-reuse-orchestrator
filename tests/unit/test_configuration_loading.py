@@ -5,12 +5,15 @@ from pathlib import Path
 import pytest
 
 from workflow_reuse_orchestrator.config import (
+    RuntimeBindings,
     StudyConfig,
     load_study,
     project_root,
     read_yaml_mapping,
     resolve_project_path,
 )
+from workflow_reuse_orchestrator.domain.budgets import RequestBudget
+from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ModelBinding
 
 
 def test_loads_study_from_a_project_subdirectory(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -47,3 +50,21 @@ def test_rejects_a_yaml_list_instead_of_a_configuration(tmp_path: Path) -> None:
     path.write_text("- hotpotqa\n", encoding="utf-8")
     with pytest.raises(ValueError, match="Expected a YAML mapping"):
         read_yaml_mapping(path)
+
+
+def test_typed_bindings_reject_context_above_native_capacity(model_binding: ModelBinding) -> None:
+    with pytest.raises(ValueError, match="native context"):
+        RuntimeBindings(
+            model=model_binding,
+            inference=InferenceProfile(num_ctx=16384, num_predict=128, seed=2609),
+        )
+
+
+def test_typed_bindings_require_one_safe_generation(
+    inference_profile: InferenceProfile, request_budget: RequestBudget
+) -> None:
+    with pytest.raises(ValueError, match="one bounded generation"):
+        RuntimeBindings(
+            inference=inference_profile,
+            request_limits=request_budget.model_copy(update={"max_input_tokens": 10}),
+        )

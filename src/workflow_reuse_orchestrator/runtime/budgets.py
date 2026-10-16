@@ -31,7 +31,7 @@ class BudgetTracker:
     """
 
     def __init__(self, budget: RequestBudget, *, clock: Callable[[], float] = perf_counter) -> None:
-        self.budget = budget
+        self._budget = budget
         self._clock = clock
         self._started = clock()
         self._model_calls = 0
@@ -41,7 +41,13 @@ class BudgetTracker:
         self._repairs = 0
         self._fallbacks = 0
         self._pending: tuple[int, int] | None = None
+        self._tool_pending = False
         self._blocked_reason: str | None = None
+
+    @property
+    def budget(self) -> RequestBudget:
+        """One immutable limit declaration for this request's entire lifetime."""
+        return self._budget
 
     @property
     def remaining_seconds(self) -> float:
@@ -61,8 +67,7 @@ class BudgetTracker:
 
     def reserve_generation(self, *, input_tokens_upper_bound: int, output_tokens: int) -> None:
         self._check_time()
-        if self._pending is not None:
-            raise ValueError("A generation is already pending.")
+        self._check_idle()
         for value in (input_tokens_upper_bound, output_tokens):
             if type(value) is not int or value < 1:
                 raise ValueError("Generation reservations must be positive integer token bounds.")
@@ -100,32 +105,48 @@ class BudgetTracker:
 
     def run_tool(self, operation: Callable[[], T]) -> T:
         self._check_time()
-        if self._pending is not None:
-            raise ValueError("Cannot execute a tool during a pending generation.")
+        self._check_idle()
         if self._tool_calls >= self.budget.max_tool_calls:
             raise BudgetExceeded("Tool-call allowance exhausted.")
         self._tool_calls += 1
-        result = operation()
+        self._tool_pending = True
+        try:
+            result = operation()
+        except BaseException:
+            # Keep the original failure/cancellation; subsequent work sees expiry.
+            self._latch_deadline()
+            raise
+        finally:
+            self._tool_pending = False
         self._check_time()
         return result
 
     def consume_plan_repair(self) -> None:
         self._check_time()
+        self._check_idle()
         if self._repairs >= self.budget.max_plan_repairs:
             raise BudgetExceeded("Plan-repair allowance exhausted.")
         self._repairs += 1
 
     def consume_fallback_plan(self) -> None:
         self._check_time()
+        self._check_idle()
         if self._fallbacks >= self.budget.max_fallback_plans:
             raise BudgetExceeded("Fallback-plan allowance exhausted.")
         self._fallbacks += 1
 
     def _check_time(self) -> None:
+        self._latch_deadline()
         if self._blocked_reason is not None:
             raise BudgetExceeded(self._blocked_reason)
-        if self.remaining_seconds <= 0:
-            raise BudgetExceeded("Whole-request wall-time allowance exhausted.")
+
+    def _latch_deadline(self) -> None:
+        if self.remaining_seconds <= 0 and self._blocked_reason is None:
+            self._blocked_reason = "Whole-request wall-time allowance exhausted."
+
+    def _check_idle(self) -> None:
+        if self._pending is not None or self._tool_pending:
+            raise ValueError("Another model/tool effect is pending; execution must be sequential.")
 
     @staticmethod
     def _add(total: int | None, value: int | None) -> int | None:
@@ -169,7 +190,8 @@ class BudgetedGenerator:
             response = self._provider.generate(
                 model=self._model, inference=self._inference, request=request
             )
-        except Exception:
+        except BaseException:
+            # KeyboardInterrupt/cancellation also leave an attempted, unmeasured call.
             self.tracker.abandon_generation()
             raise
         self.tracker.finish_generation(response)

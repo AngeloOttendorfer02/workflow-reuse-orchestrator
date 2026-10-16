@@ -8,7 +8,7 @@
 | --- | --- |
 | `src/workflow_reuse_orchestrator/__init__.py` | Python package initializer. |
 | `src/workflow_reuse_orchestrator/cli.py` | Command-line parsing and pipeline entry point. |
-| `src/workflow_reuse_orchestrator/config.py` | Validated configuration loading and project path resolution. |
+| `src/workflow_reuse_orchestrator/config.py` | Typed four-document declarations, single-pass bundle loading, ownership/cross-document validation and project paths. |
 | `src/workflow_reuse_orchestrator/storage.py` | Transactional SQLite receipts, artifacts, checksums, and read-only access. |
 
 ### domain
@@ -17,10 +17,10 @@
 | --- | --- |
 | `src/workflow_reuse_orchestrator/domain/__init__.py` | Python package initializer. |
 | `src/workflow_reuse_orchestrator/domain/tasks.py` | Questions, supplied passages/tables, source locations, and evaluator references. |
-| `src/workflow_reuse_orchestrator/domain/workflows.py` | Workflow/node contracts, dependencies, roles, and graph validation. |
-| `src/workflow_reuse_orchestrator/domain/outcomes.py` | Agent outputs, selection decisions, attempts, and execution outcomes. |
+| `src/workflow_reuse_orchestrator/domain/workflows.py` | Legacy v1 graphs, v2 typed input bindings, canonical output ports and DAG validation. |
+| `src/workflow_reuse_orchestrator/domain/outcomes.py` | Receipts, role outputs, fresh-evidence validation and cumulative attempt snapshots. Selection decisions/event traces remain planned. |
 | `src/workflow_reuse_orchestrator/domain/budgets.py` | Request allowances and measured cumulative resource usage. |
-| `src/workflow_reuse_orchestrator/domain/providers.py` | Generative model, encoder, and tool contracts/bindings. |
+| `src/workflow_reuse_orchestrator/domain/providers.py` | Generative model/inference contracts and typed local tool results/protocols. Encoder binding is currently declared in config.py. |
 
 ### data
 
@@ -61,7 +61,7 @@
 | `src/workflow_reuse_orchestrator/learning/__init__.py` | Python package initializer. |
 | `src/workflow_reuse_orchestrator/learning/examples.py` | Matched task/workflow outcomes and eligible binary-success labels. |
 | `src/workflow_reuse_orchestrator/learning/features.py` | The shared 140-feature contract and fitting-only transforms. |
-| `src/workflow_reuse_orchestrator/learning/training.py` | LR/GBT/MLP fitting, calibration, tuning, and feature ablations. |
+| `src/workflow_reuse_orchestrator/learning/training.py` | LR/RF/GBT/MLP fitting and validation-based family selection, calibration, tuning, and feature ablations. |
 | `src/workflow_reuse_orchestrator/learning/selection.py` | Frozen success prediction, thresholding, and token-cost selection. |
 
 ### evaluation
@@ -116,7 +116,7 @@
 | `notebooks/04_baselines_and_planning.ipynb` | Compare the single agent, fixed workflow, and fresh planner in a representative development pilot. |
 | `notebooks/05_workflow_library.ipynb` | Discover, generalize, independently validate, and inspect reusable procedures. |
 | `notebooks/06_selector_data_and_features.ipynb` | Collect matched candidate outcomes and prepare/audit the 140 features. |
-| `notebooks/07_selector_training.ipynb` | Fit and compare LR, GBT, and the two-hidden-layer MLP; calibrate and select thresholds. |
+| `notebooks/07_selector_training.ipynb` | Compare LR/RF/GBT/MLP, select the predictor on development validation, calibrate and select thresholds. |
 | `notebooks/08_complete_pipeline.ipynb` | Run the complete adaptive prototype and all five policies on a small development population. |
 | `notebooks/09_final_results.ipynb` | Analyze the frozen final study and produce thesis figures/tables. |
 
@@ -135,6 +135,7 @@
 | `tests/unit/test_document_preparation.py` | Canonical passages/tables and source provenance. |
 | `tests/unit/test_source_partition_contract.py` | Connected source groups and partition isolation. |
 | `tests/unit/test_workflow_graph_contract.py` | Graph validation and declared node bindings. |
+| `tests/unit/test_workflow_bindings.py` | V2 port/type/dependency validation and v1 separation. |
 | `tests/unit/test_runtime_budget_accounting.py` | Cumulative allowances, failures, and telemetry availability. |
 | `tests/unit/test_selector_feature_contract.py` | 140-feature order, rank behavior, and transform provenance. |
 | `tests/unit/test_dataset_answer_scoring.py` | Dataset-specific answer/scoring fixtures. |
@@ -153,9 +154,11 @@
 | File | Purpose |
 | --- | --- |
 | `examples/document_question.json` | Reference-free demonstration input placeholder. |
+| `examples/bound_workflow.json` | Valid v2 binding declaration; structural example, without executing agents. |
 | `docs/README.md` | Documentation reading order and ownership. |
 | `docs/research_plan.md` | Research questions, scope, hypotheses, and deliverables. |
 | `docs/architecture.md` | Components, contracts, execution, persistence, and releases. |
+| `docs/contracts.md` | Implemented binding, output, evidence, attempt and accounting semantics. |
 | `docs/data.md` | Dataset sources, preparation, source groups, and partitions. |
 | `docs/methods.md` | Baselines, library construction, features, training, and selection. |
 | `docs/evaluation.md` | Experiment families, metrics, statistical rules, and reporting. |
@@ -173,6 +176,7 @@
 | `uv.lock` | Generated dependency lock for this new project. |
 | `.env.example` | Example runtime environment settings. |
 | `.gitignore` | Ignore generated data, caches, run outputs, environments, and local `.idea/` settings. |
+| `.github/workflows/ci.yml` | Pinned Python 3.12 Linux/Windows offline check matrix; no live model or benchmark jobs. |
 | `README.md` | Scope, current status, and documentation entry point. |
 | `SETUP.md` | Initial PowerShell setup, checks, first commit, and GitHub steps. |
 | `.python-version` | Python 3.12 selection for uv. |

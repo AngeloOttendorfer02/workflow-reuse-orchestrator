@@ -4,6 +4,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class RequestBudget(BaseModel):
+    """Limits apply to the whole request, including unsuccessful recovery work."""
+
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True, allow_inf_nan=False)
 
     max_model_calls: int = Field(ge=1)
@@ -16,6 +18,12 @@ class RequestBudget(BaseModel):
 
 
 class ResourceUsage(BaseModel):
+    """Cumulative measurements; None is unavailable and must never become zero.
+
+    Pending model calls expose unknown tokens until reconciliation. Wall time is
+    elapsed request time, not a sum of provider-reported component timings.
+    """
+
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True, allow_inf_nan=False)
 
     model_calls: int = Field(default=0, ge=0)

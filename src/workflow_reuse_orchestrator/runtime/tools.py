@@ -1,22 +1,22 @@
-"""Bounded arithmetic evaluation without Python eval or ambient Decimal state."""
+"""Supplied-source lexical search, restricted arithmetic, and shared tool budgets."""
 
 import ast
-from dataclasses import dataclass
+import re
 from decimal import ROUND_FLOOR, Context, Decimal, DecimalException, Underflow, localcontext
 from time import perf_counter
+
+from workflow_reuse_orchestrator.domain.providers import CalculatorResult as CalculatorResult
+from workflow_reuse_orchestrator.domain.providers import SourceSearchHit, SourceSearchResult
+from workflow_reuse_orchestrator.domain.tasks import (
+    CellEvidence,
+    SentenceEvidence,
+    TaskInput,
+)
+from workflow_reuse_orchestrator.runtime.budgets import BudgetTracker
 
 
 class CalculatorError(ValueError):
     """An arithmetic expression exceeds the supported syntax or numeric bounds."""
-
-
-@dataclass(frozen=True, slots=True)
-class CalculatorResult:
-    """A calculator result with observed end-to-end operation latency."""
-
-    expression: str
-    value: str
-    wall_seconds: float
 
 
 class SafeCalculator:
@@ -34,6 +34,8 @@ class SafeCalculator:
         started = perf_counter()
         try:
             parsed = ast.parse(normalized, mode="eval")
+            if sum(1 for _ in ast.walk(parsed)) > 128:
+                raise CalculatorError("calculator expression exceeds the syntax-node limit")
             with localcontext(Context(prec=28, Emax=256, Emin=-256)) as context:
                 # Underflow must not silently turn a nonzero result into zero.
                 context.traps[Underflow] = True
@@ -84,3 +86,90 @@ class SafeCalculator:
                     raise CalculatorError("calculator requires integer exponents within [-20, 20]")
                 return left ** int(right)
         raise CalculatorError("expression contains unsupported syntax")
+
+
+class SuppliedSourceSearch:
+    """Case-folded whole-word matches over this task's sentences and table cells.
+
+    Rank by distinct matched query terms, then original passage/table order and
+    zero-based position. This deterministic local tool is separate from workflow
+    library retrieval. It never opens URLs/files or loads evaluator references.
+    """
+
+    def __init__(self, task: TaskInput) -> None:
+        self._task = task
+
+    def search(self, query: str, *, limit: int = 5) -> SourceSearchResult:
+        started = perf_counter()
+        if type(query) is not str or not query.strip() or len(query) > 256:
+            raise ValueError("Search query must contain 1 to 256 characters.")
+        terms = tuple(sorted(set(re.findall(r"\w+", query.casefold()))))
+        if not terms or len(terms) > 32:
+            raise ValueError("Search query must contain 1 to 32 distinct word terms.")
+        if type(limit) is not int or not 1 <= limit <= 20:
+            raise ValueError("Search limit must be an integer within [1, 20].")
+        hits: list[SourceSearchHit] = []
+        task = self._task
+        for passage in task.passages:
+            for index, text in enumerate(passage.sentences):
+                matched = self._matches(terms, text)
+                if matched:
+                    hits.append(
+                        SourceSearchHit(
+                            reference=SentenceEvidence(
+                                task_id=task.task_id,
+                                source_id=passage.source_id,
+                                passage_id=passage.passage_id,
+                                sentence_index=index,
+                            ),
+                            text=text,
+                            matched_terms=matched,
+                        )
+                    )
+        for table in task.tables:
+            for row_index, row in enumerate(table.rows):
+                for column_index, text in enumerate(row):
+                    matched = self._matches(terms, text)
+                    if matched:
+                        hits.append(
+                            SourceSearchHit(
+                                reference=CellEvidence(
+                                    task_id=task.task_id,
+                                    source_id=table.source_id,
+                                    table_id=table.table_id,
+                                    row_index=row_index,
+                                    column_index=column_index,
+                                ),
+                                text=text,
+                                matched_terms=matched,
+                            )
+                        )
+        hits.sort(key=lambda hit: -len(hit.matched_terms))  # Stable ties retain source order.
+        return SourceSearchResult(
+            query=query.strip(), hits=tuple(hits[:limit]), wall_seconds=perf_counter() - started
+        )
+
+    @staticmethod
+    def _matches(terms: tuple[str, ...], text: str) -> tuple[str, ...]:
+        words = set(re.findall(r"\w+", text.casefold()))
+        return tuple(term for term in terms if term in words)
+
+
+class RequestTools:
+    """Host-owned tool entry points, sharing the caller's whole-request tracker.
+
+    Low-level tools remain usable for unit tests. Future role runners use these
+    counted entry points. Failures consume tool allowance; calls are synchronous,
+    so a deadline overrun is detected after return rather than forcibly interrupted.
+    """
+
+    def __init__(self, *, task: TaskInput, tracker: BudgetTracker) -> None:
+        self._search = SuppliedSourceSearch(task)
+        self._calculator = SafeCalculator()
+        self.tracker = tracker
+
+    def search(self, query: str, *, limit: int = 5) -> SourceSearchResult:
+        return self.tracker.run_tool(lambda: self._search.search(query, limit=limit))
+
+    def calculate(self, expression: str) -> CalculatorResult:
+        return self.tracker.run_tool(lambda: self._calculator.calculate(expression))

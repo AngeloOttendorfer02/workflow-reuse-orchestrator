@@ -1,0 +1,142 @@
+{
+  "schema_version": "workflow-v2",
+  "workflow_id": "example-retrieve-reason-check",
+  "nodes": [
+    {
+      "node_id": "retrieve",
+      "role": "retrieval",
+      "instructions": "Locate relevant evidence in the supplied documents.",
+      "depends_on": [],
+      "inputs": [
+        {
+          "name": "question",
+          "kind": "question",
+          "value": {
+            "source": "task",
+            "field": "question"
+          }
+        },
+        {
+          "name": "documents",
+          "kind": "documents",
+          "value": {
+            "source": "task",
+            "field": "documents"
+          }
+        }
+      ]
+    },
+    {
+      "node_id": "reason",
+      "role": "reasoning",
+      "instructions": "Derive an answer from the bound evidence.",
+      "depends_on": [
+        "retrieve"
+      ],
+      "inputs": [
+        {
+          "name": "question",
+          "kind": "question",
+          "value": {
+            "source": "task",
+            "field": "question"
+          }
+        },
+        {
+          "name": "support",
+          "kind": "evidence",
+          "value": {
+            "source": "node",
+            "node_id": "retrieve",
+            "output": "evidence"
+          }
+        }
+      ]
+    },
+    {
+      "node_id": "check",
+      "role": "checking",
+      "instructions": "Check the proposed answer against the bound evidence.",
+      "depends_on": [
+        "retrieve",
+        "reason"
+      ],
+      "inputs": [
+        {
+          "name": "question",
+          "kind": "question",
+          "value": {
+            "source": "task",
+            "field": "question"
+          }
+        },
+        {
+          "name": "proposal",
+          "kind": "answer",
+          "value": {
+            "source": "node",
+            "node_id": "reason",
+            "output": "answer"
+          }
+        },
+        {
+          "name": "support",
+          "kind": "evidence",
+          "value": {
+            "source": "node",
+            "node_id": "retrieve",
+            "output": "evidence"
+          }
+        }
+      ]
+    },
+    {
+      "node_id": "final",
+      "role": "reasoning",
+      "instructions": "Deliver an answer after considering the check and evidence.",
+      "depends_on": [
+        "retrieve",
+        "reason",
+        "check"
+      ],
+      "inputs": [
+        {
+          "name": "question",
+          "kind": "question",
+          "value": {
+            "source": "task",
+            "field": "question"
+          }
+        },
+        {
+          "name": "proposal",
+          "kind": "answer",
+          "value": {
+            "source": "node",
+            "node_id": "reason",
+            "output": "answer"
+          }
+        },
+        {
+          "name": "review",
+          "kind": "check",
+          "value": {
+            "source": "node",
+            "node_id": "check",
+            "output": "check"
+          }
+        },
+        {
+          "name": "support",
+          "kind": "evidence",
+          "value": {
+            "source": "node",
+            "node_id": "retrieve",
+            "output": "evidence"
+          }
+        }
+      ]
+    }
+  ],
+  "final_node_id": "final"
+}

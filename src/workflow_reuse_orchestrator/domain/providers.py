@@ -1,10 +1,11 @@
 """Fixed-model identity, inference controls, generation contracts, and errors."""
 
+from dataclasses import dataclass
 from typing import Annotated, Literal, Protocol, Self
 
 from pydantic import BaseModel, ConfigDict, Field, JsonValue, StringConstraints, model_validator
 
-from workflow_reuse_orchestrator.domain.tasks import Identifier, Text
+from workflow_reuse_orchestrator.domain.tasks import EvidenceReference, Identifier, Text
 
 Sha256 = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$", strict=True)]
 
@@ -92,3 +93,32 @@ class GenerationProvider(Protocol):
         inference: InferenceProfile,
         request: GenerationRequest,
     ) -> GenerationResponse: ...
+
+
+@dataclass(frozen=True, slots=True)
+class CalculatorResult:
+    expression: str
+    value: str
+    wall_seconds: float
+
+
+class SourceSearchHit(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    reference: EvidenceReference
+    text: Text
+    matched_terms: tuple[Text, ...] = Field(min_length=1)
+
+
+class SourceSearchResult(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True, allow_inf_nan=False)
+    query: Text
+    hits: tuple[SourceSearchHit, ...] = Field(max_length=20)
+    wall_seconds: float = Field(ge=0)
+
+
+class Calculator(Protocol):
+    def calculate(self, expression: str) -> CalculatorResult: ...
+
+
+class SourceSearch(Protocol):
+    def search(self, query: str, *, limit: int = 5) -> SourceSearchResult: ...

@@ -17,8 +17,68 @@ MethodId = Literal[
     "fixed-workflow",
     "per-question-planning",
     "similarity-reuse",
-    "prediction-reuse-mlp",
+    "prediction-reuse",
 ]
+
+
+PredictorId = Literal["logistic_regression", "random_forest", "gradient_boosted_trees", "mlp"]
+SelectionCriterion = Literal["predictive_performance", "calibration", "prediction_overhead"]
+
+
+class ModelSelectionDeclarations(BaseModel):
+    """Development-only selection declarations, not fitted predictor state."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    scope: Literal["development_validation"]
+    criteria: list[SelectionCriterion] = Field(min_length=3, max_length=3)
+    decision_rule: str | None = None
+    selected_predictor: PredictorId | None = None
+
+    @field_validator("criteria")
+    @classmethod
+    def require_distinct_criteria(
+        cls, values: list[SelectionCriterion]
+    ) -> list[SelectionCriterion]:
+        if len(set(values)) != len(values):
+            raise ValueError("Model-selection criteria must be unique.")
+        return values
+
+    @field_validator("decision_rule")
+    @classmethod
+    def require_nonempty_rule(cls, value: str | None) -> str | None:
+        if value is not None and not value.strip():
+            raise ValueError("The model-selection decision rule must not be blank.")
+        return value.strip() if value is not None else None
+
+    @model_validator(mode="after")
+    def require_rule_for_selected_predictor(self) -> Self:
+        if self.selected_predictor is not None and self.decision_rule is None:
+            raise ValueError(
+                "Record a validation decision rule before declaring a selected predictor."
+            )
+        return self
+
+
+class PredictorDeclarations(BaseModel):
+    """Validate the predictor subset of the still-draft learning configuration.
+
+    Features, estimator parameters, calibration and thresholds receive their full
+    scientific schemas in later work packages. This contract does not fit models
+    or certify a release for final evaluation.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    predictors: list[PredictorId] = Field(min_length=4, max_length=4)
+    model_selection: ModelSelectionDeclarations
+
+    @field_validator("predictors")
+    @classmethod
+    def require_distinct_predictors(cls, values: list[PredictorId]) -> list[PredictorId]:
+        if len(set(values)) != len(values):
+            raise ValueError("Candidate predictors must be unique.")
+        return values
 
 
 class RuntimeBindings(BaseModel):
@@ -66,6 +126,16 @@ class StudyConfig(BaseModel):
     learning_config: Path
     evaluation_config: Path
     runtime: RuntimeBindings
+
+    @field_validator("methods", mode="before")
+    @classmethod
+    def reject_historical_method_in_active_study(cls, value: object) -> object:
+        if isinstance(value, list) and "prediction-reuse-mlp" in value:
+            raise ValueError(
+                "Use 'prediction-reuse' in the active study instead of 'prediction-reuse-mlp'. "
+                "Historical receipts must retain their original method identifiers."
+            )
+        return value
 
     @field_validator("datasets", "methods")
     @classmethod
@@ -125,7 +195,9 @@ def load_study(path: Path | None = None) -> StudyConfig:
     """Validate the study declarations and the linked YAML document identities.
 
     The starter does not verify model metadata, dataset partitions, feature
-    implementations, or evaluation readiness. Their work packages add those checks.
+    implementations, fitted predictors, or evaluation readiness. It validates the
+    candidate-family and development-only model-selection declarations; their
+    numerical/statistical settings remain draft.
     """
     root = project_root(path.parent if path is not None and path.is_absolute() else None)
     location = root / "configs/study.yaml" if path is None else path
@@ -139,9 +211,17 @@ def load_study(path: Path | None = None) -> StudyConfig:
         expected_version = f"workflow-{name}-v1"
         if document.get("schema_version") != expected_version:
             raise ValueError(f"Expected schema_version {expected_version!r} in {linked_path}.")
+        if name == "learning":
+            PredictorDeclarations.model_validate(document)
     return study
 
 
 def ollama_base_url(override: str | None = None) -> str:
     """Use an explicit endpoint, its environment setting, or the local default."""
     return override or os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+
+
+def load_predictor_declarations(study: StudyConfig, root: Path) -> PredictorDeclarations:
+    """Read only declarations; historical result records are never migrated here."""
+    path = resolve_project_path(root, study.learning_config)
+    return PredictorDeclarations.model_validate(read_yaml_mapping(path))

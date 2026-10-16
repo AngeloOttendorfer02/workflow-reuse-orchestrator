@@ -6,6 +6,7 @@ from typing import Any
 
 from workflow_reuse_orchestrator.config import (
     configuration_files,
+    load_predictor_declarations,
     load_study,
     ollama_base_url,
     project_root,
@@ -40,12 +41,16 @@ def check_study(config_path: Path | None = None) -> dict[str, Any]:
     root = project_root(
         config_path.parent if config_path is not None and config_path.is_absolute() else None
     )
+    learning = load_predictor_declarations(study, root)
     return {
         "status": "foundations_ready",
         "profile": study.profile,
         "seed": study.seed,
         "datasets": study.datasets,
         "methods": study.methods,
+        "predictors": learning.predictors,
+        "model_selection": learning.model_selection.model_dump(mode="json"),
+        "selector_training_available": False,
         "configuration_files": {
             name: path.relative_to(root).as_posix()
             for name, path in configuration_files(study, root).items()
@@ -59,6 +64,7 @@ def check_study(config_path: Path | None = None) -> dict[str, Any]:
             "study declarations and typed runtime bindings",
             "project-relative references",
             "linked YAML syntax and document identities",
+            "candidate predictors and development-only model-selection declarations",
         ],
     }
 

@@ -10,12 +10,12 @@ methods:
   - fixed-workflow
   - per-question-planning
   - similarity-reuse
-  - prediction-reuse-mlp
+  - prediction-reuse
 datasets_config: configs/datasets.yaml
 learning_config: configs/learning.yaml
 evaluation_config: configs/evaluation.yaml
 
-# Bind measured values when the runtime foundations are implemented.
+# Bind measured values after representative development pilots.
 runtime:
   model: null
   encoder: null

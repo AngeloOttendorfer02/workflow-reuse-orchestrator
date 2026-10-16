@@ -6,9 +6,10 @@ from typing import Any
 
 import httpx
 import pytest
+import yaml
 
 from workflow_reuse_orchestrator.cli import main
-from workflow_reuse_orchestrator.config import project_root
+from workflow_reuse_orchestrator.config import project_root, read_yaml_mapping
 from workflow_reuse_orchestrator.domain.outcomes import Receipt
 from workflow_reuse_orchestrator.experiments import pipeline
 from workflow_reuse_orchestrator.runtime.ollama import OllamaProvider
@@ -20,6 +21,17 @@ def test_check_reports_pending_runtime_bindings(capsys) -> None:
     report = json.loads(capsys.readouterr().out)
     assert report["status"] == "foundations_ready"
     assert report["runtime_check_available"] is True
+    assert "prediction-reuse" in report["methods"]
+    assert "prediction-reuse-mlp" not in report["methods"]
+    assert report["predictors"] == [
+        "logistic_regression",
+        "random_forest",
+        "gradient_boosted_trees",
+        "mlp",
+    ]
+    assert report["model_selection"]["scope"] == "development_validation"
+    assert report["model_selection"]["selected_predictor"] is None
+    assert report["selector_training_available"] is False
     assert report["workflow_execution_available"] is False
     assert set(report["pending_runtime_bindings"]) == {
         "model",
@@ -224,3 +236,48 @@ def test_previous_validator_receipt_is_not_reused_or_overwritten(
         assert completed is not None
         assert completed.status == "succeeded"
         assert store.binding("run_parameters") == {"purpose": "infrastructure_pilot"}
+
+
+@pytest.mark.parametrize("invalid", ["duplicate_family", "final_scope"])
+def test_cli_rejects_invalid_learning_before_runtime_work(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    invalid: str,
+) -> None:
+    source = project_root()
+    (tmp_path / "pyproject.toml").write_text(
+        '[project]\nname = "workflow-reuse-orchestrator"\n', encoding="utf-8"
+    )
+    configs = tmp_path / "configs"
+    configs.mkdir()
+    for name in ("study", "datasets", "learning", "evaluation"):
+        document = read_yaml_mapping(source / "configs" / f"{name}.yaml")
+        if name == "learning":
+            if invalid == "duplicate_family":
+                document["predictors"][1] = document["predictors"][0]
+            else:
+                document["model_selection"]["scope"] = "final_evaluation"
+        (configs / f"{name}.yaml").write_text(yaml.safe_dump(document), encoding="utf-8")
+    assert main(["pipeline", "check", "--config", str(configs / "study.yaml")]) == 2
+    result = capsys.readouterr()
+    assert result.out == ""
+    assert "Pipeline failed:" in result.err
+    assert not (tmp_path / "runs").exists()
+
+
+def test_new_configuration_does_not_relabel_historical_receipts(tmp_path: Path) -> None:
+    database = tmp_path / "results.sqlite3"
+    original = Receipt(
+        receipt_id="historical-policy:001",
+        kind="policy_outcome",
+        status="succeeded",
+        payload={"method_id": "prediction-reuse-mlp", "predictor": "mlp"},
+    )
+    with ResultStore(database) as store:
+        store.put_receipt(original)
+    assert "prediction-reuse" in pipeline.check_study()["methods"]
+    with ResultStore(database, read_only=True) as store:
+        retained = store.receipt(original.receipt_id)
+        assert retained is not None
+        assert retained == original
+        assert retained.payload["method_id"] == "prediction-reuse-mlp"

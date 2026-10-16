@@ -18,18 +18,21 @@ and evaluation system, with traceable evidence about benefits and limitations.
 
 ## Research questions
 
+**Main question:** To what extent can prediction-based workflow selection and
+reuse reduce token consumption and end-to-end runtime while maintaining answer
+correctness, compared with fixed workflows and planning for every question?
+
 | ID | Question | Evidence |
 | --- | --- | --- |
-| RQ1 | How much do similarity and success-prediction reuse change correctness, tokens, calls, and latency relative to fresh planning on each dataset? | Paired five-policy evaluation with correctness-loss gates and uncertainty. |
-| RQ2 | Does a learned success predictor improve candidate selection over similarity, and how do logistic regression, gradient-boosted trees, and an MLP compare? | Identical held-out candidate examples, MCC, Brier score, calibration, and selection diagnostics. |
-| RQ3 | How much do explicit task and workflow metadata contribute beyond text representations? | Refitted 134-, 136-, and 130-feature MLP ablations against the 140-feature model. |
-| RQ4 | Can a library and selector developed without one dataset transfer to that dataset? | Three independently developed leave-one-dataset-out releases. |
-| RQ5 | At what request volume, if any, does reuse repay its startup cost? | Measured discovery, validation, labeling, fitting, and request costs across distinct request sequences. |
+| RQ1: Workflow selection | How does prediction-based selection affect correctness, unsuccessful reuse, and fallback frequency compared with similarity-based selection using identical libraries and candidate sets? | Paired policy evaluation; matched candidate data; four predictor-family comparisons, MCC/Brier, calibration and overhead. |
+| RQ2: Task complexity | How much do task-complexity and workflow-structure features contribute to selection performance compared with models omitting these features? | Refitted 134-, 136-, and 130-feature variants against the 140-feature baseline, with a controlled predictor family. |
+| RQ3: Transfer | How do correctness and computational costs change on a dataset excluded from workflow discovery, selector training, and validation? | Three independent leave-one-dataset-out releases excluding the target from all development-dependent choices. |
+| RQ4: Total computational cost | At what request volume, if any, does reuse require fewer total tokens or less runtime than per-question planning, including discovery, validation, and selector-training costs? | Measured startup/serving costs across distinct requests, with correctness gates. |
 
-The principal quantitative question is RQ1: relative reductions in total request
-tokens and end-to-end latency are assessed subject to a dataset-specific bound on
-correctness loss. Margins and statistical precision are fixed after development
-pilots and before final evaluation; no numerical benefit is assumed in advance.
+Relative token and end-to-end runtime reductions are assessed subject to a
+predefined dataset-specific bound on correctness loss. Margins and statistical
+precision are fixed after development pilots and before final evaluation. No
+numerical benefit or winning predictor family is assumed in advance.
 
 ## Hypotheses
 
@@ -50,7 +53,7 @@ negative effects, and dataset-dependent trade-offs remain valid outcomes.
 | Frozen encoder | Separate from the generative model; used for task/workflow representations. |
 | Reusable collaboration graphs | Bounded DAGs with at most 12 nodes and typed bindings. |
 | Five principal policies | Single agent, fixed workflow, fresh planning, similarity reuse, learned reuse. |
-| Three predictors | Logistic regression, gradient-boosted trees, two-hidden-layer MLP. |
+| Four predictor candidates | Logistic regression, random forest, gradient-boosted trees, MLP; final family selected using development validation. |
 | Inspectable prototype | CLI, nine notebooks, database, report, and selected execution traces. |
 
 Multi-model routing, external browsing, arbitrary executable agent code, unbounded

@@ -9,8 +9,20 @@ features:
   total: 140
 predictors:
   - logistic_regression
+  - random_forest
   - gradient_boosted_trees
   - mlp
+# Candidate families share the same feature schema and development data.
+# The final family is selected on validation evidence, not fixed to MLP.
+model_selection:
+  scope: development_validation
+  criteria:
+    - predictive_performance
+    - calibration
+    - prediction_overhead
+  decision_rule: null
+  selected_predictor: null
+# Starting candidate architecture; this does not select MLP as the winner.
 mlp:
   hidden_layers: 2
   hidden_sizes: null

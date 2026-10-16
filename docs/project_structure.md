@@ -9,7 +9,7 @@
 | `src/workflow_reuse_orchestrator/__init__.py` | Python package initializer. |
 | `src/workflow_reuse_orchestrator/cli.py` | Command-line parsing and pipeline entry point. |
 | `src/workflow_reuse_orchestrator/config.py` | Typed four-document declarations, single-pass bundle loading, ownership/cross-document validation and project paths. |
-| `src/workflow_reuse_orchestrator/storage.py` | Transactional SQLite receipts, artifacts, checksums, and read-only access. |
+| `src/workflow_reuse_orchestrator/storage.py` | Versioned SQLite ledger, immutable identities/receipts/artifacts, atomic job/events, OS writer lock, explicit migration, read-only integrity/progress. |
 
 ### domain
 
@@ -18,7 +18,7 @@
 | `src/workflow_reuse_orchestrator/domain/__init__.py` | Python package initializer. |
 | `src/workflow_reuse_orchestrator/domain/tasks.py` | Questions, supplied passages/tables, source locations, and evaluator references. |
 | `src/workflow_reuse_orchestrator/domain/workflows.py` | Legacy v1 graphs, v2 typed input bindings, canonical output ports and DAG validation. |
-| `src/workflow_reuse_orchestrator/domain/outcomes.py` | Receipts, role outputs, fresh-evidence validation and cumulative attempt snapshots. Selection decisions/event traces remain planned. |
+| `src/workflow_reuse_orchestrator/domain/outcomes.py` | Receipts, role outputs/evidence, cumulative attempt snapshots, run/scope/request/attempt/job specifications and incremental job results. Selection decisions remain planned. |
 | `src/workflow_reuse_orchestrator/domain/budgets.py` | Request allowances and measured cumulative resource usage. |
 | `src/workflow_reuse_orchestrator/domain/providers.py` | Generative model/inference contracts and typed local tool results/protocols. Encoder binding is currently declared in config.py. |
 
@@ -78,7 +78,7 @@
 | --- | --- |
 | `src/workflow_reuse_orchestrator/experiments/__init__.py` | Python package initializer. |
 | `src/workflow_reuse_orchestrator/experiments/pipeline.py` | Stage orchestration and shared CLI/notebook execution API. |
-| `src/workflow_reuse_orchestrator/experiments/stages.py` | Resumable job states, progress, and named stage work. |
+| `src/workflow_reuse_orchestrator/experiments/stages.py` | Implemented sequential durable JobRunner, completed-unit reuse, interruption handling and progress callbacks. Scientific stage callbacks remain planned. |
 | `src/workflow_reuse_orchestrator/experiments/definitions.py` | Main, transfer, ablation, volume, repetition, and diagnostic scopes. |
 | `src/workflow_reuse_orchestrator/experiments/freeze.py` | Immutable release publication and protected-run verification. |
 
@@ -142,9 +142,12 @@
 | `tests/unit/test_role_agent_contract.py` | Role outputs, tools, and fresh evidence. |
 | `tests/unit/test_workflow_library_contract.py` | Generalization, validation, and candidate matching. |
 | `tests/unit/test_success_predictor_training.py` | Predictor fitting, calibration, and persisted parity. |
-| `tests/integration/test_workflow_study_pipeline.py` | Measured stage orchestration and resume behavior. |
+| `tests/integration/test_workflow_study_pipeline.py` | Configuration/CLI and recorded infrastructure-pilot regression checks; scientific stage execution remains pending. |
 | `tests/integration/test_fixed_model_runtime_provider.py` | Ollama identity verification and lifecycle. |
 | `tests/integration/test_workflow_result_storage.py` | Transactional receipt and artifact persistence. |
+| `tests/integration/test_study_job_resume.py` | Durable intent, completion rollback, unknown effects, request/attempt/retry lineage, completed-unit resume and cost availability. |
+| `tests/integration/test_result_store_migration.py` | Explicit v1 migration, read-only bytes, process writer exclusion and forced-exit lock release. |
+| `tests/integration/test_runtime_pilot_ledger.py` | Mocked pilot lineage, read-only status and explicit retry cost retention. |
 | `tests/integration/test_frozen_workflow_selector_release.py` | Release integrity and protected execution. |
 | `tests/e2e/test_supplied_document_workflow.py` | Small mock end-to-end document study. |
 | `tests/notebooks/test_numbered_notebook_smoke.py` | Independent notebook fixture/smoke checks. |
@@ -159,6 +162,7 @@
 | `docs/research_plan.md` | Research questions, scope, hypotheses, and deliverables. |
 | `docs/architecture.md` | Components, contracts, execution, persistence, and releases. |
 | `docs/contracts.md` | Implemented binding, output, evidence, attempt and accounting semantics. |
+| `docs/persistence.md` | Implemented ledger, state transitions, atomicity, retries, migration, writer locks and progress. |
 | `docs/data.md` | Dataset sources, preparation, source groups, and partitions. |
 | `docs/methods.md` | Baselines, library construction, features, training, and selection. |
 | `docs/evaluation.md` | Experiment families, metrics, statistical rules, and reporting. |

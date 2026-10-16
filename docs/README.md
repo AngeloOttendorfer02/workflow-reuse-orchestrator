@@ -19,6 +19,8 @@ optional single-call infrastructure pilot. Scientific execution remains pending.
 | 8 | [Decisions](decisions.md) | Open settings, resolution gates, risks, and change control. |
 | Reference | [Project structure](project_structure.md) | Existing paths and intended module ownership. |
 | Reference | [Operations](operations.md) | Commands that work in the current implementation. |
+| Reference | [Contract semantics](contracts.md) | Workflow versions, typed bindings, evidence, role outputs and request accounting. |
+| Reference | [Persistence and resume](persistence.md) | Job states, atomic effects, migration, retries, writer locks and progress semantics. |
 
 ## Planning conventions
 

@@ -22,6 +22,8 @@ class ResourceUsage(BaseModel):
 
     Pending model calls expose unknown tokens until reconciliation. Wall time is
     elapsed request time, not a sum of provider-reported component timings.
+    The durable job ledger records incremental unit usage under an explicit
+    usage_basis; those records must not be added to cumulative attempt snapshots.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True, allow_inf_nan=False)

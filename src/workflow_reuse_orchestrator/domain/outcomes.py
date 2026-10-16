@@ -1,10 +1,11 @@
-"""Immutable receipt identities for started and completed effects."""
+"""Role outputs, request identities, and durable work-unit contracts."""
 
 from typing import Annotated, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, JsonValue, TypeAdapter, model_validator
 
-from workflow_reuse_orchestrator.domain.budgets import ResourceUsage
+from workflow_reuse_orchestrator.domain.budgets import RequestBudget, ResourceUsage
+from workflow_reuse_orchestrator.domain.providers import Sha256
 from workflow_reuse_orchestrator.domain.tasks import (
     EvidenceReference,
     Identifier,
@@ -102,7 +103,7 @@ class AttemptOutcome(BaseModel):
 
     cumulative_usage includes all earlier attempts, planning, repairs and tools.
     An unknown effect cannot be reported as success or safely retried as free work.
-    Persistence and recovery transitions are implemented in C05 and later.
+    C05 persists identities; later policies own complete attempt lifecycles.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
@@ -128,4 +129,105 @@ class AttemptOutcome(BaseModel):
             raise ValueError("Failed/unknown attempts require a failure code.")
         if (self.status == "unknown") != (self.failure_code == "unknown_effect"):
             raise ValueError("Unknown effects require the unknown terminal state.")
+        return self
+
+
+class RunSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    run_id: Identifier
+    purpose: Literal["infrastructure_pilot", "development", "protected"]
+    configuration_sha256: Sha256
+    code_version: Identifier
+
+
+class ScopeSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    scope_id: Identifier
+    run_id: Identifier
+    family: Identifier
+    fold_id: Identifier
+
+
+class RequestSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    request_id: Identifier
+    scope_id: Identifier
+    task_id: Identifier
+    method_id: Identifier
+    budget: RequestBudget
+
+
+class AttemptSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    attempt_id: Identifier
+    request_id: Identifier
+    kind: Literal["primary", "reuse", "fallback"]
+
+
+class JobSpec(BaseModel):
+    """One resumable work unit; external effects require intent before contact."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    job_id: Identifier
+    scope_id: Identifier
+    stage: Identifier
+    phase: Literal["startup", "request", "analysis"]
+    method_id: Identifier
+    effect: Literal["local", "model", "tool"]
+    request_id: Identifier | None = None
+    attempt_id: Identifier | None = None
+    retry_of: Identifier | None = None
+    parameters: dict[str, JsonValue] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def validate_request_identity(self) -> Self:
+        if (self.request_id is None) != (self.attempt_id is None):
+            raise ValueError("Request and attempt identities must be supplied together.")
+        if self.phase == "request" and self.request_id is None:
+            raise ValueError("Request-phase jobs require request and attempt identities.")
+        return self
+
+
+class JobResult(BaseModel):
+    """Incremental cost of this unit, unlike AttemptOutcome's cumulative usage."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    status: Literal["succeeded", "failed"] = "succeeded"
+    result: dict[str, JsonValue] = Field(default_factory=dict)
+    usage: ResourceUsage = Field(default_factory=ResourceUsage)
+    error: Text | None = None
+
+    @model_validator(mode="after")
+    def validate_error(self) -> Self:
+        if (self.status == "failed") != (self.error is not None):
+            raise ValueError("Only failed results require an error.")
+        return self
+
+
+class JobRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    schema_version: Literal["job-v1"] = "job-v1"
+    spec: JobSpec
+    status: Literal["pending", "running", "succeeded", "failed", "unknown"] = "pending"
+    usage: ResourceUsage = Field(default_factory=ResourceUsage)
+    wall_time_available: bool = True
+    result: dict[str, JsonValue] | None = None
+    error: Text | None = None
+    started_at: str | None = None
+    finished_at: str | None = None
+
+    @model_validator(mode="after")
+    def validate_state(self) -> Self:
+        if self.status == "pending":
+            if self.started_at is not None or self.finished_at is not None:
+                raise ValueError("Pending jobs cannot have execution timestamps.")
+        elif self.started_at is None:
+            raise ValueError("Admitted jobs require a start timestamp.")
+        terminal = self.status in ("succeeded", "failed", "unknown")
+        if terminal != (self.finished_at is not None):
+            raise ValueError("Only terminal jobs require a finish timestamp.")
+        if (self.status in ("failed", "unknown")) != (self.error is not None):
+            raise ValueError("Failed/unknown jobs require an error.")
+        if (self.status in ("succeeded", "failed")) != (self.result is not None):
+            raise ValueError("Known completed jobs require a result, even if empty.")
         return self

@@ -5,6 +5,9 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any, Literal
 
+from pydantic import JsonValue
+
+from workflow_reuse_orchestrator import __version__
 from workflow_reuse_orchestrator.config import (
     StudyBundle,
     configuration_files,
@@ -14,8 +17,17 @@ from workflow_reuse_orchestrator.config import (
     resolve_project_path,
 )
 from workflow_reuse_orchestrator.domain.budgets import RequestBudget
-from workflow_reuse_orchestrator.domain.outcomes import Receipt
-from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ProviderError
+from workflow_reuse_orchestrator.domain.outcomes import (
+    AttemptSpec,
+    JobResult,
+    JobSpec,
+    Receipt,
+    RequestSpec,
+    RunSpec,
+    ScopeSpec,
+)
+from workflow_reuse_orchestrator.domain.providers import InferenceProfile
+from workflow_reuse_orchestrator.experiments.stages import JobRunner
 from workflow_reuse_orchestrator.runtime.budgets import (
     BudgetedGenerator,
     BudgetExceeded,
@@ -176,6 +188,34 @@ def inspect_runtime_model(model_name: str, base_url: str | None = None) -> dict[
         return provider.inspect_model(model_name).model_dump(mode="json")
 
 
+def inspect_run(output_dir: Path, *, job_id: str | None = None) -> dict[str, Any]:
+    """Inspect the ledger without migration, recovery, locks or provider contact."""
+    with ResultStore(output_dir / "results.sqlite3", read_only=True) as store:
+        store.verify_integrity()
+        report = store.progress()
+        if job_id is not None:
+            job = store.job(job_id)
+            if job is None:
+                raise ValueError(f"Unknown job: {job_id}")
+            report["job"] = job.model_dump(mode="json")
+            report["events"] = store.events(job_id)
+        return {**report, "runtime_contacted": False}
+
+
+def migrate_run(output_dir: Path) -> dict[str, Any]:
+    database = output_dir / "results.sqlite3"
+    if not database.is_file():
+        raise ValueError("Migration requires an existing result database.")
+    with ResultStore(database, migrate=True) as store:
+        store.verify_integrity()
+        return {
+            "schema_version": store.schema_version,
+            "status": "migrated",
+            "runtime_contacted": False,
+            "historical_jobs_reconstructed": False,
+        }
+
+
 def runtime_check(
     *,
     model_name: str,
@@ -186,6 +226,7 @@ def runtime_check(
     num_predict: int | None = None,
     timeout_seconds: float = 60.0,
     progress: Callable[[str], None] | None = None,
+    retry_of: str | None = None,
 ) -> dict[str, Any]:
     """Inspect a model and record at most one generation, independently of study execution.
 
@@ -218,7 +259,7 @@ def runtime_check(
     study_document = study.model_dump(mode="json")
     for field in ("datasets_config", "learning_config", "evaluation_config"):
         study_document[field] = getattr(study, field).as_posix()
-    parameters = {
+    parameters: dict[str, JsonValue] = {
         "purpose": "infrastructure_pilot",
         "model_name": model_name,
         "base_url": endpoint,
@@ -229,7 +270,10 @@ def runtime_check(
         "request_budget": budget.model_dump(mode="json"),
     }
     database = output_dir / "results.sqlite3"
+    first_job_id = "runtime-check:trial-001"
+    job_id = first_job_id if retry_of is None else f"{retry_of}:retry"
     with ResultStore(database) as store:
+        store.verify_integrity()
         previous_parameters = store.binding("run_parameters")
         if previous_parameters is not None and "expected_output" not in previous_parameters:
             raise ValueError(
@@ -237,16 +281,80 @@ def runtime_check(
                 "Use a new output folder for the corrected check."
             )
         store.bind("run_parameters", parameters)
-        completed = store.receipt("runtime-check:001-completed")
-        if completed is not None:
-            if progress is not None:
-                progress("Reading the completed infrastructure-pilot receipt.")
-            return {**completed.payload, "measurement_source": "stored_receipt"}
-        if store.receipt("runtime-check:000-started") is not None:
+        if retry_of is None:
+            completed = store.receipt("runtime-check:001-completed")
+            if completed is not None:
+                if progress is not None:
+                    progress("Reading the completed infrastructure-pilot receipt.")
+                return {**completed.payload, "measurement_source": "stored_receipt"}
+            if store.receipt("runtime-check:000-started") is not None:
+                if store.schema_version == 2:
+                    store.recover_running(run_id="runtime-pilot")
+                raise ValueError(
+                    "An unfinished generation has an unknown outcome. "
+                    "Inspect its job and supply --retry-of JOB_ID for an explicit new trial, "
+                    "or use a new output folder."
+                )
+        if store.schema_version != 2:
             raise ValueError(
-                "An unfinished generation has an unknown outcome. "
-                "Use a new output folder for an explicitly counted retry."
+                "Migrate this schema-v1 database explicitly or use a new output folder."
             )
+        package_root = Path(__file__).resolve().parents[1]
+        code_hash = canonical_sha256(
+            {
+                path.relative_to(package_root).as_posix(): hashlib.sha256(
+                    path.read_bytes()
+                ).hexdigest()
+                for path in sorted(package_root.rglob("*.py"))
+            }
+        )
+        store.declare_run(
+            RunSpec(
+                run_id="runtime-pilot",
+                purpose="infrastructure_pilot",
+                configuration_sha256=canonical_sha256(parameters),
+                code_version=f"{__version__}:{code_hash}",
+            )
+        )
+        store.declare_scope(
+            ScopeSpec(
+                scope_id="runtime-pilot:scope",
+                run_id="runtime-pilot",
+                family="infrastructure",
+                fold_id="infrastructure",
+            )
+        )
+        store.recover_running(run_id="runtime-pilot")
+        request_id, attempt_id = f"{job_id}:request", f"{job_id}:attempt"
+        store.declare_request(
+            RequestSpec(
+                request_id=request_id,
+                scope_id="runtime-pilot:scope",
+                task_id="infrastructure-prompt",
+                method_id="infrastructure-pilot",
+                budget=budget,
+            )
+        )
+        store.declare_attempt(
+            AttemptSpec(attempt_id=attempt_id, request_id=request_id, kind="primary")
+        )
+        spec = JobSpec(
+            job_id=job_id,
+            scope_id="runtime-pilot:scope",
+            stage="runtime_check",
+            phase="startup",
+            method_id="infrastructure-pilot",
+            effect="model",
+            request_id=request_id,
+            attempt_id=attempt_id,
+            retry_of=retry_of,
+            parameters=parameters,
+        )
+        job = store.declare_job(spec)
+        if job.status in ("succeeded", "failed"):
+            return {**(job.result or {}), "measurement_source": "stored_receipt"}
+        if job.status != "pending":
+            raise ValueError(f"Job {job_id} has an unknown outcome; declare an explicit retry.")
         if progress is not None:
             progress("Inspecting the installed model and runtime fingerprints.")
         with OllamaProvider(base_url=endpoint, timeout_seconds=timeout_seconds) as provider:
@@ -258,54 +366,106 @@ def runtime_check(
             generator = BudgetedGenerator(
                 provider=provider, model=model, inference=inference, tracker=tracker
             )
-            store.put_receipt(
-                Receipt(
-                    receipt_id="runtime-check:000-started",
-                    kind="runtime_check",
-                    status="started",
-                    payload={"purpose": "infrastructure_pilot", "model_name": model_name},
-                )
-            )
-            response = None
-            error = None
-            try:
+
+            def operation() -> JobResult:
+                response = None
+                error = None
+                try:
+                    if progress is not None:
+                        progress("Executing one bounded infrastructure-pilot generation.")
+                    response = generator.generate(str(parameters["prompt"]))
+                    if response.finish_reason == "length":
+                        error = "generation_truncated"
+                    elif response.finish_reason is None:
+                        error = "completion_reason_unavailable"
+                    elif response.finish_reason != "stop":
+                        error = "unexpected_completion_reason"
+                    elif not tracker.usage.token_counts_available:
+                        error = "token_usage_unavailable"
+                    elif any(
+                        tag in response.output_text.casefold() for tag in ("<think>", "</think>")
+                    ):
+                        error = "unexpected_thinking_output"
+                    elif response.output_text.strip() != parameters["expected_output"]:
+                        error = "unexpected_pilot_output"
+                except BudgetExceeded as exc:
+                    if response is None:
+                        raise  # Unknown/late provider effects must not become a free retry.
+                    error = str(exc)
+                report: dict[str, Any] = {
+                    "status": "passed" if error is None else "failed",
+                    "purpose": "infrastructure_pilot",
+                    "job_id": job_id,
+                    "request_id": request_id,
+                    "attempt_id": attempt_id,
+                    "method_id": "infrastructure-pilot",
+                    "fold_id": "infrastructure",
+                    "retry_of": retry_of,
+                    "model": model.model_dump(mode="json"),
+                    "inference": inference.model_dump(mode="json"),
+                    "request_budget": budget.model_dump(mode="json"),
+                    "usage": tracker.usage.model_dump(mode="json"),
+                    "generation": response.model_dump(mode="json")
+                    if response is not None
+                    else None,
+                    "error": error,
+                    "workflow_execution_available": False,
+                    "study_bindings_updated": False,
+                }
                 if progress is not None:
-                    progress("Executing one bounded infrastructure-pilot generation.")
-                response = generator.generate(str(parameters["prompt"]))
-                if response.finish_reason == "length":
-                    error = "generation_truncated"
-                elif response.finish_reason is None:
-                    error = "completion_reason_unavailable"
-                elif response.finish_reason != "stop":
-                    error = "unexpected_completion_reason"
-                elif not tracker.usage.token_counts_available:
-                    error = "token_usage_unavailable"
-                elif any(tag in response.output_text.casefold() for tag in ("<think>", "</think>")):
-                    error = "unexpected_thinking_output"
-                elif response.output_text.strip() != parameters["expected_output"]:
-                    error = "unexpected_pilot_output"
-            except (ProviderError, BudgetExceeded) as exc:
-                error = str(exc)
-            report: dict[str, Any] = {
-                "status": "passed" if error is None else "failed",
-                "purpose": "infrastructure_pilot",
-                "model": model.model_dump(mode="json"),
-                "inference": inference.model_dump(mode="json"),
-                "request_budget": budget.model_dump(mode="json"),
-                "usage": tracker.usage.model_dump(mode="json"),
-                "generation": response.model_dump(mode="json") if response is not None else None,
-                "error": error,
-                "workflow_execution_available": False,
-                "study_bindings_updated": False,
-            }
-            if progress is not None:
-                progress("Saving generation, usage, and completion status to SQLite.")
-            store.put_receipt(
-                Receipt(
-                    receipt_id="runtime-check:001-completed",
-                    kind="runtime_check",
+                    progress("Saving generation, usage, and completion status to SQLite.")
+                return JobResult(
                     status="succeeded" if error is None else "failed",
-                    payload=report,
+                    result=report,
+                    usage=tracker.usage,
+                    error=error,
+                )
+
+            def completed_receipts(result: JobResult) -> tuple[Receipt, ...]:
+                if retry_of is not None:
+                    return ()
+                return (
+                    Receipt(
+                        receipt_id="runtime-check:001-completed",
+                        kind="runtime_check",
+                        status=result.status,
+                        payload=result.result,
+                    ),
+                )
+
+            def job_progress(event: dict[str, Any]) -> None:
+                if progress is not None:
+                    counts = event["progress"]["jobs"]
+                    progress(
+                        f"[{event['phase']}/{event['stage']}] method={event['method_id']} "
+                        f"fold={event['fold_id']} completed={counts['succeeded']} "
+                        f"failed={counts['failed']} unknown={counts['unknown']} "
+                        f"planned={counts['planned']}"
+                    )
+
+            receipts = (
+                ()
+                if retry_of is not None
+                else (
+                    Receipt(
+                        receipt_id="runtime-check:000-started",
+                        kind="runtime_check",
+                        status="started",
+                        payload={
+                            "purpose": "infrastructure_pilot",
+                            "model_name": model_name,
+                            "job_id": job_id,
+                            "method_id": "infrastructure-pilot",
+                            "fold_id": "infrastructure",
+                        },
+                    ),
                 )
             )
-            return {**report, "measurement_source": "live"}
+            job = JobRunner(store, progress=job_progress).run(
+                spec,
+                operation,
+                started_receipts=receipts,
+                completed_receipts=completed_receipts,
+                failure_usage=lambda: tracker.usage,
+            )
+            return {**(job.result or {}), "measurement_source": "live"}

@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import sqlite3
 import sys
 from collections.abc import Sequence
 from pathlib import Path
@@ -13,7 +14,9 @@ from workflow_reuse_orchestrator.experiments.pipeline import (
     VALIDATION_LEVELS,
     ValidationLevel,
     check_study,
+    inspect_run,
     inspect_runtime_model,
+    migrate_run,
     plan_study,
     runtime_check,
     runtime_models,
@@ -53,6 +56,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     pilot.add_argument("--num-ctx", type=int)
     pilot.add_argument("--num-predict", type=int)
     pilot.add_argument("--timeout-seconds", type=float, default=60.0)
+    pilot.add_argument(
+        "--retry-of", help="Failed/unknown job ID; creates an explicit new pilot trial."
+    )
+    for name, help_text in (
+        ("status", "Read stored progress/events without changing the database."),
+        ("migrate", "Explicitly add the v2 job ledger to a schema-v1 database."),
+    ):
+        operation = operations.add_parser(name, help=help_text)
+        operation.add_argument("--output", required=True, type=Path)
+        if name == "status":
+            operation.add_argument("--job", help="Include one job and its ordered events.")
     runtime = commands.add_parser("runtime", help="List models and inspect model fingerprints.")
     runtime_operations = runtime.add_subparsers(dest="operation", required=True)
     models = runtime_operations.add_parser("models", help="List installed Ollama model names.")
@@ -74,6 +88,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             report = check_study(args.config, level=cast(ValidationLevel, args.level))
         elif args.operation == "plan":
             report = plan_study(args.config)
+        elif args.operation == "status":
+            report = inspect_run(args.output, job_id=args.job)
+        elif args.operation == "migrate":
+            report = migrate_run(args.output)
         else:
             report = runtime_check(
                 model_name=args.model,
@@ -84,8 +102,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 num_predict=args.num_predict,
                 timeout_seconds=args.timeout_seconds,
                 progress=lambda message: print(message, file=sys.stderr),
+                retry_of=args.retry_of,
             )
-    except (OSError, ValueError, ProviderError) as exc:
+    except (OSError, ValueError, ProviderError, sqlite3.Error) as exc:
         print(f"Pipeline failed: {exc}", file=sys.stderr)
         return 2
     print(json.dumps(report, indent=2))

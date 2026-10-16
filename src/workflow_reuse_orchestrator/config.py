@@ -1,16 +1,24 @@
-"""Load the starter study declarations and project-relative configuration files."""
+"""Load and validate owned workflow-study configuration declarations."""
 
 import os
 import tomllib
 from pathlib import Path
-from typing import Any, Literal, Self
+from typing import Annotated, Any, Literal, Self
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StringConstraints,
+    ValidationError,
+    field_validator,
+    model_validator,
+)
 
 from workflow_reuse_orchestrator.domain.budgets import RequestBudget
-from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ModelBinding
-from workflow_reuse_orchestrator.domain.tasks import DatasetId
+from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ModelBinding, Sha256
+from workflow_reuse_orchestrator.domain.tasks import DatasetId, Identifier
 
 MethodId = Literal[
     "single-agent",
@@ -81,15 +89,235 @@ class PredictorDeclarations(BaseModel):
         return values
 
 
+class Declaration(BaseModel):
+    """Owned declaration fields; unknown keys and nonfinite values are errors."""
+
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+
+class EncoderBinding(Declaration):
+    model_id: Identifier
+    revision: Annotated[
+        str, StringConstraints(pattern=r"^[0-9a-f]{40}([0-9a-f]{24})?$", strict=True)
+    ]
+    tokenizer_revision: Annotated[
+        str, StringConstraints(pattern=r"^[0-9a-f]{40}([0-9a-f]{24})?$", strict=True)
+    ]
+    serialization_version: Identifier
+    pooling: Literal["mean", "cls"]
+
+
+class PromptFileBinding(Declaration):
+    path: Path
+    sha256: Sha256
+
+
+class PromptBindings(Declaration):
+    coordinator: PromptFileBinding
+    retrieval: PromptFileBinding
+    reasoning: PromptFileBinding
+    checking: PromptFileBinding
+    generalization: PromptFileBinding
+
+
+class SourceRelease(Declaration):
+    release: Identifier | None
+    source_checksum: Sha256 | None
+
+
+class HotpotRelease(SourceRelease):
+    variant: Literal["distractor"]
+
+
+class DatasetReleases(Declaration):
+    hotpotqa: HotpotRelease
+    drop: SourceRelease
+    finqa: SourceRelease
+
+
+class PartitionDeclarations(Declaration):
+    grouping: Literal["connected_source_groups"]
+    assignment_version: Identifier | None
+    final_evaluation_frozen: bool = Field(strict=True)
+
+
+class DatasetConfig(Declaration):
+    schema_version: Literal["workflow-datasets-v1"]
+    status: Literal["draft", "configured"]
+    datasets: DatasetReleases
+    snapshot_id: Identifier | None
+    partitions: PartitionDeclarations
+
+
+class FeatureDimensions(Declaration):
+    """The main 140-column interface; ablations are separate fitted variants."""
+
+    task_representation: Literal[64]
+    workflow_representation: Literal[64]
+    task_metadata: Literal[4]
+    graph_metadata: Literal[6]
+    compatibility: Literal[2]
+    total: Literal[140]
+
+
+class MLPCandidate(Declaration):
+    hidden_layers: int = Field(ge=1, strict=True)
+    hidden_sizes: list[Annotated[int, Field(ge=1, strict=True)]] | None
+
+    @model_validator(mode="after")
+    def match_layer_widths(self) -> Self:
+        if self.hidden_sizes is not None and len(self.hidden_sizes) != self.hidden_layers:
+            raise ValueError("MLP hidden_sizes must contain one width per hidden layer.")
+        return self
+
+
+class CalibrationDeclarations(Declaration):
+    method: Literal["sigmoid", "isotonic"]
+    fitting_role: Literal["selector_calibration"]
+
+
+class SelectionThresholds(Declaration):
+    success_probability: float = Field(ge=0, le=1)
+    cosine_similarity: float = Field(ge=-1, le=1)
+    tie_break: Literal["workflow_id"]
+
+
+class DevelopmentCostDeclarations(Declaration):
+    basis: Literal["development_executions"]
+    fallback: Literal["workflow_structure"]
+    estimator_version: Identifier
+
+
+class LearningConfig(PredictorDeclarations):
+    """Owned learning declarations; fitted-state verification is still separate."""
+
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    schema_version: Literal["workflow-learning-v1"]
+    status: Literal["draft", "configured"]
+    features: FeatureDimensions
+    mlp: MLPCandidate
+    fitting_scope: Literal["development_only"]
+    calibration: CalibrationDeclarations | None
+    selection_thresholds: SelectionThresholds | None
+    development_cost_estimates: DevelopmentCostDeclarations | None
+
+
+class ScorerDeclaration(Declaration):
+    name: Identifier
+    version: Identifier
+    normalization_version: Identifier
+    numerical_tolerance: float | None = Field(default=None, ge=0)
+
+
+class ScoringDeclarations(Declaration):
+    hotpotqa: ScorerDeclaration | None
+    drop: ScorerDeclaration | None
+    finqa: ScorerDeclaration | None
+
+
+class CorrectnessMargins(Declaration):
+    hotpotqa: float = Field(ge=0, lt=1)
+    drop: float = Field(ge=0, lt=1)
+    finqa: float = Field(ge=0, lt=1)
+
+
+class DatasetCounts(Declaration):
+    hotpotqa: int = Field(ge=1, strict=True)
+    drop: int = Field(ge=1, strict=True)
+    finqa: int = Field(ge=1, strict=True)
+
+
+class FinalPopulation(Declaration):
+    snapshot_id: Identifier
+    counts: DatasetCounts
+
+
+class SamplingDeclarations(Declaration):
+    mode: Literal["full", "source_grouped"]
+    sample_id: Identifier
+    assignment_version: Identifier
+    seed: int = Field(ge=0, strict=True)
+
+
+class StatisticsDeclarations(Declaration):
+    confidence_level: float = Field(gt=0, lt=1)
+    bootstrap_resamples: int = Field(ge=1, strict=True)
+    resampling_unit: Literal["source_group"]
+    paired_test: Identifier
+    multiplicity: Literal["holm"]
+    seed: int = Field(ge=0, strict=True)
+
+
+class RepetitionDeclarations(Declaration):
+    executions: Literal[3]
+    subset_id: Identifier
+    seed: int = Field(ge=0, strict=True)
+
+
+class HumanAssessmentDeclarations(Declaration):
+    assessors: Literal[2]
+    sample_id: Identifier
+    rubric_version: Identifier
+    blind_methods: Literal[True]
+    agreement_before_reconciliation: Literal[True]
+
+
+class CacheOrderDeclarations(Declaration):
+    cache_policy: Literal["miss", "separate_conditions"]
+    warmup_policy: Literal["excluded_and_reported", "included"]
+    method_order: Literal["seeded_random", "balanced"]
+    concurrency: Literal[1]
+    seed: int = Field(ge=0, strict=True)
+
+
+class EvaluationConfig(Declaration):
+    schema_version: Literal["workflow-evaluation-v1"]
+    status: Literal["draft", "configured"]
+    protocol_frozen: bool = Field(strict=True)
+    scoring: ScoringDeclarations
+    correctness_loss_margins: CorrectnessMargins | None
+    final_population: FinalPopulation | None
+    sampling: SamplingDeclarations | None
+    statistics: StatisticsDeclarations | None
+    repetitions: RepetitionDeclarations | None
+    human_assessment: HumanAssessmentDeclarations | None
+    cache_and_method_order: CacheOrderDeclarations | None
+
+    def unresolved_fields(self) -> list[str]:
+        fields = [
+            "correctness_loss_margins",
+            "final_population",
+            "sampling",
+            "statistics",
+            "repetitions",
+            "human_assessment",
+            "cache_and_method_order",
+        ]
+        missing = [name for name in fields if getattr(self, name) is None]
+        missing.extend(
+            f"scoring.{dataset}"
+            for dataset in ("hotpotqa", "drop", "finqa")
+            if getattr(self.scoring, dataset) is None
+        )
+        return missing
+
+    @model_validator(mode="after")
+    def require_complete_frozen_declarations(self) -> Self:
+        if self.protocol_frozen and self.unresolved_fields():
+            raise ValueError("A frozen protocol cannot contain unresolved evaluation declarations.")
+        return self
+
+
 class RuntimeBindings(BaseModel):
-    """Typed model/inference/request limits; encoder and prompts remain reserved."""
+    """Typed bindings; their presence does not verify live provider availability."""
 
     model_config = ConfigDict(extra="forbid")
 
     model: ModelBinding | None = None
-    encoder: dict[str, Any] | None = None
+    encoder: EncoderBinding | None = None
     inference: InferenceProfile | None = None
-    prompts: dict[str, Any] | None = None
+    prompts: PromptBindings | None = None
     request_limits: RequestBudget | None = None
 
     @model_validator(mode="after")
@@ -191,29 +419,59 @@ def configuration_files(study: StudyConfig, root: Path) -> dict[str, Path]:
     }
 
 
-def load_study(path: Path | None = None) -> StudyConfig:
-    """Validate the study declarations and the linked YAML document identities.
+class StudyBundle(BaseModel):
+    """One typed read of the four configuration documents."""
 
-    The starter does not verify model metadata, dataset partitions, feature
-    implementations, fitted predictors, or evaluation readiness. It validates the
-    candidate-family and development-only model-selection declarations; their
-    numerical/statistical settings remain draft.
-    """
+    root: Path
+    study: StudyConfig
+    datasets: DatasetConfig
+    learning: LearningConfig
+    evaluation: EvaluationConfig
+
+    @model_validator(mode="after")
+    def consistent_scientific_identities(self) -> Self:
+        population = self.evaluation.final_population
+        if population is not None and population.snapshot_id != self.datasets.snapshot_id:
+            raise ValueError("Final population snapshot_id differs from the dataset configuration.")
+        sampling = self.evaluation.sampling
+        if sampling is not None and (
+            sampling.assignment_version != self.datasets.partitions.assignment_version
+        ):
+            raise ValueError("Evaluation sampling uses a different source-group assignment.")
+        if self.evaluation.protocol_frozen and not self.datasets.partitions.final_evaluation_frozen:
+            raise ValueError("A frozen protocol requires frozen final source-group assignments.")
+        return self
+
+
+def _read_model[ConfigModel: BaseModel](path: Path, model: type[ConfigModel]) -> ConfigModel:
+    try:
+        return model.model_validate(read_yaml_mapping(path))
+    except ValidationError as exc:
+        raise ValueError(f"Invalid configuration in {path}: {exc}") from exc
+
+
+def load_study_bundle(path: Path | None = None) -> StudyBundle:
+    """Validate owned declaration schemas; do not load data, fit or contact providers."""
     root = project_root(path.parent if path is not None and path.is_absolute() else None)
     location = root / "configs/study.yaml" if path is None else path
     if not location.is_absolute():
         location = resolve_project_path(root, location)
     elif not location.resolve().is_relative_to(root):
         raise ValueError("The study configuration must be inside the project.")
-    study = StudyConfig.model_validate(read_yaml_mapping(location))
-    for name, linked_path in configuration_files(study, root).items():
-        document = read_yaml_mapping(linked_path)
-        expected_version = f"workflow-{name}-v1"
-        if document.get("schema_version") != expected_version:
-            raise ValueError(f"Expected schema_version {expected_version!r} in {linked_path}.")
-        if name == "learning":
-            PredictorDeclarations.model_validate(document)
-    return study
+    study = _read_model(location, StudyConfig)
+    linked = configuration_files(study, root)
+    return StudyBundle(
+        root=root,
+        study=study,
+        datasets=_read_model(linked["datasets"], DatasetConfig),
+        learning=_read_model(linked["learning"], LearningConfig),
+        evaluation=_read_model(linked["evaluation"], EvaluationConfig),
+    )
+
+
+def load_study(path: Path | None = None) -> StudyConfig:
+    """Return the study after validating all linked declaration documents."""
+    return load_study_bundle(path).study
 
 
 def ollama_base_url(override: str | None = None) -> str:
@@ -224,4 +482,4 @@ def ollama_base_url(override: str | None = None) -> str:
 def load_predictor_declarations(study: StudyConfig, root: Path) -> PredictorDeclarations:
     """Read only declarations; historical result records are never migrated here."""
     path = resolve_project_path(root, study.learning_config)
-    return PredictorDeclarations.model_validate(read_yaml_mapping(path))
+    return _read_model(path, LearningConfig)

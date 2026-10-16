@@ -43,4 +43,7 @@ show_error_codes = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra"
+addopts = "-ra --strict-markers"
+markers = [
+    "live: explicit opt-in tests that may contact an external model runtime",
+]

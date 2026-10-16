@@ -5,10 +5,13 @@ import json
 import sys
 from collections.abc import Sequence
 from pathlib import Path
+from typing import cast
 
 from workflow_reuse_orchestrator import __version__
 from workflow_reuse_orchestrator.domain.providers import ProviderError
 from workflow_reuse_orchestrator.experiments.pipeline import (
+    VALIDATION_LEVELS,
+    ValidationLevel,
     check_study,
     inspect_runtime_model,
     plan_study,
@@ -28,11 +31,18 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     operations = pipeline.add_subparsers(dest="operation", required=True)
     for name, help_text in (
-        ("check", "Validate starter declarations and linked YAML documents offline."),
+        ("check", "Validate typed declarations and an explicit offline readiness gate."),
         ("plan", "Show the study's planned stages without executing them."),
     ):
         operation = operations.add_parser(name, help=help_text)
         operation.add_argument("--config", type=Path, help="Project-relative study configuration.")
+        if name == "check":
+            operation.add_argument(
+                "--level",
+                choices=VALIDATION_LEVELS,
+                default="scaffold",
+                help="Readiness gate to require; all configuration checks are offline.",
+            )
     pilot = operations.add_parser(
         "runtime-check", help="Record one infrastructure-pilot generation."
     )
@@ -61,7 +71,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 else inspect_runtime_model(args.model, args.base_url)
             )
         elif args.operation == "check":
-            report = check_study(args.config)
+            report = check_study(args.config, level=cast(ValidationLevel, args.level))
         elif args.operation == "plan":
             report = plan_study(args.config)
         else:
@@ -79,4 +89,4 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Pipeline failed: {exc}", file=sys.stderr)
         return 2
     print(json.dumps(report, indent=2))
-    return 1 if report.get("status") == "failed" else 0
+    return 1 if report.get("status") in {"failed", "blocked"} else 0

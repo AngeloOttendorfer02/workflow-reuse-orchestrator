@@ -1,8 +1,9 @@
 """Small local fixtures; no real model or scientific dataset is contacted."""
 
 import json
+import socket
 from collections.abc import Iterator
-from typing import Any
+from typing import Any, NoReturn
 
 import httpx
 import pytest
@@ -91,3 +92,38 @@ def ollama_fixture() -> Iterator[tuple[httpx.Client, dict[str, Any]]]:
 
     with httpx.Client(transport=httpx.MockTransport(handle)) as client:
         yield client, state
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption(
+        "--run-live",
+        action="store_true",
+        default=False,
+        help="Run explicitly marked live-runtime tests; offline tests remain network-blocked.",
+    )
+
+
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    if not config.getoption("--run-live"):
+        skip_live = pytest.mark.skip(reason="Live runtime tests require --run-live.")
+        for item in items:
+            if item.get_closest_marker("live") is not None:
+                item.add_marker(skip_live)
+
+
+@pytest.fixture(autouse=True)
+def require_explicit_network_opt_in(
+    request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    if request.node.get_closest_marker("live") is not None and request.config.getoption(
+        "--run-live"
+    ):
+        return
+
+    def blocked(*args: object, **kwargs: object) -> NoReturn:
+        raise RuntimeError("Offline tests cannot open network connections; use a marked live test.")
+
+    monkeypatch.setattr(socket.socket, "connect", blocked)
+    monkeypatch.setattr(socket.socket, "connect_ex", blocked)
+    monkeypatch.setattr(socket, "create_connection", blocked)
+    monkeypatch.setattr(socket, "getaddrinfo", blocked)

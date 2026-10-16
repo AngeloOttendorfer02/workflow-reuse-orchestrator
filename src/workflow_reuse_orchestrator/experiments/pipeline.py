@@ -1,15 +1,17 @@
 """Configuration inspection and a recorded, single-call infrastructure pilot."""
 
+import hashlib
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from workflow_reuse_orchestrator.config import (
+    StudyBundle,
     configuration_files,
-    load_predictor_declarations,
     load_study,
+    load_study_bundle,
     ollama_base_url,
-    project_root,
+    resolve_project_path,
 )
 from workflow_reuse_orchestrator.domain.budgets import RequestBudget
 from workflow_reuse_orchestrator.domain.outcomes import Receipt
@@ -35,15 +37,100 @@ STAGES = (
 )
 
 
-def check_study(config_path: Path | None = None) -> dict[str, Any]:
-    """Describe a validated scaffold without making runtime-readiness claims."""
-    study = load_study(config_path)
-    root = project_root(
-        config_path.parent if config_path is not None and config_path.is_absolute() else None
+ValidationLevel = Literal["scaffold", "runtime", "data", "protected"]
+VALIDATION_LEVELS = ("scaffold", "runtime", "data", "protected")
+GATE_NAMES = {
+    "scaffold": "scaffold_valid",
+    "runtime": "runtime_bound",
+    "data": "data_ready",
+    "protected": "protected_release_ready",
+}
+
+
+def readiness_blockers(bundle: StudyBundle) -> dict[str, list[str]]:
+    """Check declarations offline; unfinished scientific verifiers fail closed."""
+    runtime = bundle.study.runtime
+    runtime_blockers = [
+        f"runtime.{name} is unbound"
+        for name in type(runtime).model_fields
+        if getattr(runtime, name) is None
+    ]
+    if runtime.prompts is not None:
+        for role in type(runtime.prompts).model_fields:
+            binding = getattr(runtime.prompts, role)
+            try:
+                path = resolve_project_path(bundle.root, binding.path)
+                content = path.read_bytes()
+                if not content.strip():
+                    runtime_blockers.append(f"runtime.prompts.{role} is empty")
+                elif hashlib.sha256(content).hexdigest() != binding.sha256:
+                    runtime_blockers.append(f"runtime.prompts.{role} checksum does not match")
+            except (OSError, ValueError) as exc:
+                runtime_blockers.append(f"runtime.prompts.{role}: {exc}")
+
+    data = bundle.datasets
+    data_blockers = []
+    for dataset in ("hotpotqa", "drop", "finqa"):
+        release = getattr(data.datasets, dataset)
+        for name in ("release", "source_checksum"):
+            if getattr(release, name) is None:
+                data_blockers.append(f"datasets.{dataset}.{name} is unresolved")
+    if data.snapshot_id is None:
+        data_blockers.append("datasets.snapshot_id is unresolved")
+    if data.partitions.assignment_version is None:
+        data_blockers.append("datasets.partitions.assignment_version is unresolved")
+    # A path/flag or nonempty SQLite file cannot substitute for snapshot evidence.
+    data_blockers.append(
+        "Prepared dataset integrity and partition verification is not implemented."
     )
-    learning = load_predictor_declarations(study, root)
+
+    protected_blockers = []
+    if runtime_blockers:
+        protected_blockers.append("Runtime bindings have not passed the offline runtime gate.")
+    protected_blockers.append("Dataset snapshot verification has not passed the data gate.")
+    learning = bundle.learning
+    for name in ("decision_rule", "selected_predictor"):
+        if getattr(learning.model_selection, name) is None:
+            protected_blockers.append(f"learning.model_selection.{name} is unresolved")
+    for name in ("calibration", "selection_thresholds", "development_cost_estimates"):
+        if getattr(learning, name) is None:
+            protected_blockers.append(f"learning.{name} is unresolved")
+    if not bundle.evaluation.protocol_frozen:
+        protected_blockers.append("evaluation.protocol_frozen is false")
+    protected_blockers.extend(
+        f"evaluation.{name} is unresolved" for name in bundle.evaluation.unresolved_fields()
+    )
+    # A frozen flag is a declaration, not an immutable release/inference verifier.
+    protected_blockers.append(
+        "Protected release and fitted-artifact verification is not implemented."
+    )
     return {
-        "status": "foundations_ready",
+        "scaffold": [],
+        "runtime": runtime_blockers,
+        "data": data_blockers,
+        "protected": protected_blockers,
+    }
+
+
+def check_study(
+    config_path: Path | None = None, *, level: ValidationLevel = "scaffold"
+) -> dict[str, Any]:
+    """Validate owned schemas and report an explicitly requested offline gate."""
+    if level not in VALIDATION_LEVELS:
+        raise ValueError(f"Unknown validation level: {level}")
+    bundle = load_study_bundle(config_path)
+    study, root, learning = bundle.study, bundle.root, bundle.learning
+    blockers = readiness_blockers(bundle)
+    ready = not blockers[level]
+    return {
+        "status": "foundations_ready"
+        if ready and level == "scaffold"
+        else ("runtime_bound" if ready else "blocked"),
+        "requested_level": level,
+        "ready": ready,
+        "readiness": {GATE_NAMES[name]: not problems for name, problems in blockers.items()},
+        "blockers": {GATE_NAMES[name]: problems for name, problems in blockers.items()},
+        "runtime_contacted": False,
         "profile": study.profile,
         "seed": study.seed,
         "datasets": study.datasets,
@@ -56,15 +143,18 @@ def check_study(config_path: Path | None = None) -> dict[str, Any]:
             for name, path in configuration_files(study, root).items()
         },
         "pending_runtime_bindings": [
-            name for name, value in study.runtime.model_dump().items() if value is None
+            name
+            for name in type(study.runtime).model_fields
+            if getattr(study.runtime, name) is None
         ],
         "workflow_execution_available": False,
         "runtime_check_available": True,
         "checks": [
-            "study declarations and typed runtime bindings",
-            "project-relative references",
-            "linked YAML syntax and document identities",
-            "candidate predictors and development-only model-selection declarations",
+            "study and typed runtime declarations",
+            "project-relative configuration references",
+            "dataset, learning and evaluation declaration schemas and ownership",
+            "cross-document snapshot and source-group identities",
+            "requested offline readiness gate",
         ],
     }
 

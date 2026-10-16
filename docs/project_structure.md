@@ -127,7 +127,11 @@
 | `tests/contract/test_workflow_architecture.py` | Import boundaries and reference isolation. |
 | `tests/unit/test_configuration_loading.py` | Implemented configuration/path and typed-binding failure checks. |
 | `tests/unit/test_runtime_tools.py` | Implemented supplied-source search and restricted arithmetic checks. |
-| `tests/conftest.py` | Offline model, inference, budget and mock Ollama fixtures. |
+| `tests/conftest.py` | Offline fixtures, default network denial, strict live-test opt-in. |
+| `tests/unit/test_scientific_configuration.py` | Ownership, bounds and scientific declaration failures. |
+| `tests/unit/test_offline_test_mode.py` | Unmarked tests cannot open connections or resolve names. |
+| `tests/integration/test_configuration_readiness.py` | Offline gate exit codes, hashes, cross-document identities and false-readiness prevention. |
+| `tests/integration/test_live_runtime_metadata.py` | Optional read-only model metadata test, skipped unless explicitly enabled. |
 | `tests/unit/test_document_preparation.py` | Canonical passages/tables and source provenance. |
 | `tests/unit/test_source_partition_contract.py` | Connected source groups and partition isolation. |
 | `tests/unit/test_workflow_graph_contract.py` | Graph validation and declared node bindings. |

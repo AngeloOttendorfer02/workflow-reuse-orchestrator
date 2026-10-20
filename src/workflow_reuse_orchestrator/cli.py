@@ -10,6 +10,7 @@ from typing import cast
 
 from workflow_reuse_orchestrator import __version__
 from workflow_reuse_orchestrator.config import load_study_bundle
+from workflow_reuse_orchestrator.data.hotpotqa import normalize_hotpotqa
 from workflow_reuse_orchestrator.data.prepare import acquire_dataset
 from workflow_reuse_orchestrator.domain.providers import ProviderError
 from workflow_reuse_orchestrator.domain.tasks import DatasetId
@@ -32,7 +33,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
-    data = commands.add_parser("data", help="Inspect and acquire versioned raw benchmark sources.")
+    data = commands.add_parser("data", help="Acquire and normalize versioned benchmark sources.")
     data_operations = data.add_subparsers(dest="operation", required=True)
     for name in ("sources", "acquire"):
         operation = data_operations.add_parser(name)
@@ -46,6 +47,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             operation.add_argument("--raw-root", type=Path)
             operation.add_argument("--timeout-seconds", type=float, default=60.0)
+    normalize = data_operations.add_parser("normalize", help="Normalize acquired HotpotQA offline.")
+    normalize.add_argument("--config", type=Path)
+    normalize.add_argument("--dataset", choices=("hotpotqa",), required=True)
+    normalize.add_argument("--split", choices=("all", "train", "dev"), default="all")
+    normalize.add_argument("--raw-root", type=Path, default=Path("data/raw"))
+    normalize.add_argument("--output", type=Path, required=True)
     pipeline = commands.add_parser(
         "pipeline", help="Inspect study configuration and planned stages."
     )
@@ -107,6 +114,20 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "runtime_contacted": False,
                     "data_snapshot_available": False,
                 }
+            elif args.operation == "normalize":
+                raw_root = args.raw_root
+                output = args.output
+                if not raw_root.is_absolute():
+                    raw_root = bundle.root / raw_root
+                if not output.is_absolute():
+                    output = bundle.root / output
+                report = normalize_hotpotqa(
+                    catalog.hotpotqa,
+                    raw_root,
+                    output,
+                    split=args.split,
+                    progress=lambda message: print(message, file=sys.stderr),
+                )
             else:
                 datasets: list[DatasetId] = (
                     ["hotpotqa", "drop", "finqa"]

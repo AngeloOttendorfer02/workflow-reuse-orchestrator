@@ -177,3 +177,46 @@ the whole release is acquired and verified. Raw acquisition counts are separate
 from later retained counts and executed experiment sizes. These commands make no
 model calls, fit no selector, and do not update scientific snapshot bindings or pass
 the prepared-data readiness gate.
+
+## Normalize HotpotQA offline
+
+After C06 acquisition, normalize both native splits from the project root:
+
+```powershell
+uv run --locked --offline orchestrator data normalize `
+    --dataset hotpotqa `
+    --output data/processed/hotpotqa-staging.sqlite3
+```
+
+This command makes no network/model calls and needs no Conda certificate override.
+`--raw-root` defaults to `data/raw`. Relative input/output paths resolve against
+the configured project root. Progress goes to stderr; stdout contains the final
+machine-readable audit, normalization identity, and per-split counts.
+
+Use `--split dev` or `--split train` to normalize one native split. Give a different
+output path when selecting different splits, for example:
+
+```powershell
+uv run --locked --offline orchestrator data normalize `
+    --dataset hotpotqa --split dev `
+    --output data/processed/hotpotqa-dev-staging.sqlite3
+```
+
+Repeat the exact same command to verify reproducibility. It should report
+`verified_existing` with the same `normalization_id` and unchanged file bytes.
+The rerun re-verifies raw sources and regenerates the logical content before
+checking the existing artifact. A file change, conflicting task ID, source-plan
+mismatch, or output collision fails without replacing the existing output.
+
+The SQLite file separates `inputs`, `evaluation_references`, `sources`,
+`task_sources`, `provenance`, `exclusions`, and its metadata manifest. Use
+`load_hotpotqa_task(path, task_id, split=...)` for model input and the explicitly
+separate `load_hotpotqa_reference(...)` only for evaluator work. These package
+functions are in `workflow_reuse_orchestrator.data.hotpotqa`. The staging artifact
+does not enforce scientific-role access; final-pool references must not be used
+to tune development decisions.
+
+`scientific_roles_assigned`, `data_snapshot_available`, and
+`study_bindings_updated` remain false. C11 assigns source-separated roles and C12
+publishes the combined frozen snapshot after all adapters and scorer checks.
+Raw and processed artifacts stay outside Git.

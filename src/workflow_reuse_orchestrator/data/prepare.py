@@ -209,7 +209,9 @@ class _JSONReader:
                 self.more()
 
 
-def _json_records(stream: TextIO, *, mapping: bool = False) -> Iterator[dict[str, Any]]:
+def _json_records(
+    stream: TextIO, *, mapping: bool = False, key_field: str | None = None
+) -> Iterator[dict[str, Any]]:
     reader = _JSONReader(stream)
     reader.take("{" if mapping else "[")
     end = "}" if mapping else "]"
@@ -225,6 +227,10 @@ def _json_records(stream: TextIO, *, mapping: bool = False) -> Iterator[dict[str
             value = reader.value()
             if not isinstance(value, dict):
                 raise ValueError("Raw dataset records must be JSON objects.")
+            if key_field is not None:
+                if not mapping or key_field in value:
+                    raise ValueError("Raw mapping key cannot replace an existing record field.")
+                value[key_field] = key
             yield value
             if reader.peek() == end:
                 break

@@ -220,3 +220,40 @@ to tune development decisions.
 `study_bindings_updated` remain false. C11 assigns source-separated roles and C12
 publishes the combined frozen snapshot after all adapters and scorer checks.
 Raw and processed artifacts stay outside Git.
+
+## Normalize DROP offline
+
+After C06 acquisition, normalize both native DROP splits:
+
+```powershell
+uv run --locked --offline orchestrator data normalize `
+    --dataset drop `
+    --output data/processed/drop-staging.sqlite3
+```
+
+Repeat the exact command to verify the existing output. It should return
+`verified_existing`, the same normalization ID and unchanged output bytes.
+There are no network/model calls, package changes or certificate overrides.
+The command reads the already acquired archive under `data/raw/drop/<release>`.
+`--raw-root` and `--output` accept project-relative or absolute paths.
+
+`--split train` and `--split dev` normalize only the requested native archive
+member. Use a new output path for a different split selection; existing output
+cannot be replaced by a different normalization. The report includes per-split
+raw/retained question and passage counts, exclusions, answer types, warnings,
+and source/normalization checksums. Detailed exclusion reasons are stored in the
+SQLite `exclusions` table. `native_locations` maps retained tasks back to native
+passage/query IDs and indexes. No ZIP member is extracted to disk.
+
+`load_drop_task(path, task_id, split=...)` returns only `TaskInput`.
+`load_drop_reference(...)` explicitly returns `DropEvaluationReference`, whose
+typed `answer_groups` retain multi-span groups and validated alternatives.
+Both functions are in `workflow_reuse_orchestrator.data.drop`. C10 scoring must
+use these typed groups; inherited `answers` strings are display representations.
+
+Expected counts for the configured original release are 77,409 raw / 77,400
+retained train questions (nine `no_usable_answers` exclusions), and 9,536 raw /
+9,536 retained dev questions. A reused native dev query ID is retained as two
+distinct input-derived task IDs; it is not an extra exclusion. Native train/dev
+names do not assign scientific roles. Snapshot/role/binding flags remain false
+until C11/C12.

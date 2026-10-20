@@ -122,3 +122,42 @@ Preparation is accepted when:
 
 Data files and generated snapshots remain outside Git. Commit preparation code,
 small deterministic fixtures, schemas/configuration, and the documentation.
+
+## Implemented raw acquisition boundary
+
+C06 adds `orchestrator data sources` and `orchestrator data acquire`, using a typed
+acquisition catalog in `configs/datasets.yaml`. Normalization, scorers, source-role
+assignment and canonical snapshot publication remain later work packages. The
+scientific release/snapshot fields remain unresolved until verified artifacts are
+bound; raw acquisition alone does not certify data readiness.
+
+The catalog retains official HotpotQA training v1.1 and distractor-dev v1 identities,
+the original DROP train/dev archive, and FinQA train/dev/public-test JSON at commit
+`9e2006a6ed65279a01d62e92e61c02638c7c358d`. Source references are the
+[HotpotQA homepage](https://hotpotqa.github.io/),
+[AllenAI DROP page source](https://github.com/allenai/allennlp-website/blob/master/drop.html),
+and [FinQA repository](https://github.com/czyssrs/FinQA).
+
+HotpotQA and DROP hashes and byte lengths are pinned from upstream dataset metadata
+linked in the catalog. The HotpotQA canonical server was unavailable during the
+C06 check, so explicit immutable mirrors are configured. Their bytes must match
+the original published hashes; a differently serialized mirror is rejected. The
+training mirror calls its file `hotpot_train_v1.json`, but its pinned byte hash
+identifies the original training v1.1 bytes. Both origin and transport are recorded.
+
+FinQA uses a fixed Git revision and records observed SHA-256 values on first
+acquisition. These are acquisition pins, not claimed upstream-published SHA-256
+values. Subsequent reuse verifies original bytes against retained receipts.
+Preserve manifests with raw sources when moving work to another machine.
+
+Streaming inspection counts original JSON records and DROP questions without
+loading an entire dataset into memory, extracting arbitrary archive paths, or
+creating model-facing records. Raw counts include records later normalization
+may exclude. Publication requires valid raw structure and configured hash/size
+checks. This keeps acquisition, normalization losses, and experiment sample sizes
+separate and auditable.
+
+License metadata records the linked upstream declaration. FinQA's entry identifies
+the repository MIT license; it does not relabel underlying financial reports.
+Raw files and manifests remain outside Git under `data/raw`. See
+[operations](operations.md#acquire-raw-benchmark-sources) for the commands.

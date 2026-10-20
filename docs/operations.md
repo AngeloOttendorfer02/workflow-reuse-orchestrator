@@ -32,7 +32,8 @@ uv run --locked orchestrator pipeline plan --config configs/study.yaml
 
 Expected status is `foundations_ready`, with `runtime_check_available: true`
 and `workflow_execution_available: false`. Model, inference, and request limits
-have typed schemas when configured. Encoder and prompt bindings remain reserved.
+have typed schemas when configured. Encoder and prompt declarations have schemas
+but remain unbound in the draft configuration.
 The linked scientific YAML files are drafts; full dataset, feature, and
 statistical validation belongs to their work packages. All nine study stages
 remain pending execution.
@@ -112,4 +113,67 @@ and after effects; it records and fails a completed overrun. It does not claim
 an exact interruption of a synchronous model call at the wall-time deadline.
 Full prompt fitting and explicit handling of long passages/tables belong to
 the agent/executor work package. Workflow declarations currently validate graph
-structure and dependencies; role outputs and handoff bindings follow there.
+structure, dependencies, typed role outputs and handoff bindings. Full workflow
+execution remains a later work package.
+
+## Acquire raw benchmark sources
+
+C06 implements raw-source acquisition separately from normalization, source-role
+assignment, scoring, and workflow execution. Inspect the configured source catalog
+without contacting external services:
+
+```powershell
+uv run --locked --offline orchestrator data sources
+```
+
+Start with one small live source and repeat the same command to verify local reuse:
+
+```powershell
+uv run --locked orchestrator data acquire --dataset finqa --split dev
+uv run --locked --offline orchestrator data acquire --dataset finqa --split dev
+```
+
+The second command verifies already-acquired source bytes without downloading.
+`--offline` controls uv dependency resolution; it does not block application
+networking if a requested raw source is missing.
+
+Acquire every configured native split when sufficient disk space is available:
+
+```powershell
+uv run --locked orchestrator data acquire --dataset all
+```
+
+Choose `--dataset hotpotqa`, `--dataset drop`, or `--dataset finqa` for one dataset.
+`--split train`, `--split dev`, or `--split test` selects a native split. DROP ships
+train/dev together, so either request acquires the complete archive. An unsupported
+split is rejected before downloads. Use `--raw-root` for an alternative source
+directory and `--timeout-seconds` for the network I/O timeout.
+
+Each release lives under `data/raw/<dataset>/<release>/`. Original source bytes
+remain intact alongside one `acquisition.json` manifest: canonical source and
+explicit mirror if configured, revision, license references, timestamps, checksums,
+byte lengths, HTTP metadata, and native record/question counts. Final redirect URLs
+omit query parameters. A kernel lock coordinates writers; the lock file can remain
+on disk after completion.
+
+Interrupted downloads retain `.part` bytes and checksummed checkpoints. Repeating
+the command resumes a compatible byte range or safely restarts an incomplete
+download if range resumption is unavailable. Completed-source corruption, changed
+plans, and incorrect pinned hashes fail explicitly rather than overwriting a
+completed release. Retain the original acquisition record when diagnosing failures.
+
+HTTPS acquisition uses Python's default system CA certificates, including the
+Windows CA and ROOT stores, with hostname and certificate verification enabled.
+`SSL_CERT_FILE` and `SSL_CERT_DIR` can explicitly select a trusted CA bundle or
+OpenSSL certificate directory. A `CERTIFICATE_VERIFY_FAILED` error can indicate
+that an HTTPS inspection proxy or antivirus CA is missing from the trusted roots.
+Use a CA approved by your network administrator; certificate verification must
+remain enabled. After correcting certificate trust, repeat the acquisition command:
+verified files are reused, and compatible partial downloads can resume.
+
+FinQA dev alone reports the release as `partial` and its dev source as `complete`;
+train and test are pending. The aggregate source checksum is available only after
+the whole release is acquired and verified. Raw acquisition counts are separate
+from later retained counts and executed experiment sizes. These commands make no
+model calls, fit no selector, and do not update scientific snapshot bindings or pass
+the prepared-data readiness gate.

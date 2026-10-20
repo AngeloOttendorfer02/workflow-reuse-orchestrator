@@ -161,3 +161,51 @@ License metadata records the linked upstream declaration. FinQA's entry identifi
 the repository MIT license; it does not relabel underlying financial reports.
 Raw files and manifests remain outside Git under `data/raw`. See
 [operations](operations.md#acquire-raw-benchmark-sources) for the commands.
+
+## HotpotQA normalization (C07)
+
+`data normalize --dataset hotpotqa` reads only acquired, checksummed native
+train/dev files. It streams records into one unpartitioned SQLite staging artifact
+under `data/processed`; it does not publish a frozen `datasets.sqlite3` snapshot.
+Separate tables hold model-facing inputs, evaluator references, source versions,
+ordered task/source links, native provenance, and exclusions. The input loader
+selects only the input table; evaluation references require an explicit separate
+loader. Both loaders verify their record checksums and use read-only connections.
+
+Task IDs are `hotpotqa:<native_id>`. Article identities hash NFC-normalized titles
+with underscores treated as spaces and whitespace collapsed; original title text
+is retained. Paragraph identities hash the exact title and ordered sentence list.
+Sentence-content hashes also support the later duplicate-source audit. These
+identities expose article variants without claiming that all aliases or
+near-duplicates have already been resolved; that audit belongs to C11.
+
+Every supplied paragraph remains in its native order, including distractors.
+Sentence text, formatting and blank sentence slots are preserved exactly, so
+zero-based evidence locations remain meaningful. A passage must still have some
+non-blank text. Gold supporting facts, their resolved evidence locations, answer,
+question type and difficulty remain evaluator-only. Invalid support locations are
+retained as warnings without selecting context or excluding an otherwise valid
+question. No alternative answers are invented for the native single-answer field.
+
+The per-split audit reconciles `raw = retained + duplicates + malformed`.
+Identical repeated task IDs within a native split retain the first occurrence and
+record later occurrences as exclusions. Conflicting records with the same native
+ID stop publication. The same ID in different native splits remains in both split
+tables for the C11 source-group audit. Different IDs with equal content also stay
+available for that audit. Invalid IDs, questions, answers or paragraph structure
+receive stable exclusion reasons with raw indexes and record hashes. Invalid JSON
+or a changed acquisition receipt fails the operation rather than publishing a
+partially processed artifact.
+
+Normalization binds the adapter version, release/source-plan identity, selected
+source hashes, counts and a deterministic logical content hash. An identical rerun
+verifies the existing artifact without rewriting it. Different content requires a
+new output path; corrupt existing output fails explicitly. Publication is atomic
+and a single-writer lock protects the output. Raw source hashes are checked before
+and after reading.
+
+Structural validation of the pinned dev file retained all 7,405 questions, with no
+duplicate-ID or malformed-record exclusions. It preserved blank sentence slots in
+49 questions and flagged one question with an out-of-range supporting-fact index.
+These are preparation audits, not experimental correctness results. Scientific
+roles, cross-source leakage checks and final snapshot publication remain C11/C12.

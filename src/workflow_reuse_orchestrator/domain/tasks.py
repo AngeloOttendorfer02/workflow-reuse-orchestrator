@@ -15,7 +15,14 @@ class Passage(BaseModel):
     source_id: Identifier
     passage_id: Identifier
     title: str = ""
-    sentences: tuple[Text, ...] = Field(min_length=1)
+    # Preserve empty native sentence slots: removing one shifts evidence indexes.
+    sentences: tuple[str, ...] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def require_text(self) -> Self:
+        if not any(sentence.strip() for sentence in self.sentences):
+            raise ValueError("A passage must contain some non-blank text.")
+        return self
 
 
 class Table(BaseModel):

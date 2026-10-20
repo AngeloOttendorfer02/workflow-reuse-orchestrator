@@ -20,6 +20,7 @@ from workflow_reuse_orchestrator.data.prepare import AcquisitionCatalog
 from workflow_reuse_orchestrator.domain.budgets import RequestBudget
 from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ModelBinding, Sha256
 from workflow_reuse_orchestrator.domain.tasks import DatasetId, Identifier
+from workflow_reuse_orchestrator.evaluation.scoring import validate_scorer_declarations
 
 MethodId = Literal[
     "single-agent",
@@ -216,6 +217,11 @@ class ScoringDeclarations(Declaration):
     hotpotqa: ScorerDeclaration | None
     drop: ScorerDeclaration | None
     finqa: ScorerDeclaration | None
+
+    @model_validator(mode="after")
+    def match_implemented_scorers(self) -> Self:
+        validate_scorer_declarations(self.model_dump(mode="json"))
+        return self
 
 
 class CorrectnessMargins(Declaration):

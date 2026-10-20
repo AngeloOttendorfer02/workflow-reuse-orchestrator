@@ -2,9 +2,21 @@ schema_version: workflow-evaluation-v1
 status: draft
 protocol_frozen: false
 scoring:
-  hotpotqa: null
-  drop: null
-  finqa: null
+  hotpotqa:
+    name: hotpotqa_answer
+    version: c10-v1
+    normalization_version: hotpotqa-official-v1
+    numerical_tolerance: null
+  drop:
+    name: drop_answer
+    version: c10-v1
+    normalization_version: drop-official-v1
+    numerical_tolerance: null
+  finqa:
+    name: finqa_execution_answer
+    version: c10-v1
+    normalization_version: finqa-decimal-percent-v1
+    numerical_tolerance: 0.00001
 correctness_loss_margins: null
 final_population: null
 sampling: null

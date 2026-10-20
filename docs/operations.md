@@ -300,3 +300,47 @@ space of native annotations separately from model-facing original table cells.
 No scientific roles are assigned and no study bindings are changed by C09.
 Snapshot/readiness flags remain false until the scorer, source-group and snapshot
 gates are implemented. Keep raw and processed artifacts outside Git.
+
+## Verify and inspect answer scorers
+
+From the project root, inspect all configured C10 evaluator identities offline:
+
+```powershell
+uv run --locked --offline orchestrator evaluation scorers
+uv run --locked --offline --group dev pytest -q tests/unit/test_dataset_answer_scoring.py
+```
+
+The catalog reports source revisions/hashes, implemented policy versions, output
+limits, numerical tolerance and an implementation fingerprint. Configured names,
+versions and tolerance must match the code. This command does not freeze the
+overall study or mark prepared data ready.
+
+To evaluate one explicit submission/reference pair, use JSON files serialized
+from `AnswerSubmission` and the appropriate evaluator model:
+
+```powershell
+uv run --locked --offline orchestrator evaluation score `
+    --submission runs/development/submission.json `
+    --reference runs/development/reference.json
+```
+
+Those paths are examples: provide files that actually exist. The evaluator model
+is `EvaluationReference` for HotpotQA, `DropEvaluationReference` for DROP and
+`FinqaEvaluationReference` for FinQA. References can be obtained through the
+explicit evaluator loaders on normalized staging artifacts. Use permitted
+development records; scientific-role enforcement is implemented with later
+source-group/snapshot gates. This command prints a receipt to stdout and creates
+no run files, makes no model/network calls, and does not modify raw/staged data.
+
+`AnswerSubmission` requires `task_id`, `dataset_id` and `status`; its optional
+fields are `answer`, `finish_reason` and `failure_code`. Pass the final answer
+field from the validated execution result. DROP multi-span answers use a string
+array or an answer string containing that JSON array. Include known provider
+completion/truncation metadata; the scorer cannot infer omitted truncation state.
+
+A successful CLI invocation can produce binary label 0, label 1 or an unavailable
+null label. Invalid files or mismatched task/reference identities exit with a
+configuration/input error. Confirmed failed/truncated/invalid answers yield 0;
+unknown and unfinished effects remain null. `answer_em` and `answer_f1` apply to
+HotpotQA/DROP; FinQA reports `numeric_correct` and numerical difference. Gold
+answers/programs remain separate from the online task input.

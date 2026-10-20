@@ -1,0 +1,8138 @@
+{
+  "schema_version": "upstream-answer-vectors-v1",
+  "seed": 2609,
+  "sources": {
+    "hotpotqa": {
+      "repository": "hotpotqa/hotpot",
+      "revision": "3635853403a8735609ee997664e1528f4480762a",
+      "path": "hotpot_evaluate_v1.py",
+      "sha256": "d35fc91a6db21d791dbdda11daf3856e9359f5701d54e3eefba20d88fecc02c0",
+      "url": "https://raw.githubusercontent.com/hotpotqa/hotpot/3635853403a8735609ee997664e1528f4480762a/hotpot_evaluate_v1.py"
+    },
+    "drop": {
+      "repository": "allenai/allennlp-models",
+      "revision": "b1f372248c17ad12684d344955fbcd98e957e77e",
+      "path": "allennlp_models/rc/tools/drop.py",
+      "sha256": "589abfbb8a85760cdb3d30381068acb4545c82076311c2da5a112e283193e0a2",
+      "url": "https://raw.githubusercontent.com/allenai/allennlp-models/b1f372248c17ad12684d344955fbcd98e957e77e/allennlp_models/rc/tools/drop.py"
+    },
+    "finqa": {
+      "repository": "czyssrs/FinQA",
+      "revision": "9e2006a6ed65279a01d62e92e61c02638c7c358d",
+      "path": "code/evaluate/evaluate.py",
+      "sha256": "845cd131cab843eceff256cf6d392978cc470a7da4a80107beb56027fdca5c13",
+      "url": "https://raw.githubusercontent.com/czyssrs/FinQA/9e2006a6ed65279a01d62e92e61c02638c7c358d/code/evaluate/evaluate.py"
+    }
+  },
+  "hotpotqa": [
+    {
+      "prediction": "3.0",
+      "gold": "3.0",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "high-speed \n North year the",
+      "gold": "3.0 a \n",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "20% March high-speed",
+      "gold": "North the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "South \n noanswer -3 high-speed",
+      "gold": "North 3.0 3 3.0",
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": "noanswer red 20% (four) yes noanswer",
+      "gold": "3.5 (four) x/y South x/y March a",
+      "expected": [
+        0.0,
+        0.16666666666666666
+      ]
+    },
+    {
+      "prediction": "A. 3,000 blue",
+      "gold": "A. 3,000 blue",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "x/y high-speed no North (four) -3 blue",
+      "gold": "x/y North yes 3.0 x/y blue A.",
+      "expected": [
+        0.0,
+        0.4615384615384615
+      ]
+    },
+    {
+      "prediction": "high-speed noanswer",
+      "gold": "1998 an x/y x/y the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "year 3 noanswer March",
+      "gold": "A. the 3.5 high-speed an yes March",
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": "high-speed 1998 x/y South an x/y",
+      "gold": "A.",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "1998 March",
+      "gold": "1998 March",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "year",
+      "gold": "a 3.0 (four) (four) the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "1998 3.0 March",
+      "gold": "South \n 20% the high-speed red 3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "no the 20%",
+      "gold": "a a blue",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an no 3,000",
+      "gold": "x/y a a noanswer no",
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": "no noanswer the",
+      "gold": "no noanswer the",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "red (four) -3 3.5",
+      "gold": "yes x/y a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3,000 3,000 South 3.0",
+      "gold": "3 red yes noanswer",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an \n no",
+      "gold": "x/y 3 South South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "the 1998",
+      "gold": "3,000 \n -3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an yes red x/y high-speed",
+      "gold": "an yes red x/y high-speed",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "an South blue high-speed South noanswer 3,000",
+      "gold": "blue",
+      "expected": [
+        0.0,
+        0.2857142857142857
+      ]
+    },
+    {
+      "prediction": "a (four)",
+      "gold": "an 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "(four) A. red March 20%",
+      "gold": "\n blue high-speed",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "(four) 3.0 x/y x/y -3 20%",
+      "gold": "\n \n \n high-speed",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "South 20% 3 North",
+      "gold": "South 20% 3 North",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "March",
+      "gold": "3.5 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "noanswer blue",
+      "gold": "red red A. March",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "20%",
+      "gold": "an A. an noanswer no a March",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an 3.5 x/y",
+      "gold": "blue",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "blue",
+      "gold": "blue",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "(four) 3,000 year (four) 1998 3 the",
+      "gold": "x/y",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "yes March North (four) a year a",
+      "gold": "South A. yes no 1998",
+      "expected": [
+        0.0,
+        0.22222222222222224
+      ]
+    },
+    {
+      "prediction": "a blue North",
+      "gold": "x/y the \n 3 (four) year -3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "x/y",
+      "gold": "3.5 3 noanswer no South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.0 3",
+      "gold": "3.0 3",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "no (four) A. noanswer x/y North (four)",
+      "gold": "high-speed 3.0 \n (four)",
+      "expected": [
+        0.0,
+        0.2222222222222222
+      ]
+    },
+    {
+      "prediction": "a",
+      "gold": "an a 3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "x/y 3,000",
+      "gold": "an an (four) (four)",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "-3 the 20% 1998 3.0",
+      "gold": "an North March x/y year South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an year blue South -3 noanswer",
+      "gold": "an year blue South -3 noanswer",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "3.5 A.",
+      "gold": "-3 3,000 20%",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3,000 3.5 3 high-speed",
+      "gold": "a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "a year",
+      "gold": "3,000 the \n 20% a high-speed (four)",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "1998 North 3,000 3.5",
+      "gold": "3.5 1998 blue \n 1998 -3",
+      "expected": [
+        0.0,
+        0.4444444444444445
+      ]
+    },
+    {
+      "prediction": "3",
+      "gold": "3",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "South red a red 3.0 South red",
+      "gold": "x/y blue the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "North year high-speed North no \n",
+      "gold": "-3 (four) \n March (four) 20% red",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "March 1998 3,000 20%",
+      "gold": "3 3,000 March \n 3,000 3.0 South",
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": "x/y South",
+      "gold": "3.5 3.0 3,000 yes a 3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "a red x/y",
+      "gold": "a red x/y",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "South the 3,000 x/y",
+      "gold": "year 1998 x/y \n 3.0 noanswer 1998",
+      "expected": [
+        0.0,
+        0.2222222222222222
+      ]
+    },
+    {
+      "prediction": "1998 no A. noanswer -3 no",
+      "gold": "high-speed",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "blue South yes high-speed A.",
+      "gold": "x/y a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "(four) a",
+      "gold": "an 3.0 noanswer",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "noanswer 20%",
+      "gold": "noanswer 20%",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "March South",
+      "gold": "A. North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "A. \n",
+      "gold": "North noanswer",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "the",
+      "gold": "high-speed 1998",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.5 no 3 x/y blue noanswer",
+      "gold": "blue A. x/y 3.5 North",
+      "expected": [
+        0.0,
+        0.6
+      ]
+    },
+    {
+      "prediction": "3,000",
+      "gold": "3,000",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "3 high-speed a North \n",
+      "gold": "A. North year (four)",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "red no high-speed",
+      "gold": "3,000 a red",
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": "March red noanswer",
+      "gold": "3,000 high-speed an red",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "3.0 x/y March blue red",
+      "gold": "a North 3,000 -3 an a 3.0",
+      "expected": [
+        0.0,
+        0.22222222222222224
+      ]
+    },
+    {
+      "prediction": "the blue South (four) 20% 1998",
+      "gold": "the blue South (four) 20% 1998",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "A. 3",
+      "gold": "(four) South red",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "red 3 3 yes March",
+      "gold": "x/y x/y",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.0 no \n A. A.",
+      "gold": "no",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "South noanswer",
+      "gold": "a \n 3.5 1998 North 3.0",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.0 -3 March a (four)",
+      "gold": "3.0 -3 March a (four)",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "an \n 3,000 North 3 noanswer 3",
+      "gold": "3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "(four)",
+      "gold": "red yes 3.0 20% an South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "red 3 1998 high-speed year",
+      "gold": "noanswer -3 March",
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": "South yes South the (four)",
+      "gold": "a 3 x/y yes blue noanswer 3.5",
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": "-3 \n no 20% yes yes \n",
+      "gold": "-3 \n no 20% yes yes \n",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "3.5 1998",
+      "gold": "South (four) -3 high-speed",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "noanswer",
+      "gold": "high-speed 3,000 the A. 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an 20% 3",
+      "gold": "noanswer a high-speed blue a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "high-speed blue 1998",
+      "gold": "yes x/y x/y the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an North (four) 3.5 3,000 a 3,000",
+      "gold": "an North (four) 3.5 3,000 a 3,000",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "20% an 3.5",
+      "gold": "3.0 March red 1998",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "March 1998 \n 3,000",
+      "gold": "3 the red 3,000",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "(four) blue 3.5 3,000 blue red",
+      "gold": "an red blue x/y",
+      "expected": [
+        0.0,
+        0.4444444444444444
+      ]
+    },
+    {
+      "prediction": "3.5 3",
+      "gold": "3,000 noanswer year blue -3 North",
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": "no blue an -3 red",
+      "gold": "no blue an -3 red",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "\n",
+      "gold": "noanswer 20% year blue an red North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "high-speed the",
+      "gold": "\n 3.0 3 blue an",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "South noanswer 20% (four)",
+      "gold": "-3 March \n North 3,000 red",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "March year 3,000 20% North 3.0",
+      "gold": "x/y",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "red A.",
+      "gold": "red A.",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "red year March",
+      "gold": "3 1998 3.5 high-speed 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an",
+      "gold": "x/y high-speed yes \n noanswer 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3 high-speed (four) -3 \n",
+      "gold": "an the A. blue North 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.0 3.0 high-speed 3.0 \n no March",
+      "gold": "-3 A.",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "South 3 -3",
+      "gold": "South 3 -3",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "yes 1998 3.5",
+      "gold": "yes blue (four) yes",
+      "expected": [
+        0.0,
+        0.28571428571428575
+      ]
+    },
+    {
+      "prediction": "20% red year March",
+      "gold": "a high-speed 3,000 high-speed 3,000",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "high-speed 3.5 blue x/y noanswer",
+      "gold": "1998 3.0",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "North 3,000 red A. year high-speed",
+      "gold": "a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "North 1998 noanswer red",
+      "gold": "North 1998 noanswer red",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "\n -3",
+      "gold": "1998 1998 North 3 3.0",
+      "expected": [
+        0.0,
+        0.33333333333333337
+      ]
+    },
+    {
+      "prediction": "the red red",
+      "gold": "high-speed high-speed the red 20% x/y",
+      "expected": [
+        0.0,
+        0.28571428571428575
+      ]
+    },
+    {
+      "prediction": "no -3 year (four) high-speed",
+      "gold": "(four) a red blue North",
+      "expected": [
+        0.0,
+        0.22222222222222224
+      ]
+    },
+    {
+      "prediction": "3.0 red (four) 3.0 x/y (four)",
+      "gold": "an yes",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "1998 1998 the \n",
+      "gold": "1998 1998 the \n",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "x/y \n a year an no North",
+      "gold": "blue South -3 March yes an 3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "20% noanswer",
+      "gold": "(four) \n a South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "a 1998 a A. a A. blue",
+      "gold": "no",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "x/y",
+      "gold": "the North March",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.5 March x/y 20% 3.0 (four) yes",
+      "gold": "3.5 March x/y 20% 3.0 (four) yes",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "North",
+      "gold": "A.",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3,000 red an 20% noanswer",
+      "gold": "no 20% 3.5 blue",
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": "A. March",
+      "gold": "(four) 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "(four) 20% high-speed (four) no",
+      "gold": "20% x/y March",
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": "red A. x/y",
+      "gold": "red A. x/y",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "yes 3 a 20% (four)",
+      "gold": "North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "-3",
+      "gold": "year South 3 x/y x/y North",
+      "expected": [
+        0.0,
+        0.2857142857142857
+      ]
+    },
+    {
+      "prediction": "x/y",
+      "gold": "3 \n \n blue North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "20%",
+      "gold": "noanswer an -3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3,000",
+      "gold": "3,000",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "3 March no 3.5 blue",
+      "gold": "year -3 a A. 3 blue yes",
+      "expected": [
+        0.0,
+        0.4000000000000001
+      ]
+    },
+    {
+      "prediction": "blue 20% x/y",
+      "gold": "(four) \n March 3 20% \n",
+      "expected": [
+        0.0,
+        0.28571428571428575
+      ]
+    },
+    {
+      "prediction": "a noanswer",
+      "gold": "year 20% 3.0 x/y yes the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an",
+      "gold": "\n x/y South \n blue 3,000 year",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "North the A. (four) year",
+      "gold": "North the A. (four) year",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "blue North 3",
+      "gold": "South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "red red yes March 20% yes",
+      "gold": "red noanswer A. 20%",
+      "expected": [
+        0.0,
+        0.4444444444444444
+      ]
+    },
+    {
+      "prediction": "yes a 1998 (four)",
+      "gold": "no 3.5 1998",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "3,000 3,000 year \n the March March",
+      "gold": "March",
+      "expected": [
+        0.0,
+        0.33333333333333337
+      ]
+    },
+    {
+      "prediction": "3.5 \n",
+      "gold": "3.5 \n",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "an",
+      "gold": "year 20% no A.",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "\n blue blue 3 \n noanswer",
+      "gold": "high-speed 1998 red",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "yes a",
+      "gold": "3 red A. noanswer",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "20% an high-speed North",
+      "gold": "blue red A. an 20% South",
+      "expected": [
+        0.0,
+        0.28571428571428575
+      ]
+    },
+    {
+      "prediction": "3 a -3 no no high-speed",
+      "gold": "3 a -3 no no high-speed",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "noanswer 3,000 3.5 20% year year",
+      "gold": "North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "March noanswer -3 20% no",
+      "gold": "no",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "1998 an noanswer 3 3.5 A.",
+      "gold": "high-speed high-speed",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "the March 3,000 blue 3",
+      "gold": "(four) year",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3 year x/y 3.0 a (four) an",
+      "gold": "3 year x/y 3.0 a (four) an",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "x/y (four) no a South blue 3.5",
+      "gold": "yes 3.5 -3 -3 \n 3 a",
+      "expected": [
+        0.0,
+        0.1818181818181818
+      ]
+    },
+    {
+      "prediction": "3.5 March",
+      "gold": "-3 the an",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.5",
+      "gold": "blue (four) 3,000 \n a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "x/y 20%",
+      "gold": "x/y March \n A. noanswer 1998 3.5",
+      "expected": [
+        0.0,
+        0.28571428571428575
+      ]
+    },
+    {
+      "prediction": "-3 \n North an March",
+      "gold": "-3 \n North an March",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "1998",
+      "gold": "\n 1998",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "year North the a",
+      "gold": "x/y a A.",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "x/y no red 3,000 March North 3",
+      "gold": "no blue",
+      "expected": [
+        0.0,
+        0.22222222222222224
+      ]
+    },
+    {
+      "prediction": "-3 an year 3,000",
+      "gold": "an South March a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "no",
+      "gold": "no",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "(four) -3 North North 1998 North \n",
+      "gold": "20% North (four) -3 (four) high-speed",
+      "expected": [
+        0.0,
+        0.5
+      ]
+    },
+    {
+      "prediction": "x/y red A. x/y 3,000 the blue",
+      "gold": "an 3,000 (four) yes year (four) March",
+      "expected": [
+        0.0,
+        0.1818181818181818
+      ]
+    },
+    {
+      "prediction": "high-speed",
+      "gold": "(four) \n 3.0 x/y 3.5 3.0",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "South March a an year blue",
+      "gold": "3,000 3.5 3.0 1998 \n",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "March 3 -3 blue red x/y",
+      "gold": "March 3 -3 blue red x/y",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "South 3.5 high-speed \n a North noanswer",
+      "gold": "March",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "noanswer March a x/y a",
+      "gold": "an",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "a",
+      "gold": "3.5 year an 3.0 a high-speed March",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "South the",
+      "gold": "noanswer 3.0 year \n blue (four)",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3",
+      "gold": "3",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "x/y \n",
+      "gold": "South high-speed South an 3,000 1998",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "20% a high-speed year \n no",
+      "gold": "the no March year 3.5",
+      "expected": [
+        0.0,
+        0.5
+      ]
+    },
+    {
+      "prediction": "high-speed yes no",
+      "gold": "-3 3.0",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "20% (four) blue 3.5 yes a",
+      "gold": "high-speed red year",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3.0 blue blue -3 March 3,000",
+      "gold": "3.0 blue blue -3 March 3,000",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "the 1998 high-speed North North the 1998",
+      "gold": "3.5 1998",
+      "expected": [
+        0.0,
+        0.28571428571428575
+      ]
+    },
+    {
+      "prediction": "South high-speed the \n",
+      "gold": "high-speed a -3 blue the yes",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "1998 no yes 3,000",
+      "gold": "A. blue North -3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "no no yes",
+      "gold": "the blue noanswer \n 3.0",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "\n (four) red a",
+      "gold": "\n (four) red a",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "3.5 \n 3.5",
+      "gold": "North a 3,000 red 3 \n",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "the South",
+      "gold": "blue 3 the North an North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "red 3",
+      "gold": "North 20% x/y x/y 3.5 A.",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3 3.5 South 3,000 3 an North",
+      "gold": "3 (four) blue year 3.5 x/y",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "South 1998 (four) March 1998 \n",
+      "gold": "South 1998 (four) March 1998 \n",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "red high-speed \n",
+      "gold": "high-speed an blue the 3.5 3,000 A.",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "3 the A. South (four) 3.5 South",
+      "gold": "blue -3 x/y \n yes",
+      "expected": [
+        0.0,
+        0.22222222222222224
+      ]
+    },
+    {
+      "prediction": "North",
+      "gold": "high-speed (four) North",
+      "expected": [
+        0.0,
+        0.5
+      ]
+    },
+    {
+      "prediction": "an red (four)",
+      "gold": "red noanswer A. North yes A.",
+      "expected": [
+        0.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "prediction": "South March 3",
+      "gold": "South March 3",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "the (four) 3.5",
+      "gold": "\n the (four) x/y A.",
+      "expected": [
+        0.0,
+        0.5
+      ]
+    },
+    {
+      "prediction": "noanswer \n blue yes red South",
+      "gold": "1998 3,000 x/y 20% 20% 20%",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "an 3.0 a the",
+      "gold": "high-speed",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "x/y 20%",
+      "gold": "\n 3,000 yes a North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "-3",
+      "gold": "-3",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "-3 blue",
+      "gold": "March yes 3",
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": "North",
+      "gold": "yes March high-speed red 3,000 red 20%",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "the x/y 3 x/y high-speed South",
+      "gold": "March South the 20% March -3 March",
+      "expected": [
+        0.0,
+        0.3636363636363636
+      ]
+    },
+    {
+      "prediction": "20%",
+      "gold": "3,000 South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "blue blue blue high-speed 3 3,000 an",
+      "gold": "blue blue blue high-speed 3 3,000 an",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "x/y an (four) the 3 3.5",
+      "gold": "20% x/y South 3 South (four) year",
+      "expected": [
+        0.0,
+        0.5454545454545454
+      ]
+    },
+    {
+      "prediction": "South 3 an South x/y",
+      "gold": "March (four) 3.0 North 3,000 3.5",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3 year year 3 no a high-speed",
+      "gold": "the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "A. (four) blue 3,000 March 20%",
+      "gold": "(four) March red 3.0",
+      "expected": [
+        0.0,
+        0.4444444444444445
+      ]
+    },
+    {
+      "prediction": "noanswer an x/y",
+      "gold": "noanswer an x/y",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "1998 no 20% South 20% x/y (four)",
+      "gold": "3,000 blue",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "(four)",
+      "gold": "an A. high-speed year",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "blue yes South A. 20% high-speed",
+      "gold": "3.0 no",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "blue March an year the South",
+      "gold": "\n a \n x/y",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "March",
+      "gold": "March",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "March 3.0 high-speed A.",
+      "gold": "year 3 1998 noanswer x/y South red",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "1998 South",
+      "gold": "-3",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "no noanswer no (four) a yes year",
+      "gold": "no x/y -3",
+      "expected": [
+        0.0,
+        0.2222222222222222
+      ]
+    },
+    {
+      "prediction": "3.5",
+      "gold": "\n a 3.0 no a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "blue noanswer 3.0 3.5 x/y 3,000",
+      "gold": "blue noanswer 3.0 3.5 x/y 3,000",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "March",
+      "gold": "yes North the year South",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "3 3 3.5",
+      "gold": "March -3 blue noanswer x/y March 3.5",
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": "yes blue March -3 the",
+      "gold": "-3 1998 March yes high-speed no 3.0",
+      "expected": [
+        0.0,
+        0.5454545454545454
+      ]
+    },
+    {
+      "prediction": "year",
+      "gold": "year -3 noanswer 3.0",
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": "blue 3,000",
+      "gold": "blue 3,000",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "March year A. South a 1998 3.0",
+      "gold": "North",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "year 1998 North March high-speed",
+      "gold": "20% high-speed 3.5",
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": "blue yes the \n",
+      "gold": "North a \n 20% 3 the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "yes 3,000",
+      "gold": "a",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "North South 1998 red",
+      "gold": "North South 1998 red",
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": "-3 20% a no high-speed yes",
+      "gold": "-3 a",
+      "expected": [
+        0.0,
+        0.33333333333333337
+      ]
+    },
+    {
+      "prediction": "the 20% North x/y 20% (four) (four)",
+      "gold": "yes South high-speed the",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": "high-speed North -3 March 20% 3.0",
+      "gold": "year -3 x/y",
+      "expected": [
+        0.0,
+        0.2222222222222222
+      ]
+    },
+    {
+      "prediction": "1998 3 March -3 high-speed",
+      "gold": "x/y 3,000 (four) an red",
+      "expected": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "drop": [
+    {
+      "prediction": [
+        "1998 blue year the -3 (four)",
+        "3,000 North a 3.0 March red",
+        "an yes 3.5",
+        "year",
+        "\n high-speed North \n 3,000 noanswer"
+      ],
+      "gold": [
+        "\n high-speed North \n 3,000 noanswer",
+        "year",
+        "an yes 3.5",
+        "3,000 North a 3.0 March red",
+        "1998 blue year the -3 (four)"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "red year blue 3.0 noanswer x/y",
+        "no -3 3,000 an 1998 red"
+      ],
+      "gold": [
+        "North noanswer",
+        "A. South x/y 20% 20%",
+        "an 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 the",
+        "x/y x/y a no yes",
+        "blue (four) North 3.0 high-speed a",
+        "year",
+        "a 20% 3.0"
+      ],
+      "gold": [
+        "March year",
+        "3.0 \n March (four) yes South",
+        "no yes 3.0",
+        "3.0",
+        "-3 a March red 3.0 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed",
+        "3.5 A. (four)",
+        "red \n 20% red 3.0 red"
+      ],
+      "gold": [
+        "year red year 3.0 the high-speed",
+        "3.5 the 20% (four)",
+        "blue 3,000 -3 high-speed x/y an"
+      ],
+      "expected": [
+        0.0,
+        0.43
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer South",
+        "red 3.5 3.0"
+      ],
+      "gold": [
+        "yes the -3 1998 year",
+        "North -3 South an",
+        "red 3.0 no",
+        "an"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "3 no blue 1998 no",
+        "3.0 (four) red high-speed North",
+        "year 3 blue high-speed the North",
+        "yes March 3.5 North"
+      ],
+      "gold": [
+        "red red -3 -3 South \n",
+        "a a no",
+        "\n 3 1998 red",
+        "year 20%"
+      ],
+      "expected": [
+        0.0,
+        0.27
+      ]
+    },
+    {
+      "prediction": [
+        "20% 3 North x/y yes red",
+        "x/y 1998 year year"
+      ],
+      "gold": [
+        "x/y",
+        "South noanswer 3,000 South"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "North",
+        "a (four) A. the",
+        "1998 no noanswer 3.0 20% a",
+        "red noanswer 3 noanswer"
+      ],
+      "gold": [
+        "red noanswer 3 noanswer",
+        "1998 no noanswer 3.0 20% a",
+        "a (four) A. the",
+        "North"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "A. South \n the yes the",
+        "a",
+        "(four)",
+        "3.0 North March noanswer South"
+      ],
+      "gold": [
+        "an",
+        "(four) 20% \n",
+        "3.5 A. 3.0",
+        "year 3 3.5 3.5 20% March",
+        "noanswer A."
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer",
+        "3 x/y 3.5",
+        "no year yes a noanswer no",
+        "20% yes",
+        "yes red an (four) \n 3.0"
+      ],
+      "gold": [
+        "-3"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "the",
+        "a 1998 3.0 noanswer -3 red",
+        "an year the -3 x/y North"
+      ],
+      "gold": [
+        "red 3 March North the -3"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "-3 blue red red",
+        "-3 (four)"
+      ],
+      "gold": [
+        "a no year 3,000",
+        "3",
+        "x/y"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 South",
+        "3.5 noanswer 20% -3 A."
+      ],
+      "gold": [
+        "(four) 20% red"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "North blue 3.0 1998 3 an",
+        "A. (four) an the blue",
+        "an 3,000",
+        "x/y noanswer -3 3.0"
+      ],
+      "gold": [
+        "an x/y blue South"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer 20% x/y 3 high-speed"
+      ],
+      "gold": [
+        "noanswer 20% x/y 3 high-speed"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "\n -3 no 3 -3",
+        "A.",
+        "the year"
+      ],
+      "gold": [
+        "no 3 noanswer no A. red",
+        "blue blue March yes x/y (four)",
+        "South high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "x/y \n a 3.5 3,000",
+        "yes no yes"
+      ],
+      "gold": [
+        "the blue high-speed",
+        "South",
+        "3,000 \n year red an red",
+        "3 year blue -3 blue no"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "1998 March March",
+        "1998 a",
+        "blue 20% North",
+        "the 3",
+        "red red year"
+      ],
+      "gold": [
+        "year year noanswer A. the 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "a"
+      ],
+      "gold": [
+        "South 3 x/y"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "no red 20% a North",
+        "yes 3.0",
+        "20% the an \n 20% x/y"
+      ],
+      "gold": [
+        "red 3.0",
+        "noanswer",
+        "x/y 3.0 an high-speed",
+        "South \n 3 a noanswer 20%",
+        "x/y"
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "\n no high-speed a x/y year",
+        "the no red no South blue",
+        "3,000 A."
+      ],
+      "gold": [
+        "a",
+        "(four) South the red",
+        "yes no 3.0 1998",
+        "3 red"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer",
+        "A. A. yes 1998 blue",
+        "South noanswer South South a",
+        "March 1998 (four) 20% March 20%"
+      ],
+      "gold": [
+        "March 1998 (four) 20% March 20%",
+        "South noanswer South South a",
+        "A. A. yes 1998 blue",
+        "noanswer"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "North 3",
+        "3 20% the",
+        "(four) 3.5 A. \n",
+        "the no \n (four) year a",
+        "3 1998 3,000 March"
+      ],
+      "gold": [
+        "high-speed 3",
+        "an an noanswer South March",
+        "(four) A. 1998",
+        "the",
+        "March A. 3.0 North (four)"
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "blue North"
+      ],
+      "gold": [
+        "blue",
+        "3 North 3 blue",
+        "x/y 20%",
+        "(four) the 3,000 year A. red"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 no",
+        "noanswer 1998 red year South the",
+        "yes",
+        "high-speed"
+      ],
+      "gold": [
+        "no -3",
+        "yes March x/y",
+        "North South",
+        "South blue an a"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "a 3,000",
+        "20% South red",
+        "high-speed March 3.5 3.0 red"
+      ],
+      "gold": [
+        "an 20%",
+        "no 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "South March",
+        "3,000 no red",
+        "A.",
+        "yes North the A. \n"
+      ],
+      "gold": [
+        "3.5 March x/y \n no yes",
+        "March yes noanswer",
+        "South 3"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "South",
+        "high-speed",
+        "20% North",
+        "noanswer"
+      ],
+      "gold": [
+        "noanswer red",
+        "high-speed",
+        "(four) \n yes 3.0 no",
+        "no A. red A. A. high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "prediction": [
+        "x/y (four) (four) high-speed",
+        "20% red the x/y",
+        "no",
+        "(four) 20% high-speed red"
+      ],
+      "gold": [
+        "(four) 20% high-speed red",
+        "no",
+        "20% red the x/y",
+        "x/y (four) (four) high-speed"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer 3 \n",
+        "3 no March the blue -3",
+        "North red",
+        "a high-speed a",
+        "a -3 blue -3"
+      ],
+      "gold": [
+        "\n 3.0 high-speed 1998"
+      ],
+      "expected": [
+        0.0,
+        0.07
+      ]
+    },
+    {
+      "prediction": [
+        "yes",
+        "high-speed noanswer 3.0 3.0 blue (four)",
+        "noanswer 3 noanswer noanswer 3.0"
+      ],
+      "gold": [
+        "1998 A. the 1998 North noanswer",
+        "3.5 North yes \n"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "-3 noanswer 3.5 \n",
+        "the March North"
+      ],
+      "gold": [
+        "high-speed",
+        "-3 3,000 1998 March",
+        "A. yes 3,000 no 3,000 North",
+        "the 3 A. A."
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 (four) -3 3,000",
+        "3 yes 1998",
+        "1998 March x/y",
+        "(four) 1998 blue"
+      ],
+      "gold": [
+        "A. noanswer",
+        "3.0 (four) 3.5 3.0 \n 3.5",
+        "3 red 1998",
+        "blue (four) 3.5",
+        "high-speed high-speed 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.27
+      ]
+    },
+    {
+      "prediction": [
+        "3",
+        "the South March no"
+      ],
+      "gold": [
+        "(four) South high-speed",
+        "3 3 March blue"
+      ],
+      "expected": [
+        0.0,
+        0.39
+      ]
+    },
+    {
+      "prediction": [
+        "\n South 3,000 high-speed",
+        "A. North 3,000 noanswer March",
+        "3.5",
+        "March blue 1998 red"
+      ],
+      "gold": [
+        "blue no a 3 A. x/y",
+        "x/y",
+        "\n 3.0 3.0 x/y"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "a -3 x/y a \n",
+        "no an"
+      ],
+      "gold": [
+        "no an",
+        "a -3 x/y a \n"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "North blue high-speed"
+      ],
+      "gold": [
+        "blue March A. year 20%",
+        "red",
+        "no",
+        "3 March"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 the 20%",
+        "3,000 an"
+      ],
+      "gold": [
+        "South the North South 3.5 (four)"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "-3 3.0 South",
+        "3.0 \n noanswer 3.0 year a",
+        "3 North",
+        "North the March year",
+        "high-speed year the"
+      ],
+      "gold": [
+        "3.5 1998 high-speed \n North"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "red high-speed March 1998 3 3,000",
+        "red 3",
+        "South 3.5 1998 3,000"
+      ],
+      "gold": [
+        "the 3,000 \n",
+        "high-speed 3.5 high-speed March 3,000 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.36
+      ]
+    },
+    {
+      "prediction": [
+        "3.5",
+        "3,000 the a 3",
+        "blue 20%",
+        "x/y an"
+      ],
+      "gold": [
+        "-3",
+        "3.5 year",
+        "20% a noanswer noanswer \n blue",
+        "1998 3 a -3 South"
+      ],
+      "expected": [
+        0.0,
+        0.53
+      ]
+    },
+    {
+      "prediction": [
+        "no North",
+        "South x/y an x/y year noanswer",
+        "A. 3.0",
+        "3.0 red no 3.0 South"
+      ],
+      "gold": [
+        "3",
+        "(four) yes"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 an"
+      ],
+      "gold": [
+        "3.5 an"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "x/y -3 a 20%"
+      ],
+      "gold": [
+        "noanswer noanswer 3.0 3,000 red"
+      ],
+      "expected": [
+        0.0,
+        0.29
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 \n North",
+        "March noanswer high-speed a 3.0",
+        "A. an red A. A.",
+        "high-speed high-speed no -3 a March",
+        "red 3.0 -3 \n 3.0 blue"
+      ],
+      "gold": [
+        "blue",
+        "3.0",
+        "North an year the high-speed \n"
+      ],
+      "expected": [
+        0.0,
+        0.26
+      ]
+    },
+    {
+      "prediction": [
+        "1998",
+        "\n 3.5 3.0 3.0"
+      ],
+      "gold": [
+        "high-speed noanswer noanswer March South",
+        "20% A. \n March (four) high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "1998",
+        "North 3.5 (four) no",
+        "year 3.0 1998"
+      ],
+      "gold": [
+        "blue"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "A. 3.0"
+      ],
+      "gold": [
+        "-3 a A.",
+        "3 an an 20% red yes",
+        "high-speed x/y red x/y 3.5",
+        "North 1998 \n 3.5 3.5",
+        "a 1998 no"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "3 red red 3,000 year red",
+        "-3 noanswer 3.5 \n",
+        "a",
+        "3,000 an March"
+      ],
+      "gold": [
+        "noanswer 3.5 the"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "year no 3.0 an yes",
+        "3,000 the 3 high-speed noanswer",
+        "the 3,000 3",
+        "20% -3 an"
+      ],
+      "gold": [
+        "20% -3 an",
+        "the 3,000 3",
+        "3,000 the 3 high-speed noanswer",
+        "year no 3.0 an yes"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "no (four) March red 3,000",
+        "x/y",
+        "red the noanswer \n",
+        "the no"
+      ],
+      "gold": [
+        "3.0 no",
+        "no",
+        "no yes March x/y 20% -3",
+        "\n x/y"
+      ],
+      "expected": [
+        0.0,
+        0.5
+      ]
+    },
+    {
+      "prediction": [
+        "a",
+        "March A. A. yes",
+        "3.0 the",
+        "noanswer high-speed red"
+      ],
+      "gold": [
+        "A. the red a 1998",
+        "North (four) blue"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "no A. (four)",
+        "3 red 3.0 3.5",
+        "3",
+        "A."
+      ],
+      "gold": [
+        "North year year",
+        "3,000 3 1998",
+        "3.5 3,000 3.0 March x/y"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "3 3.0 the blue",
+        "\n 3.0 North 1998"
+      ],
+      "gold": [
+        "high-speed high-speed high-speed March \n",
+        "no 3.5 high-speed an"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "an x/y",
+        "3 3.5 yes an March",
+        "March March blue high-speed x/y \n",
+        "3.5 3",
+        "3.0 20% no March"
+      ],
+      "gold": [
+        "North an red noanswer North",
+        "3,000",
+        "x/y"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "3 3 March March",
+        "red",
+        "1998 \n \n (four) North year",
+        "yes \n 20% South",
+        "red A. \n an noanswer 3"
+      ],
+      "gold": [
+        "yes",
+        "the 1998 \n 3.0 yes",
+        "South 3",
+        "x/y"
+      ],
+      "expected": [
+        0.0,
+        0.27
+      ]
+    },
+    {
+      "prediction": [
+        "South North 3.5 red",
+        "3,000 yes",
+        "-3 \n A. 20% A. yes",
+        "(four) March the a high-speed",
+        "blue \n"
+      ],
+      "gold": [
+        "blue \n",
+        "(four) March the a high-speed",
+        "-3 \n A. 20% A. yes",
+        "3,000 yes",
+        "South North 3.5 red"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer x/y 3,000",
+        "North year year 20% 20%",
+        "blue March",
+        "3 year 3.0"
+      ],
+      "gold": [
+        "March A.",
+        "3.5 North March red",
+        "yes 1998 an",
+        "March (four) red South -3",
+        "noanswer A. a red South"
+      ],
+      "expected": [
+        0.0,
+        0.26
+      ]
+    },
+    {
+      "prediction": [
+        "3 North North"
+      ],
+      "gold": [
+        "no",
+        "South x/y South",
+        "South high-speed",
+        "noanswer the a noanswer 3,000 x/y"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "a"
+      ],
+      "gold": [
+        "an high-speed x/y x/y"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "\n March the no year"
+      ],
+      "gold": [
+        "\n \n yes blue 3,000",
+        "20% A. a the 20%",
+        "red 3",
+        "blue 3.0 yes blue (four)",
+        "an no blue"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "year",
+        "3 noanswer high-speed the 3.0 red"
+      ],
+      "gold": [
+        "\n March",
+        "1998 3,000",
+        "red A. 1998 high-speed a",
+        "high-speed an 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "March (four) A. high-speed North -3",
+        "3.5 -3 North",
+        "3.5"
+      ],
+      "gold": [
+        "3 the March 3.0 no",
+        "South March",
+        "noanswer high-speed -3 South",
+        "year no noanswer",
+        "\n no an"
+      ],
+      "expected": [
+        0.0,
+        0.18
+      ]
+    },
+    {
+      "prediction": [
+        "20% x/y A. x/y March 1998",
+        "-3 an the noanswer an",
+        "3.0 the -3 3.5 no a",
+        "x/y 20% x/y 20% 1998 a"
+      ],
+      "gold": [
+        "x/y 20% x/y 20% 1998 a",
+        "3.0 the -3 3.5 no a",
+        "-3 an the noanswer an",
+        "20% x/y A. x/y March 1998"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "1998 yes 20% x/y"
+      ],
+      "gold": [
+        "no (four) year 3.5",
+        "red x/y yes yes",
+        "year no an noanswer",
+        "high-speed an 1998"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "year no",
+        "noanswer the",
+        "(four) a a blue",
+        "red year"
+      ],
+      "gold": [
+        "(four) South yes A. a 20%",
+        "year March the",
+        "the noanswer no yes"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "\n a",
+        "3.5 -3 yes 3.5 yes"
+      ],
+      "gold": [
+        "an the year 3.5",
+        "North red",
+        "North \n 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "South no red a",
+        "3,000 noanswer \n",
+        "a 3.0 North x/y A. yes"
+      ],
+      "gold": [
+        "A.",
+        "3",
+        "x/y 20% March noanswer",
+        "3 20% a",
+        "the March -3"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "x/y -3 high-speed an yes",
+        "3 20%",
+        "a a",
+        "yes North 3.5 red 3,000 x/y",
+        "yes"
+      ],
+      "gold": [
+        "March",
+        "3.5 year blue -3",
+        "red 3.0 A. 3 3.0",
+        "A. South"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "an",
+        "3.0 blue (four) noanswer 20% yes",
+        "A. a",
+        "red \n 20%"
+      ],
+      "gold": [
+        "South the 1998 x/y 3.5",
+        "high-speed A. (four) North"
+      ],
+      "expected": [
+        0.0,
+        0.05
+      ]
+    },
+    {
+      "prediction": [
+        "blue high-speed March A. 3.5",
+        "high-speed the",
+        "South the x/y North March A.",
+        "year noanswer no"
+      ],
+      "gold": [
+        "year noanswer no",
+        "South the x/y North March A.",
+        "high-speed the",
+        "blue high-speed March A. 3.5"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "\n the 3.5 North",
+        "20% South -3 3.0",
+        "A. an noanswer (four) -3 South",
+        "20% 20%"
+      ],
+      "gold": [
+        "\n 3 1998 A. high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.07
+      ]
+    },
+    {
+      "prediction": [
+        "-3 North March \n"
+      ],
+      "gold": [
+        "3,000 3.0 March year"
+      ],
+      "expected": [
+        0.0,
+        0.57
+      ]
+    },
+    {
+      "prediction": [
+        "\n",
+        "South -3 the yes red",
+        "3.0 -3 North a North 3,000",
+        "20% 3.5 3,000 -3",
+        "yes x/y"
+      ],
+      "gold": [
+        "year 20% a \n 1998"
+      ],
+      "expected": [
+        0.0,
+        0.06
+      ]
+    },
+    {
+      "prediction": [
+        "the x/y 3",
+        "-3 A.",
+        "3.5 \n yes x/y",
+        "red 3",
+        "year yes blue South \n South"
+      ],
+      "gold": [
+        "red 3,000",
+        "-3",
+        "\n -3 no South",
+        "North x/y noanswer 3,000 March"
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "North South March",
+        "high-speed 3.0 no 20% 1998 high-speed",
+        "3 1998",
+        "-3 (four) yes 20% blue",
+        "red \n an x/y yes North"
+      ],
+      "gold": [
+        "3.5 A.",
+        "noanswer x/y"
+      ],
+      "expected": [
+        0.0,
+        0.07
+      ]
+    },
+    {
+      "prediction": [
+        "20% (four)"
+      ],
+      "gold": [
+        "no 3 a an",
+        "A. 3.5 3.0 March -3"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "A.",
+        "a North"
+      ],
+      "gold": [
+        "a North",
+        "A."
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer yes noanswer A.",
+        "an South March x/y year"
+      ],
+      "gold": [
+        "year an 1998 -3 red 3,000",
+        "North 3.0 the"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "20% red",
+        "March 3,000 3,000 the"
+      ],
+      "gold": [
+        "(four)",
+        "South 20% year A.",
+        "3.5 yes",
+        "3.0"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "3,000",
+        "South \n",
+        "high-speed \n"
+      ],
+      "gold": [
+        "(four) 3,000",
+        "A. 3 1998 the",
+        "the",
+        "North high-speed North"
+      ],
+      "expected": [
+        0.0,
+        0.37
+      ]
+    },
+    {
+      "prediction": [
+        "\n",
+        "North (four) year 3,000 A. \n"
+      ],
+      "gold": [
+        "20%",
+        "1998 no 20%",
+        "yes March",
+        "the 1998",
+        "-3 x/y red North 3 -3"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "the x/y A.",
+        "A. high-speed 3 year March",
+        "-3 March",
+        "an \n high-speed"
+      ],
+      "gold": [
+        "3 3.5 South \n"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "1998 year no an (four) 3.5",
+        "blue 1998 South 3.5 3,000",
+        "20% year red"
+      ],
+      "gold": [
+        "3 3,000 North 1998 \n 3.0",
+        "(four) 3",
+        "1998 1998 20% an an",
+        "-3 20% 3"
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "March",
+        "-3"
+      ],
+      "gold": [
+        "-3",
+        "March"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 year yes \n 20%",
+        "3.5 North (four) 1998 -3 20%"
+      ],
+      "gold": [
+        "yes an March",
+        "3.0",
+        "no -3 year",
+        "a \n noanswer no yes"
+      ],
+      "expected": [
+        0.0,
+        0.21
+      ]
+    },
+    {
+      "prediction": [
+        "3 A. high-speed",
+        "no",
+        "South blue",
+        "yes year North 3 year",
+        "-3 1998 3,000 20%"
+      ],
+      "gold": [
+        "3.5 \n (four) \n year",
+        "3.0",
+        "noanswer year -3 North year"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "yes 20% high-speed x/y yes",
+        "yes"
+      ],
+      "gold": [
+        "3.0 3.5 3 -3"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "year 3,000 3,000 x/y 1998"
+      ],
+      "gold": [
+        "red year noanswer",
+        "March year 3 (four) x/y",
+        "noanswer year March noanswer \n 3.0",
+        "March",
+        "3.0 year 1998 South"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "an 3.5 3.5",
+        "South 3,000 blue an 3,000",
+        "red"
+      ],
+      "gold": [
+        "March North 3.0 year yes no"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 3.0 year"
+      ],
+      "gold": [
+        "yes 3"
+      ],
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": [
+        "A.",
+        "noanswer 3.5",
+        "x/y yes noanswer year 1998",
+        "year an -3",
+        "the March x/y high-speed an"
+      ],
+      "gold": [
+        "the March x/y high-speed an",
+        "year an -3",
+        "x/y yes noanswer year 1998",
+        "noanswer 3.5",
+        "A."
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 a A.",
+        "3.5 20% 3"
+      ],
+      "gold": [
+        "\n 3,000",
+        "the year 3.5 no March",
+        "year 3.0",
+        "\n 3.0 March 3.5 an"
+      ],
+      "expected": [
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "prediction": [
+        "\n A. North no yes",
+        "March yes an",
+        "x/y high-speed \n"
+      ],
+      "gold": [
+        "x/y 3.5 red A. 1998",
+        "yes high-speed",
+        "A."
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 the the",
+        "3 noanswer",
+        "the blue 1998 no an no",
+        "3.0 (four) a -3"
+      ],
+      "gold": [
+        "year 20% red 3",
+        "3 20% \n March"
+      ],
+      "expected": [
+        0.0,
+        0.18
+      ]
+    },
+    {
+      "prediction": [
+        "an an -3 20% -3 year",
+        "A. \n yes year high-speed a",
+        "March x/y 20% South 20% the",
+        "x/y an high-speed 3 yes",
+        "-3 South x/y an"
+      ],
+      "gold": [
+        "3 noanswer March 20% blue",
+        "South no red \n"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "March high-speed x/y A.",
+        "North blue 20% 20% red",
+        "x/y no no",
+        "noanswer a red 3,000 an"
+      ],
+      "gold": [
+        "3,000 year the year a blue",
+        "an an",
+        "3.5 -3",
+        "20% noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "year 3.0 3.5 \n 3.5",
+        "North"
+      ],
+      "gold": [
+        "20%",
+        "March South 20% March 1998",
+        "a 20% (four) year an South",
+        "red the A. -3",
+        "noanswer 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "x/y",
+        "the South 20% (four)"
+      ],
+      "gold": [
+        "the South 20% (four)",
+        "x/y"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3 no",
+        "yes 3,000 1998 20% no"
+      ],
+      "gold": [
+        "red A. March 1998 no",
+        "no no 3.0 \n",
+        "3.0",
+        "x/y an -3"
+      ],
+      "expected": [
+        0.0,
+        0.36
+      ]
+    },
+    {
+      "prediction": [
+        "no",
+        "North",
+        "1998 -3",
+        "blue high-speed",
+        "1998 South"
+      ],
+      "gold": [
+        "3.0",
+        "20% A. yes North -3 noanswer",
+        "\n March high-speed",
+        "March 3.5 blue"
+      ],
+      "expected": [
+        0.0,
+        0.27
+      ]
+    },
+    {
+      "prediction": [
+        "20% an 3,000 the year"
+      ],
+      "gold": [
+        "the",
+        "blue",
+        "-3"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "March \n yes the no",
+        "the 3 x/y A. the",
+        "3 noanswer A. the 3,000 red",
+        "3,000 \n"
+      ],
+      "gold": [
+        "yes yes an A. x/y red",
+        "North the 3.5 South"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "yes South 20% a high-speed",
+        "A."
+      ],
+      "gold": [
+        "red North 20%",
+        "March",
+        "an \n",
+        "(four) year a blue (four)",
+        "no March 3"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "the March A. noanswer",
+        "\n red red \n"
+      ],
+      "gold": [
+        "an (four) an an"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "red an year",
+        "South",
+        "x/y",
+        "1998 3.0"
+      ],
+      "gold": [
+        "1998 3.0",
+        "x/y",
+        "South",
+        "red an year"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "x/y no (four) high-speed year the",
+        "A.",
+        "A. yes",
+        "3.0 3,000 (four) A. 3.0",
+        "20% 3.0 year an noanswer"
+      ],
+      "gold": [
+        "red 3,000 A. (four) South high-speed",
+        "3 North yes",
+        "-3 yes blue x/y 3",
+        "3 year 3"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "A. 1998 noanswer high-speed March the"
+      ],
+      "gold": [
+        "(four)",
+        "year",
+        "red 1998",
+        "the -3 1998 year noanswer \n"
+      ],
+      "expected": [
+        0.0,
+        0.11
+      ]
+    },
+    {
+      "prediction": [
+        "x/y",
+        "A."
+      ],
+      "gold": [
+        "-3 March (four)",
+        "blue"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "(four) A. no",
+        "3,000 1998 3,000 x/y -3 no"
+      ],
+      "gold": [
+        "3.5 North blue noanswer yes yes",
+        "South",
+        "a a an -3 red North",
+        "-3 March x/y North \n 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "a"
+      ],
+      "gold": [
+        "3 blue high-speed",
+        "3.5 a",
+        "3 20% year high-speed high-speed yes"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000",
+        "high-speed",
+        "March high-speed South x/y the an",
+        "3.5 (four) 3.0 March high-speed"
+      ],
+      "gold": [
+        "3.5",
+        "-3 noanswer x/y March a 3",
+        "3 3,000",
+        "\n a x/y x/y A."
+      ],
+      "expected": [
+        0.0,
+        0.35
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed",
+        "North 1998 x/y no March"
+      ],
+      "gold": [
+        "North 1998 x/y no March",
+        "high-speed"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "yes A. a year the North",
+        "year (four)"
+      ],
+      "gold": [
+        "3.5 (four) x/y year"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "20% \n red"
+      ],
+      "gold": [
+        "20% 3.5 3.0",
+        "-3 3.5",
+        "South A.",
+        "blue year 3.0 the high-speed \n",
+        "an 3 -3 the noanswer South"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "an 1998 no North 3,000",
+        "yes 3 blue",
+        "the the a 20% North"
+      ],
+      "gold": [
+        "the 20%",
+        "3,000 North the a high-speed year",
+        "South",
+        "(four) 3.0 3.0 a",
+        "x/y noanswer a"
+      ],
+      "expected": [
+        0.0,
+        0.3
+      ]
+    },
+    {
+      "prediction": [
+        "no",
+        "\n 3,000 1998",
+        "A. 3 North",
+        "3.5 high-speed -3",
+        "\n -3 high-speed"
+      ],
+      "gold": [
+        "20% South the (four) a"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "blue \n a (four) 3,000",
+        "A. North an South no",
+        "3,000 year North South North 3,000"
+      ],
+      "gold": [
+        "1998 an March 3.0 3.0",
+        "red blue",
+        "3.0 an March 1998",
+        "an blue blue",
+        "March \n a"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "no",
+        "noanswer 3 x/y noanswer x/y March",
+        "3.5 yes red 3.0 South"
+      ],
+      "gold": [
+        "the blue no 3.0",
+        "3,000 -3 3.5 noanswer red",
+        "3.0"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "20% 3.5 a 3,000"
+      ],
+      "gold": [
+        "20% 3.5 a 3,000"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "A. no",
+        "year red"
+      ],
+      "gold": [
+        "20% high-speed -3 3,000 \n"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "blue the",
+        "North"
+      ],
+      "gold": [
+        "3.5 year \n an 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "-3 red",
+        "March the an 3 1998",
+        "blue March North"
+      ],
+      "gold": [
+        "20% year noanswer South",
+        "South",
+        "blue no 3,000 yes",
+        "3.0 3.5 yes no",
+        "x/y no 20% March"
+      ],
+      "expected": [
+        0.0,
+        0.07
+      ]
+    },
+    {
+      "prediction": [
+        "North year 3.5 red North noanswer",
+        "blue 20% a 3.5 South year",
+        "yes",
+        "South South noanswer North",
+        "a 3,000 the -3 x/y"
+      ],
+      "gold": [
+        "1998 \n",
+        "an (four) \n North",
+        "3.5 noanswer blue -3 blue",
+        "no",
+        "high-speed x/y"
+      ],
+      "expected": [
+        0.0,
+        0.24
+      ]
+    },
+    {
+      "prediction": [
+        "-3",
+        "3,000",
+        "-3 an a 3.5"
+      ],
+      "gold": [
+        "x/y noanswer",
+        "an",
+        "March blue high-speed year an (four)",
+        "20% 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "the",
+        "(four) South noanswer",
+        "yes South x/y",
+        "North the a 3,000 x/y",
+        "3 3 blue noanswer high-speed the"
+      ],
+      "gold": [
+        "3.0",
+        "year no March no 3 -3"
+      ],
+      "expected": [
+        0.0,
+        0.07
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed an",
+        "a \n a blue"
+      ],
+      "gold": [
+        "a \n a blue",
+        "high-speed an"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "x/y A.",
+        "North"
+      ],
+      "gold": [
+        "3.5 blue a"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "North 20% -3 the blue",
+        "noanswer 1998",
+        "South \n"
+      ],
+      "gold": [
+        "1998 x/y x/y",
+        "x/y A. yes",
+        "-3 A. high-speed 1998 blue",
+        "no noanswer an 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.24
+      ]
+    },
+    {
+      "prediction": [
+        "an yes high-speed no",
+        "1998",
+        "South \n 3",
+        "South the",
+        "red -3 3.5"
+      ],
+      "gold": [
+        "the yes A. 3.0 North",
+        "(four) x/y noanswer blue red",
+        "A. high-speed the high-speed",
+        "year yes 3",
+        "3.5 the a A. year red"
+      ],
+      "expected": [
+        0.0,
+        0.35
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed 3.5 20% noanswer \n",
+        "(four) the an 3,000",
+        "the noanswer 20% (four) -3 3.0",
+        "North blue",
+        "blue yes year no (four)"
+      ],
+      "gold": [
+        "yes 3.5 A. noanswer blue x/y",
+        "noanswer \n x/y 1998",
+        "3",
+        "\n 3.0 A. -3 yes \n"
+      ],
+      "expected": [
+        0.0,
+        0.16
+      ]
+    },
+    {
+      "prediction": [
+        "March noanswer high-speed",
+        "no 3.5 North (four) yes a"
+      ],
+      "gold": [
+        "3 no",
+        "x/y North x/y no",
+        "an 3.0 1998 a 20%",
+        "1998 yes North",
+        "3,000 red 3 20% South"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "red a an a (four) no",
+        "3.0 3.0 3,000 x/y yes x/y",
+        "\n an 1998 20% yes",
+        "South 3,000 the March",
+        "-3"
+      ],
+      "gold": [
+        "high-speed red noanswer 3,000",
+        "no",
+        "March 3 1998 A.",
+        "1998",
+        "the March no A. no the"
+      ],
+      "expected": [
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "prediction": [
+        "3 1998 1998 3.5 no",
+        "noanswer North North blue",
+        "3.5 noanswer A. South A.",
+        "3.5 year",
+        "high-speed x/y 3.0 an year high-speed"
+      ],
+      "gold": [
+        "high-speed x/y 3.0 an year high-speed",
+        "3.5 year",
+        "3.5 noanswer A. South A.",
+        "noanswer North North blue",
+        "3 1998 1998 3.5 no"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "-3",
+        "South",
+        "1998 (four) North",
+        "yes"
+      ],
+      "gold": [
+        "South blue x/y",
+        "high-speed 20% year",
+        "3 1998 3 the -3",
+        "blue the"
+      ],
+      "expected": [
+        0.0,
+        0.29
+      ]
+    },
+    {
+      "prediction": [
+        "3 high-speed North 3.5 \n blue",
+        "A. noanswer noanswer an x/y",
+        "1998 3.0 3,000 an noanswer A."
+      ],
+      "gold": [
+        "20% 1998 A. an March 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "an noanswer high-speed 3.5 x/y 3.5",
+        "x/y",
+        "North A. the blue no 3,000",
+        "1998",
+        "March 3 year"
+      ],
+      "gold": [
+        "\n -3 year North -3 \n",
+        "an 3,000 an North",
+        "the -3 blue"
+      ],
+      "expected": [
+        0.0,
+        0.27
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 South North 3.0 a (four)",
+        "20% red",
+        "A. -3 \n",
+        "blue yes 3.5 noanswer an blue"
+      ],
+      "gold": [
+        "year 3 noanswer year 20% 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "A. 3,000 3.5",
+        "the North",
+        "A. 20% 3 no",
+        "red the North an yes",
+        "3,000 year"
+      ],
+      "gold": [
+        "(four) South \n the North 3",
+        "yes x/y South no x/y",
+        "x/y 3.5",
+        "North noanswer -3"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed yes 3",
+        "blue yes 3.5 A. high-speed",
+        "3.0 noanswer"
+      ],
+      "gold": [
+        "March 3.5 (four) high-speed the",
+        "March March red the March noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "an an an 3 (four)",
+        "blue noanswer yes",
+        "3.5 North yes the an high-speed"
+      ],
+      "gold": [
+        "3.5 North yes the an high-speed",
+        "blue noanswer yes",
+        "an an an 3 (four)"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "20% high-speed",
+        "3.5"
+      ],
+      "gold": [
+        "year",
+        "x/y 20% 3.0 no"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "20%",
+        "year North 3.5",
+        "North (four)",
+        "no 3.5",
+        "blue no year x/y 3 (four)"
+      ],
+      "gold": [
+        "no noanswer no March -3",
+        "blue yes South 20%",
+        "red"
+      ],
+      "expected": [
+        0.0,
+        0.16
+      ]
+    },
+    {
+      "prediction": [
+        "red",
+        "North x/y (four)",
+        "March (four) -3 year",
+        "red"
+      ],
+      "gold": [
+        "(four) red red 1998 North 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "South year 20% 3.5 a 3.0"
+      ],
+      "gold": [
+        "x/y North 3.5 20% year",
+        "\n no",
+        "South (four)"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "1998",
+        "March noanswer noanswer -3 3.0"
+      ],
+      "gold": [
+        "x/y",
+        "March 1998 blue",
+        "x/y yes -3 blue",
+        "(four) a"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "\n 3.5 a"
+      ],
+      "gold": [
+        "1998 1998 an 3 North x/y",
+        "North 3,000 a",
+        "South year",
+        "year North \n \n",
+        "South a"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 March an"
+      ],
+      "gold": [
+        "3,000 March an"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 A. no blue red",
+        "3,000 no x/y -3",
+        "noanswer March year A. South"
+      ],
+      "gold": [
+        "red high-speed 3,000 noanswer 3.5 high-speed",
+        "-3"
+      ],
+      "expected": [
+        0.0,
+        0.27
+      ]
+    },
+    {
+      "prediction": [
+        "20% x/y South"
+      ],
+      "gold": [
+        "3 3"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 high-speed -3",
+        "\n 3.5 1998 x/y"
+      ],
+      "gold": [
+        "3.5 3,000 no high-speed South (four)",
+        "noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "the the -3 3,000"
+      ],
+      "gold": [
+        "year a \n"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "yes a yes noanswer noanswer",
+        "A. 3 noanswer 20% no yes",
+        "North high-speed",
+        "1998 20% 3 North"
+      ],
+      "gold": [
+        "a blue yes blue North A.",
+        "red yes no",
+        "3,000 North -3 x/y blue x/y",
+        "noanswer 1998 no red March",
+        "noanswer red"
+      ],
+      "expected": [
+        0.0,
+        0.36
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 yes a 3.5 \n"
+      ],
+      "gold": [
+        "year \n 3 March",
+        "the A. no high-speed",
+        "-3 red",
+        "March high-speed red year the"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "North \n noanswer high-speed \n no",
+        "year 3.0 x/y A. 3.5",
+        "red 3.5 high-speed",
+        "March noanswer an March noanswer"
+      ],
+      "gold": [
+        "March noanswer an March noanswer",
+        "red 3.5 high-speed",
+        "year 3.0 x/y A. 3.5",
+        "North \n noanswer high-speed \n no"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "blue -3 March an",
+        "an 3,000 3 3.0 year",
+        "the -3 South -3 x/y"
+      ],
+      "gold": [
+        "high-speed an year"
+      ],
+      "expected": [
+        0.0,
+        0.11
+      ]
+    },
+    {
+      "prediction": [
+        "20% (four) blue \n no the",
+        "noanswer \n"
+      ],
+      "gold": [
+        "South (four) noanswer an red",
+        "South 20% red 3.5 an 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.31
+      ]
+    },
+    {
+      "prediction": [
+        "March",
+        "North red 20% 3.5 1998 1998",
+        "1998 high-speed South",
+        "blue -3"
+      ],
+      "gold": [
+        "year blue red",
+        "-3 x/y the 3.5 3.5 3",
+        "no 1998 1998 -3",
+        "North no x/y a 3",
+        "yes noanswer South 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.19
+      ]
+    },
+    {
+      "prediction": [
+        "the no South 3,000 year 3",
+        "yes",
+        "-3 no 1998"
+      ],
+      "gold": [
+        "North a 3 the",
+        "red x/y (four)",
+        "3.5 3,000 A. blue 20%",
+        "yes high-speed 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.16
+      ]
+    },
+    {
+      "prediction": [
+        "\n \n 1998",
+        "3.0 x/y an March (four)",
+        "blue x/y 3.5 -3 (four)",
+        "-3 yes 20%",
+        "high-speed yes 20% 3.0 year x/y"
+      ],
+      "gold": [
+        "(four) no year 3",
+        "1998 3,000 20%",
+        "(four) an",
+        "(four) blue x/y 3.0",
+        "an noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.43
+      ]
+    },
+    {
+      "prediction": [
+        "A. A. 3.5 x/y",
+        "no red \n -3 a",
+        "3.0 20%",
+        "South -3 x/y 1998"
+      ],
+      "gold": [
+        "year",
+        "yes 20% the a x/y",
+        "-3 South",
+        "the 20% 3.0 3"
+      ],
+      "expected": [
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "prediction": [
+        "(four) \n 3,000 1998 noanswer"
+      ],
+      "gold": [
+        "(four) \n 3,000 1998 noanswer"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 South blue",
+        "North an 3",
+        "3.5 no year high-speed"
+      ],
+      "gold": [
+        "an red North x/y",
+        "20% (four) 3",
+        "-3",
+        "20%",
+        "noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "a"
+      ],
+      "gold": [
+        "3.5",
+        "the 20% x/y 3,000",
+        "3 year A. a",
+        "blue 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "an",
+        "no yes 3.5 (four) 3.0"
+      ],
+      "gold": [
+        "3 an North \n red 3,000",
+        "A."
+      ],
+      "expected": [
+        0.0,
+        0.61
+      ]
+    },
+    {
+      "prediction": [
+        "an high-speed",
+        "March the",
+        "yes year year year an a"
+      ],
+      "gold": [
+        "year year"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "no red"
+      ],
+      "gold": [
+        "3.5 3.0 3.5 (four)",
+        "year red",
+        "1998 yes",
+        "South North red A."
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "no A. blue -3 3.5 North",
+        "x/y North high-speed year \n"
+      ],
+      "gold": [
+        "-3",
+        "no",
+        "no 3 3.0",
+        "the 3 no no 3,000 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "A. 3.0 high-speed",
+        "(four) (four)"
+      ],
+      "gold": [
+        "(four) (four)",
+        "A. 3.0 high-speed"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3 \n red South x/y noanswer",
+        "red"
+      ],
+      "gold": [
+        "noanswer",
+        "(four)",
+        "March 1998 noanswer March 3.5",
+        "(four) -3 A."
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "the",
+        "3.5 March \n yes blue 3.5"
+      ],
+      "gold": [
+        "-3 no",
+        "North",
+        "yes 20% 20% an \n"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 North blue 3.0 noanswer"
+      ],
+      "gold": [
+        "North 1998 3.5 yes x/y blue",
+        "x/y 3.5 (four)",
+        "-3 a year x/y"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "3 a 3,000"
+      ],
+      "gold": [
+        "(four) 1998 A. x/y",
+        "the red yes -3 blue",
+        "March red March a (four) 3.5",
+        "a high-speed 20% a 3.0 (four)",
+        "noanswer no 20% a"
+      ],
+      "expected": [
+        0.0,
+        0.07
+      ]
+    },
+    {
+      "prediction": [
+        "1998",
+        "A. blue x/y the x/y 3.5"
+      ],
+      "gold": [
+        "x/y blue 3.5 1998 noanswer the",
+        "red A. March 3,000",
+        "blue a 3.5 (four) March",
+        "1998 the a (four) year year"
+      ],
+      "expected": [
+        0.0,
+        0.31
+      ]
+    },
+    {
+      "prediction": [
+        "(four) the 20% (four) (four) 3,000",
+        "3.0 March A.",
+        "year 3.0 yes noanswer 3 20%",
+        "A. high-speed",
+        "the 3.0 red"
+      ],
+      "gold": [
+        "the South 3.5 yes the high-speed",
+        "an 3.5",
+        "South -3 3.0 an (four) \n"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "A. -3",
+        "yes 3.5"
+      ],
+      "gold": [
+        "yes 3.5",
+        "A. -3"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "a no",
+        "3,000 noanswer",
+        "\n 3 red yes (four)"
+      ],
+      "gold": [
+        "3.5 20% yes 20%"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "\n yes 3.0"
+      ],
+      "gold": [
+        "A. -3 North -3",
+        "20%"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "a A. March",
+        "1998 no blue red",
+        "1998 yes 3 A. 1998"
+      ],
+      "gold": [
+        "noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer no 3,000 20% 1998",
+        "noanswer no yes 3.5 an 3",
+        "a"
+      ],
+      "gold": [
+        "20% year",
+        "3,000 3.5 South March"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "North noanswer",
+        "3 March \n a North",
+        "a an South noanswer",
+        "3.0 -3 3.0 no A.",
+        "South a (four) blue North"
+      ],
+      "gold": [
+        "a high-speed no 3",
+        "high-speed 3.0 3.0 x/y no",
+        "3 3,000",
+        "3.5 blue year high-speed x/y -3",
+        "3.0"
+      ],
+      "expected": [
+        0.0,
+        0.23
+      ]
+    },
+    {
+      "prediction": [
+        "A. \n year high-speed 1998"
+      ],
+      "gold": [
+        "1998 20% (four) yes",
+        "South 3.5",
+        "an South no 3.0",
+        "3.5"
+      ],
+      "expected": [
+        0.0,
+        0.06
+      ]
+    },
+    {
+      "prediction": [
+        "blue",
+        "3.5 3.0",
+        "yes 3 3",
+        "3 3,000 -3 A. 3,000 3,000"
+      ],
+      "gold": [
+        "3 3,000 -3 A. 3,000 3,000",
+        "yes 3 3",
+        "3.5 3.0",
+        "blue"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3 3",
+        "1998 3.0",
+        "blue noanswer year blue 3.5 yes",
+        "year"
+      ],
+      "gold": [
+        "March"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 \n \n high-speed blue North",
+        "A. 3 1998 noanswer A. 3.5",
+        "high-speed blue an",
+        "-3 year",
+        "March 3 -3 3,000 yes -3"
+      ],
+      "gold": [
+        "year 3 noanswer 3.5 20%",
+        "a noanswer noanswer -3",
+        "A. (four) A. 3,000 the an",
+        "red blue noanswer 3,000",
+        "3.0 high-speed red"
+      ],
+      "expected": [
+        0.0,
+        0.45
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer noanswer 20% red noanswer 3",
+        "3.0 high-speed"
+      ],
+      "gold": [
+        "20% the \n A. year 1998",
+        "year"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "South",
+        "3.5 3 1998 A. \n 3",
+        "the noanswer",
+        "the North \n \n 3.0"
+      ],
+      "gold": [
+        "noanswer 3.5 March"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "(four) no A. no",
+        "March 1998 blue",
+        "red an noanswer yes 3.5 South",
+        "March red a March"
+      ],
+      "gold": [
+        "yes 3.5 A. North \n",
+        "3,000 an noanswer North high-speed year",
+        "-3 x/y \n"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "-3 March 20% 3,000 noanswer -3",
+        "high-speed no 3,000 3,000 blue 3",
+        "3 year an -3 A. 3.0"
+      ],
+      "gold": [
+        "(four) \n red 3.5",
+        "blue (four) high-speed blue South",
+        "a A. 3",
+        "A. 20%",
+        "a"
+      ],
+      "expected": [
+        0.0,
+        0.31
+      ]
+    },
+    {
+      "prediction": [
+        "a \n A.",
+        "-3 (four)",
+        "the A. a -3 noanswer"
+      ],
+      "gold": [
+        "the A. a -3 noanswer",
+        "-3 (four)",
+        "a \n A."
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "a 3,000 South year",
+        "noanswer noanswer -3 North 20%",
+        "year high-speed North no"
+      ],
+      "gold": [
+        "20% the"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "A. 3.0 blue",
+        "an 3 3",
+        "blue no yes 3 1998",
+        "x/y"
+      ],
+      "gold": [
+        "March blue 3.0 -3",
+        "red"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 3.5 1998 A. South 3,000"
+      ],
+      "gold": [
+        "high-speed",
+        "20% A.",
+        "a year 3,000 20% 3,000 noanswer",
+        "the x/y"
+      ],
+      "expected": [
+        0.0,
+        0.06
+      ]
+    },
+    {
+      "prediction": [
+        "an x/y no"
+      ],
+      "gold": [
+        "x/y",
+        "blue A. no South A.",
+        "North blue A. noanswer 1998 red"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "3 no",
+        "yes x/y North A. -3 March",
+        "3,000 the 3 3.0 \n no"
+      ],
+      "gold": [
+        "3",
+        "March yes",
+        "-3 South no",
+        "3.0 North a"
+      ],
+      "expected": [
+        0.0,
+        0.48
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 North March 1998 A.",
+        "3,000",
+        "A. 20% x/y",
+        "\n A. blue (four)"
+      ],
+      "gold": [
+        "3.5 yes blue noanswer year 3,000",
+        "March (four) x/y (four)"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "yes 3 x/y North 3.0",
+        "the noanswer an 3.0 high-speed red"
+      ],
+      "gold": [
+        "the noanswer an 3.0 high-speed red",
+        "yes 3 x/y North 3.0"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "the a red the A.",
+        "an (four)",
+        "3,000 (four) an"
+      ],
+      "gold": [
+        "-3 1998 3.5 3.0 no",
+        "(four) North 3,000 North",
+        "March an North -3 3,000",
+        "North",
+        "3 \n no South"
+      ],
+      "expected": [
+        0.0,
+        0.16
+      ]
+    },
+    {
+      "prediction": [
+        "red",
+        "(four) 3.0 year",
+        "A. South high-speed",
+        "20% 3"
+      ],
+      "gold": [
+        "-3 (four) year",
+        "no \n",
+        "3.5 3"
+      ],
+      "expected": [
+        0.0,
+        0.38
+      ]
+    },
+    {
+      "prediction": [
+        "an 20% \n year \n blue",
+        "a 3 \n",
+        "an year 3,000 an",
+        "3,000 a 20% South (four)"
+      ],
+      "gold": [
+        "red red an \n -3",
+        "A. 3 red A. x/y",
+        "yes South a North red -3",
+        "\n red x/y red high-speed",
+        "noanswer the (four)"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "-3",
+        "March red",
+        "1998",
+        "North the yes 20%",
+        "high-speed A."
+      ],
+      "gold": [
+        "March high-speed x/y 3.0 no March"
+      ],
+      "expected": [
+        0.0,
+        0.06
+      ]
+    },
+    {
+      "prediction": [
+        "1998 no A. South \n",
+        "high-speed noanswer 1998 red (four) 3",
+        "3 year 20% 3,000 20%"
+      ],
+      "gold": [
+        "-3 20% A.",
+        "3.0"
+      ],
+      "expected": [
+        0.0,
+        0.31
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer"
+      ],
+      "gold": [
+        "A. x/y March 1998 \n yes",
+        "blue year blue A. the",
+        "yes"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "year",
+        "high-speed",
+        "the x/y 1998",
+        "blue no 3.5 South",
+        "noanswer 3.5 North blue blue a"
+      ],
+      "gold": [
+        "noanswer 3.5 North blue blue a",
+        "blue no 3.5 South",
+        "the x/y 1998",
+        "high-speed",
+        "year"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "x/y a A. yes South"
+      ],
+      "gold": [
+        "no",
+        "North -3 no high-speed 3.0 an",
+        "3.5",
+        "3 noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 year (four) red North -3",
+        "year blue South March",
+        "red an 3,000 3,000",
+        "a A."
+      ],
+      "gold": [
+        "the yes 3.5",
+        "noanswer yes high-speed high-speed -3"
+      ],
+      "expected": [
+        0.0,
+        0.06
+      ]
+    },
+    {
+      "prediction": [
+        "1998",
+        "3,000 3 A. March -3 A.",
+        "March 3.0 20% 1998",
+        "x/y March noanswer"
+      ],
+      "gold": [
+        "year an red",
+        "x/y March 3,000 March A. year",
+        "an the South A. 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "3.5",
+        "high-speed high-speed 3.5",
+        "the",
+        "3,000 red 3.5 no"
+      ],
+      "gold": [
+        "year North an noanswer 3.0",
+        "blue the A. 3.0 3",
+        "3.0 3,000 a",
+        "the"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "3,000",
+        "the 1998",
+        "an 20% an the March March",
+        "year 20% year high-speed March"
+      ],
+      "gold": [
+        "red the high-speed March",
+        "North",
+        "no an the"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "blue",
+        "-3"
+      ],
+      "gold": [
+        "3.0 x/y noanswer March noanswer",
+        "year an yes"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 yes no 3,000 North",
+        "the"
+      ],
+      "gold": [
+        "the",
+        "3,000 yes no 3,000 North"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "a red noanswer year blue",
+        "a yes"
+      ],
+      "gold": [
+        "year 3 -3 March year yes",
+        "yes blue",
+        "1998 an 3.0 3,000",
+        "South no year 3",
+        "1998"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "x/y 1998 x/y"
+      ],
+      "gold": [
+        "\n year",
+        "3 March no no North blue",
+        "noanswer year 3,000",
+        "noanswer year x/y"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer -3 3",
+        "3.5 (four) no North March",
+        "North A. the A. red March",
+        "x/y 3.5"
+      ],
+      "gold": [
+        "year 3,000 3.5 3 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "blue x/y no",
+        "(four) (four)",
+        "-3 3.5 red 3.0 year",
+        "(four) red 3 3 North (four)",
+        "x/y noanswer March"
+      ],
+      "gold": [
+        "x/y South 3.0 year \n",
+        "x/y 3 3,000 3.0 red no",
+        "no 20% year (four) noanswer",
+        "3.5 yes \n yes \n"
+      ],
+      "expected": [
+        0.0,
+        0.19
+      ]
+    },
+    {
+      "prediction": [
+        "the 3,000 -3 South -3 -3"
+      ],
+      "gold": [
+        "March"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "20% 20% 3.5 no a",
+        "the \n 3.5 no no the",
+        "noanswer blue -3 March 1998",
+        "x/y 1998 -3",
+        "A. year South noanswer"
+      ],
+      "gold": [
+        "North",
+        "an -3 blue 3.0",
+        "March 3 year 3.0 an",
+        "3.5 -3 blue"
+      ],
+      "expected": [
+        0.0,
+        0.26
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 yes a",
+        "-3 20%",
+        "20% North no",
+        "a North noanswer a",
+        "March South x/y March March high-speed"
+      ],
+      "gold": [
+        "March South x/y March March high-speed",
+        "a North noanswer a",
+        "20% North no",
+        "-3 20%",
+        "3.5 yes a"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "a",
+        "the noanswer 3.5",
+        "3"
+      ],
+      "gold": [
+        "the 3,000 x/y 3.5 3 year",
+        "1998 high-speed North the March x/y"
+      ],
+      "expected": [
+        0.0,
+        0.11
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed",
+        "-3 high-speed noanswer -3 no -3",
+        "3.0 3,000 red high-speed year",
+        "high-speed",
+        "year noanswer no"
+      ],
+      "gold": [
+        "the North South an high-speed 3.5",
+        "March high-speed a 3,000 3.0 (four)",
+        "-3 1998",
+        "3,000 noanswer red"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "3 noanswer -3 3 x/y 3.0",
+        "x/y blue red year"
+      ],
+      "gold": [
+        "year x/y",
+        "1998 A. 3,000 North (four) a",
+        "3",
+        "x/y x/y red"
+      ],
+      "expected": [
+        0.0,
+        0.29
+      ]
+    },
+    {
+      "prediction": [
+        "a -3 red March 3,000",
+        "20%",
+        "an \n 3",
+        "no A. x/y"
+      ],
+      "gold": [
+        "A. a \n -3 March",
+        "South -3 red"
+      ],
+      "expected": [
+        0.0,
+        0.31
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 3.5 20% 3.5 North",
+        "yes March North blue blue red",
+        "South the North yes 3.0",
+        "x/y red yes",
+        "yes March"
+      ],
+      "gold": [
+        "noanswer 3.0 year 20%"
+      ],
+      "expected": [
+        0.0,
+        0.06
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer (four) blue -3 high-speed"
+      ],
+      "gold": [
+        "no",
+        "South",
+        "a a year"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "no North 3.5 A."
+      ],
+      "gold": [
+        "no North 3.5 A."
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "x/y"
+      ],
+      "gold": [
+        "red -3 red (four)",
+        "blue North South A."
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "a an yes a -3 yes",
+        "3.5 -3 March 3.5"
+      ],
+      "gold": [
+        "-3 an",
+        "a",
+        "3,000 red",
+        "-3 a 20% red 3.5 an"
+      ],
+      "expected": [
+        0.0,
+        0.31
+      ]
+    },
+    {
+      "prediction": [
+        "the 3 an blue",
+        "South",
+        "x/y North A. March the"
+      ],
+      "gold": [
+        "-3 1998 1998 \n A.",
+        "March",
+        "the",
+        "high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "x/y 3,000",
+        "the high-speed -3 blue year no",
+        "1998 a 3.5"
+      ],
+      "gold": [
+        "x/y year x/y 3",
+        "(four)",
+        "noanswer yes 1998 \n A."
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "x/y A. 3,000 -3 (four) 3.0",
+        "3,000",
+        "March 20% 1998 3 March",
+        "no x/y red"
+      ],
+      "gold": [
+        "3,000 North North"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "North a x/y",
+        "3.0",
+        "A. A. 3.5"
+      ],
+      "gold": [
+        "20% red year"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "an a",
+        "1998 -3 an",
+        "1998 an a A. year 1998"
+      ],
+      "gold": [
+        "1998 an a A. year 1998",
+        "1998 -3 an",
+        "an a"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "yes A.",
+        "blue 20% noanswer noanswer x/y red",
+        "-3 1998 an",
+        "3.5 (four) an blue an red"
+      ],
+      "gold": [
+        "3.0 1998 yes",
+        "a",
+        "(four)",
+        "noanswer no blue \n a no",
+        "March 3,000 the x/y"
+      ],
+      "expected": [
+        0.0,
+        0.34
+      ]
+    },
+    {
+      "prediction": [
+        "a \n (four) high-speed",
+        "noanswer an (four) high-speed no year",
+        "blue 3 yes x/y",
+        "yes no -3 -3",
+        "a x/y 1998"
+      ],
+      "gold": [
+        "high-speed",
+        "blue North blue 1998 3",
+        "-3 -3 North"
+      ],
+      "expected": [
+        0.0,
+        0.34
+      ]
+    },
+    {
+      "prediction": [
+        "red yes a the an -3",
+        "high-speed \n \n an the -3"
+      ],
+      "gold": [
+        "3.0",
+        "noanswer North",
+        "A. (four) March yes 3.0",
+        "North North year blue A. -3",
+        "yes noanswer high-speed A. 1998 March"
+      ],
+      "expected": [
+        0.0,
+        0.21
+      ]
+    },
+    {
+      "prediction": [
+        "March 3.0 an blue \n",
+        "the 3,000 1998 no",
+        "yes 3,000 x/y"
+      ],
+      "gold": [
+        "1998",
+        "yes -3 3.5 3.5 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "(four) \n year",
+        "3.5 -3 1998 high-speed",
+        "North red North (four) March high-speed",
+        "3,000 an",
+        "3,000 North"
+      ],
+      "gold": [
+        "a North South high-speed",
+        "an \n a March",
+        "1998",
+        "North March 3 a 3"
+      ],
+      "expected": [
+        0.0,
+        0.19
+      ]
+    },
+    {
+      "prediction": [
+        "A. North red a North",
+        "3,000 North 20% 3,000 x/y 1998"
+      ],
+      "gold": [
+        "(four)",
+        "20% 3.0 an",
+        "\n -3 an an North",
+        "year North (four)",
+        "3.5 \n year 3.5 (four)"
+      ],
+      "expected": [
+        0.0,
+        0.14
+      ]
+    },
+    {
+      "prediction": [
+        "no (four) 3 yes x/y \n",
+        "a",
+        "a"
+      ],
+      "gold": [
+        "a",
+        "a",
+        "no (four) 3 yes x/y \n"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer year",
+        "March North a A. 3,000 yes",
+        "a yes A. A."
+      ],
+      "gold": [
+        "3,000",
+        "the blue",
+        "a no South (four)"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "a",
+        "an"
+      ],
+      "gold": [
+        "March A.",
+        "1998 the an -3 1998 South",
+        "3,000 20% A.",
+        "year",
+        "North"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "North 3,000 (four) red South",
+        "1998 North yes",
+        "3,000 1998 20%",
+        "an a a year -3"
+      ],
+      "gold": [
+        "\n",
+        "\n"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "no",
+        "-3"
+      ],
+      "gold": [
+        "North 3 3,000",
+        "red x/y"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "South North",
+        "noanswer x/y year -3 3,000",
+        "\n South high-speed (four) A. no"
+      ],
+      "gold": [
+        "an an \n yes",
+        "A. -3 red March high-speed an",
+        "1998 no noanswer",
+        "blue \n \n"
+      ],
+      "expected": [
+        0.0,
+        0.05
+      ]
+    },
+    {
+      "prediction": [
+        "A. 1998",
+        "x/y an 3.5 yes noanswer",
+        "20% x/y 20%",
+        "1998 no"
+      ],
+      "gold": [
+        "March year North North",
+        "red x/y",
+        "red North"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 3 no -3 blue",
+        "year"
+      ],
+      "gold": [
+        "year",
+        "3.5 3 no -3 blue"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "blue 20% \n 20% red A.",
+        "no A. no \n South",
+        "North",
+        "noanswer (four) South",
+        "-3 an 1998 yes"
+      ],
+      "gold": [
+        "-3 3 3.5",
+        "South",
+        "3,000 South 3 North",
+        "yes"
+      ],
+      "expected": [
+        0.0,
+        0.23
+      ]
+    },
+    {
+      "prediction": [
+        "South high-speed no the no",
+        "March -3 blue A. high-speed"
+      ],
+      "gold": [
+        "-3 x/y high-speed",
+        "year 3,000 blue 20% the March",
+        "3 yes no year March",
+        "year 20% an",
+        "3.5 noanswer \n -3 -3 20%"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "no",
+        "March 3.5",
+        "3.5 3,000 A.",
+        "3.0 20% x/y year",
+        "(four) an an -3 high-speed"
+      ],
+      "gold": [
+        "the 3",
+        "3 3.0 no 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.16
+      ]
+    },
+    {
+      "prediction": [
+        "the South"
+      ],
+      "gold": [
+        "March \n",
+        "no 20% 3.0 South 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "yes North yes \n 3.0 year",
+        "20% 3.5"
+      ],
+      "gold": [
+        "x/y -3",
+        "\n 3.0 (four) 3,000 x/y",
+        "x/y March year A.",
+        "yes 20% 20%",
+        "red the"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "x/y high-speed -3 North no",
+        "3 red"
+      ],
+      "gold": [
+        "a x/y",
+        "an red an year the",
+        "noanswer \n yes",
+        "noanswer 3 1998 3.5 no a",
+        "yes 3.5 \n no a x/y"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "March",
+        "North (four)"
+      ],
+      "gold": [
+        "North (four)",
+        "March"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3 20%",
+        "yes March 20% year",
+        "red A."
+      ],
+      "gold": [
+        "no"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "red",
+        "yes 20% noanswer A. -3"
+      ],
+      "gold": [
+        "3.0 yes the blue",
+        "North North x/y North the",
+        "A. 3"
+      ],
+      "expected": [
+        0.0,
+        0.19
+      ]
+    },
+    {
+      "prediction": [
+        "an 3 the North year",
+        "(four) red",
+        "3.5 an (four) the noanswer (four)",
+        "blue yes 3,000 North no 3.5"
+      ],
+      "gold": [
+        "3,000 3,000 red noanswer South red"
+      ],
+      "expected": [
+        0.0,
+        0.05
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 (four) 20%",
+        "the 3",
+        "1998 A. no 3,000 \n South",
+        "1998 A.",
+        "A. red"
+      ],
+      "gold": [
+        "red 3.0",
+        "an an",
+        "March a 3.0",
+        "-3 A. A. year x/y",
+        "year an -3 North"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 the 3.0 yes 1998 20%",
+        "the high-speed 3,000",
+        "a North 20% 3,000 year",
+        "-3 20%"
+      ],
+      "gold": [
+        "1998",
+        "high-speed -3 A. 20% (four)"
+      ],
+      "expected": [
+        0.0,
+        0.23
+      ]
+    },
+    {
+      "prediction": [
+        "yes a A. 1998 \n",
+        "high-speed",
+        "3 the 3.0"
+      ],
+      "gold": [
+        "year 1998 -3",
+        "blue a no no March 3,000",
+        "A.",
+        "blue"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "1998 3.0 no a",
+        "blue South A. high-speed",
+        "North 3.5 3.5",
+        "a red the 3,000 \n"
+      ],
+      "gold": [
+        "a red the 3,000 \n",
+        "North 3.5 3.5",
+        "blue South A. high-speed",
+        "1998 3.0 no a"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 3.5 a",
+        "3.0",
+        "3.0",
+        "3.5 yes",
+        "3 year a -3"
+      ],
+      "gold": [
+        "\n",
+        "noanswer",
+        "-3 year an",
+        "3.0 noanswer",
+        "high-speed North South 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed blue noanswer red no x/y"
+      ],
+      "gold": [
+        "3 red A.",
+        "20% noanswer -3 South \n",
+        "blue high-speed noanswer yes no 1998",
+        "high-speed",
+        "(four)"
+      ],
+      "expected": [
+        0.0,
+        0.09
+      ]
+    },
+    {
+      "prediction": [
+        "A. the A.",
+        "red South 3,000 high-speed",
+        "-3 March year \n",
+        "a a 3.0 blue \n"
+      ],
+      "gold": [
+        "noanswer 3.5 high-speed 3 a March"
+      ],
+      "expected": [
+        0.0,
+        0.11
+      ]
+    },
+    {
+      "prediction": [
+        "3.5"
+      ],
+      "gold": [
+        "blue the -3 yes 3.0 x/y"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "the blue 1998",
+        "blue year",
+        "high-speed 3.5 an",
+        "1998 North 1998",
+        "year"
+      ],
+      "gold": [
+        "1998",
+        "1998 3 noanswer yes",
+        "x/y 3,000",
+        "20% South \n 3,000 (four) year",
+        "-3 North South South South"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "x/y",
+        "3,000 -3 -3 blue (four)",
+        "South high-speed x/y 3,000",
+        "no the \n",
+        "South red South year"
+      ],
+      "gold": [
+        "high-speed an",
+        "noanswer March blue South x/y"
+      ],
+      "expected": [
+        0.0,
+        0.18
+      ]
+    },
+    {
+      "prediction": [
+        "the March",
+        "20% 20% South -3 blue March",
+        "an"
+      ],
+      "gold": [
+        "an",
+        "20% 20% South -3 blue March",
+        "the March"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "an March",
+        "A. no"
+      ],
+      "gold": [
+        "year x/y 20%",
+        "March",
+        "no 3,000 1998 3.0",
+        "South",
+        "blue 20% 20% 1998"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "North",
+        "3.5",
+        "1998 South",
+        "red year March"
+      ],
+      "gold": [
+        "3,000 20% noanswer an the A.",
+        "noanswer North 20%"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "a yes (four) x/y"
+      ],
+      "gold": [
+        "North (four) North 3.5 1998",
+        "3.5 an high-speed",
+        "\n 1998",
+        "a noanswer (four) yes high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "a -3 a red yes",
+        "March (four) 20% 3 x/y",
+        "A. red 20% 20% 1998 3.5",
+        "no A. x/y an"
+      ],
+      "gold": [
+        "3.0 South A.",
+        "blue",
+        "March A. no no (four) 1998"
+      ],
+      "expected": [
+        0.0,
+        0.16
+      ]
+    },
+    {
+      "prediction": [
+        "South A. an a",
+        "noanswer an the 3.5 yes A.",
+        "20%",
+        "3 year 3,000 the x/y \n"
+      ],
+      "gold": [
+        "-3 an",
+        "3.5 noanswer a 1998 A. (four)",
+        "no",
+        "(four)"
+      ],
+      "expected": [
+        0.0,
+        0.24
+      ]
+    },
+    {
+      "prediction": [
+        "A. -3 South blue",
+        "-3 3.5 red A. (four)"
+      ],
+      "gold": [
+        "noanswer 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "a 3.0 -3 3.5",
+        "\n"
+      ],
+      "gold": [
+        "\n",
+        "a 3.0 -3 3.5"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "-3 South"
+      ],
+      "gold": [
+        "20% red the",
+        "year the x/y",
+        "\n (four) no noanswer the 20%",
+        "a high-speed",
+        "-3 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "3,000",
+        "North the",
+        "3.0 a 3 no",
+        "20%"
+      ],
+      "gold": [
+        "red year",
+        "20% no",
+        "3.5 high-speed high-speed \n",
+        "x/y red (four) 3.0 South",
+        "3.5 3.0 South 3,000 \n"
+      ],
+      "expected": [
+        0.0,
+        0.27
+      ]
+    },
+    {
+      "prediction": [
+        "an noanswer 1998 (four) March",
+        "-3 March (four) 3.5 the",
+        "3,000 A. high-speed no"
+      ],
+      "gold": [
+        "yes 3 the 20% (four) no",
+        "an \n the noanswer",
+        "3,000 1998",
+        "red A."
+      ],
+      "expected": [
+        0.0,
+        0.29
+      ]
+    },
+    {
+      "prediction": [
+        "South 3,000 high-speed \n a -3"
+      ],
+      "gold": [
+        "1998 (four) (four) North \n 1998",
+        "South blue 20% year yes South",
+        "20% year March -3 x/y"
+      ],
+      "expected": [
+        0.0,
+        0.07
+      ]
+    },
+    {
+      "prediction": [
+        "1998 a March",
+        "noanswer yes 3.5 no",
+        "yes the March the no",
+        "A. March South the"
+      ],
+      "gold": [
+        "South -3 March -3"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer red the -3",
+        "the no no a"
+      ],
+      "gold": [
+        "noanswer a an South",
+        "A. (four) \n noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.2
+      ]
+    },
+    {
+      "prediction": [
+        "3.5"
+      ],
+      "gold": [
+        "3.5"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "year \n 3 March",
+        "high-speed an x/y (four) red (four)",
+        "x/y (four)",
+        "\n"
+      ],
+      "gold": [
+        "March"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "March 3,000"
+      ],
+      "gold": [
+        "red South 3,000 (four) South"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "3",
+        "March South",
+        "red yes yes 3.0 3",
+        "3.5"
+      ],
+      "gold": [
+        "3 1998 1998",
+        "red (four) South noanswer red year",
+        "year x/y North 3.0 1998",
+        "March"
+      ],
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 A. (four) South yes 3",
+        "3,000",
+        "yes A. blue (four) red \n"
+      ],
+      "gold": [
+        "3,000 year",
+        "3.5 March"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "(four) North",
+        "North 3,000 the no 3.0 20%",
+        "no"
+      ],
+      "gold": [
+        "the North 1998",
+        "\n 3,000 yes blue",
+        "year year 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "a March",
+        "a 3,000 (four) 3 no 1998",
+        "-3 blue (four) North",
+        "red 3 noanswer A. high-speed no",
+        "A. 3.0"
+      ],
+      "gold": [
+        "3.0 blue",
+        "\n 3.0 3 (four) March 3.5",
+        "high-speed a yes x/y a an",
+        "3 3.0 3.0 North a year"
+      ],
+      "expected": [
+        0.0,
+        0.42
+      ]
+    },
+    {
+      "prediction": [
+        "\n",
+        "(four) 3,000 year (four) x/y -3",
+        "South 3.0 \n"
+      ],
+      "gold": [
+        "South 3.0 \n",
+        "(four) 3,000 year (four) x/y -3",
+        "\n"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "1998 North an A. South March"
+      ],
+      "gold": [
+        "(four) no a 3.5 20% 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer year A. A.",
+        "an March 3 3,000 -3 high-speed"
+      ],
+      "gold": [
+        "3,000",
+        "(four) blue (four) red South South"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "blue March"
+      ],
+      "gold": [
+        "blue A. noanswer A. the",
+        "South 3.5 20%"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "3 yes",
+        "red noanswer",
+        "red",
+        "20% noanswer South 20%"
+      ],
+      "gold": [
+        "March",
+        "3,000 a red a yes"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "A. blue 1998 the (four)",
+        "yes blue x/y high-speed high-speed no"
+      ],
+      "gold": [
+        "North 3 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "no",
+        "\n 1998",
+        "-3",
+        "3,000 x/y no x/y"
+      ],
+      "gold": [
+        "A. (four) the",
+        "a",
+        "3 yes -3 red 3.0 -3"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "20% a",
+        "red 3.0",
+        "\n red -3 high-speed",
+        "3.0"
+      ],
+      "gold": [
+        "3.0",
+        "\n red -3 high-speed",
+        "red 3.0",
+        "20% a"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "\n 3.0 North 3 South",
+        "\n"
+      ],
+      "gold": [
+        "\n a",
+        "March North 20%",
+        "(four) year high-speed South",
+        "3.0 3"
+      ],
+      "expected": [
+        0.0,
+        0.38
+      ]
+    },
+    {
+      "prediction": [
+        "North"
+      ],
+      "gold": [
+        "3,000 red 3 A.",
+        "(four) yes",
+        "North 3,000 a 3,000 20%",
+        "1998 (four) blue (four)"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 3.0 x/y blue South",
+        "x/y",
+        "3,000 x/y noanswer 3.0 3,000 high-speed",
+        "high-speed yes 3 -3"
+      ],
+      "gold": [
+        "noanswer year high-speed red March",
+        "-3 3.5 3,000",
+        "no"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "-3 (four)",
+        "(four) 3.0",
+        "A. x/y (four) high-speed a",
+        "20% a a no"
+      ],
+      "gold": [
+        "a no North red 3,000"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "North",
+        "North -3 a x/y",
+        "no"
+      ],
+      "gold": [
+        "March blue x/y North",
+        "3,000",
+        "-3 \n no the",
+        "no",
+        "(four) year"
+      ],
+      "expected": [
+        0.0,
+        0.36
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 an x/y"
+      ],
+      "gold": [
+        "3 (four) 3.5",
+        "an no the",
+        "A. 3,000 no",
+        "3.5 (four)"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "\n year 3.0 (four)",
+        "North 1998 3,000",
+        "\n red red yes North",
+        "blue",
+        "3.5 A. 1998"
+      ],
+      "gold": [
+        "3.5 A. 1998",
+        "blue",
+        "\n red red yes North",
+        "North 1998 3,000",
+        "\n year 3.0 (four)"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "1998 \n",
+        "North",
+        "x/y 3,000 3,000 March 3",
+        "-3 year 3.0 yes",
+        "a blue blue"
+      ],
+      "gold": [
+        "3,000 red",
+        "noanswer A. South 3.0 (four) 3,000",
+        "March A. blue",
+        "high-speed",
+        "x/y 3.5 -3 North"
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "-3 blue",
+        "high-speed x/y South an 3.5",
+        "20%",
+        "blue the"
+      ],
+      "gold": [
+        "the a 1998",
+        "year South blue North A.",
+        "20% 3.0 blue -3 year (four)",
+        "\n -3 high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.28
+      ]
+    },
+    {
+      "prediction": [
+        "1998 yes March 20% x/y",
+        "high-speed 3,000 3,000 noanswer",
+        "a North high-speed \n an",
+        "-3 the red 3.0 A. an",
+        "March no an a"
+      ],
+      "gold": [
+        "North noanswer no year 3.0 \n",
+        "no 1998"
+      ],
+      "expected": [
+        0.0,
+        0.11
+      ]
+    },
+    {
+      "prediction": [
+        "-3 3.5 no March",
+        "an \n high-speed",
+        "(four) an South noanswer 1998 noanswer",
+        "noanswer 1998 \n (four) 3,000"
+      ],
+      "gold": [
+        "blue blue \n the A.",
+        "an",
+        "-3 -3 3.5 A. North year"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "blue 3.0 year x/y 3.5",
+        "A. 3 South no"
+      ],
+      "gold": [
+        "a 20% x/y",
+        "South the high-speed year",
+        "yes South an",
+        "-3 a 3.0",
+        "no high-speed blue"
+      ],
+      "expected": [
+        0.0,
+        0.15
+      ]
+    },
+    {
+      "prediction": [
+        "blue 3 year (four) x/y blue"
+      ],
+      "gold": [
+        "no year x/y red a South",
+        "yes 20% March red 20%",
+        "\n",
+        "noanswer 1998",
+        "North high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "(four)",
+        "year 3 an 20% A. 3.5",
+        "the",
+        "(four)"
+      ],
+      "gold": [
+        "(four)",
+        "the",
+        "year 3 an 20% A. 3.5",
+        "(four)"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "A. March 3,000",
+        "an"
+      ],
+      "gold": [
+        "20%",
+        "noanswer South -3 year the noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "the",
+        "South noanswer blue 3,000",
+        "3.5 20% March -3 no high-speed",
+        "South March A."
+      ],
+      "gold": [
+        "A. blue year 3.0",
+        "3 1998 3.0 A. 3"
+      ],
+      "expected": [
+        0.0,
+        0.06
+      ]
+    },
+    {
+      "prediction": [
+        "year",
+        "South no",
+        "the red A.",
+        "\n 3.5 \n red noanswer"
+      ],
+      "gold": [
+        "-3 3.0 a 1998 red 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 \n noanswer x/y",
+        "a",
+        "(four) \n 20% yes"
+      ],
+      "gold": [
+        "(four) year 1998 3,000 x/y noanswer",
+        "North 3.0 A. no no South",
+        "March North A. year",
+        "20%",
+        "-3"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "red A. -3 1998"
+      ],
+      "gold": [
+        "North yes North South 3,000 no",
+        "1998 3.5 3.0",
+        "yes an -3",
+        "red x/y an",
+        "year"
+      ],
+      "expected": [
+        0.0,
+        0.13
+      ]
+    },
+    {
+      "prediction": [
+        "blue noanswer -3 red year",
+        "A. no high-speed",
+        "(four) 3 red year yes",
+        "an A. an an high-speed -3"
+      ],
+      "gold": [
+        "noanswer A. 20% yes x/y no",
+        "a \n the March North"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "an the 3.0",
+        "no",
+        "(four)",
+        "March North"
+      ],
+      "gold": [
+        "March North",
+        "(four)",
+        "no",
+        "an the 3.0"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3,000 noanswer 3 A. red March",
+        "20% 20% an March 3",
+        "South 3 North noanswer 3,000",
+        "1998 the 1998",
+        "\n 3.0 x/y"
+      ],
+      "gold": [
+        "a South the 3.5 3,000",
+        "(four) 3,000 no 1998 20%",
+        "-3 A. South 20%",
+        "no",
+        "yes (four)"
+      ],
+      "expected": [
+        0.0,
+        0.3
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 South",
+        "blue \n",
+        "\n high-speed",
+        "the 3.5 (four) (four) 3.5"
+      ],
+      "gold": [
+        "1998 20%"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "-3 3,000",
+        "20%",
+        "yes \n 3.5 no",
+        "an 3,000 no a 3,000",
+        "yes x/y"
+      ],
+      "gold": [
+        "an 1998 year blue a South",
+        "3.0 a -3",
+        "A. March noanswer a 3 South",
+        "red red A. -3",
+        "yes North high-speed South"
+      ],
+      "expected": [
+        0.0,
+        0.19
+      ]
+    },
+    {
+      "prediction": [
+        "20% -3 no blue",
+        "A. an 20% high-speed 20%",
+        "an -3 1998 the 3.5 20%",
+        "South North blue noanswer 3.0 3.5",
+        "South March"
+      ],
+      "gold": [
+        "North year \n the"
+      ],
+      "expected": [
+        0.0,
+        0.05
+      ]
+    },
+    {
+      "prediction": [
+        "yes the 20% no",
+        "yes"
+      ],
+      "gold": [
+        "an 1998 20% A. noanswer",
+        "an red South blue North 1998",
+        "20% blue \n noanswer (four) yes"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "the noanswer red -3"
+      ],
+      "gold": [
+        "3.5 3.5 a",
+        "3.0"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "blue",
+        "20% an blue the",
+        "North a 1998 South March",
+        "-3 20% March the 20%",
+        "3,000 x/y 3,000"
+      ],
+      "gold": [
+        "3,000 x/y 3,000",
+        "-3 20% March the 20%",
+        "North a 1998 South March",
+        "20% an blue the",
+        "blue"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "North x/y"
+      ],
+      "gold": [
+        "no",
+        "1998 North North",
+        "(four) an blue 20% high-speed",
+        "1998 yes 1998 a North",
+        "A."
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "20% noanswer North blue 3.5",
+        "1998 A.",
+        "A. a",
+        "\n \n",
+        "3,000 red red -3"
+      ],
+      "gold": [
+        "March noanswer North -3 high-speed"
+      ],
+      "expected": [
+        0.0,
+        0.04
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 South no",
+        "high-speed yes noanswer",
+        "3 1998 1998 x/y North 3"
+      ],
+      "gold": [
+        "North no a an noanswer",
+        "1998 March x/y",
+        "20%",
+        "3 red blue"
+      ],
+      "expected": [
+        0.0,
+        0.23
+      ]
+    },
+    {
+      "prediction": [
+        "20%",
+        "year 20% 3,000",
+        "the an an"
+      ],
+      "gold": [
+        "blue the blue red 20%",
+        "South",
+        "\n blue",
+        "year x/y \n",
+        "a red no 1998 South"
+      ],
+      "expected": [
+        0.0,
+        0.18
+      ]
+    },
+    {
+      "prediction": [
+        "red red 3,000 no",
+        "no"
+      ],
+      "gold": [
+        "-3 3.0 year no 3,000 North",
+        "1998 blue 3",
+        "a an noanswer x/y blue",
+        "x/y yes"
+      ],
+      "expected": [
+        0.0,
+        0.12
+      ]
+    },
+    {
+      "prediction": [
+        "20% -3",
+        "red -3 year high-speed noanswer North",
+        "red blue no"
+      ],
+      "gold": [
+        "a noanswer South 20% A. x/y",
+        "the North blue red"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "(four) noanswer North"
+      ],
+      "gold": [
+        "(four) noanswer North"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "no North high-speed (four)",
+        "March A. March 3,000"
+      ],
+      "gold": [
+        "high-speed South 3.0 x/y noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "-3 year 1998 1998",
+        "x/y red 3,000",
+        "March red"
+      ],
+      "gold": [
+        "red 20% A.",
+        "3,000 yes blue 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "red A. noanswer blue 3.5 x/y",
+        "blue"
+      ],
+      "gold": [
+        "noanswer blue March an the an",
+        "blue noanswer",
+        "an South 3.5 an blue",
+        "year 3,000 A. (four) noanswer",
+        "3,000 3,000 A. -3 high-speed 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.23
+      ]
+    },
+    {
+      "prediction": [
+        "an the"
+      ],
+      "gold": [
+        "March -3 3.5 1998 \n blue"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "(four) 3,000 20%"
+      ],
+      "gold": [
+        "no A. blue"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "A. -3 3 \n",
+        "3,000 A. 3.0 the 20%",
+        "high-speed blue the x/y yes"
+      ],
+      "gold": [
+        "3.5 3.0 March",
+        "3 3.5 noanswer 1998 3 the",
+        "yes noanswer March (four) x/y"
+      ],
+      "expected": [
+        0.0,
+        0.4
+      ]
+    },
+    {
+      "prediction": [
+        "20% the year",
+        "a North"
+      ],
+      "gold": [
+        "a North",
+        "20% the year"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "South South a",
+        "March blue",
+        "high-speed"
+      ],
+      "gold": [
+        "\n year a noanswer \n the",
+        "1998 no North \n",
+        "(four) the blue -3 3.5",
+        "3.0 x/y"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "an 3.5 red A. red",
+        "red blue no"
+      ],
+      "gold": [
+        "3,000",
+        "\n year 3.0 North",
+        "North a high-speed an high-speed",
+        "3.5 1998 blue x/y"
+      ],
+      "expected": [
+        0.0,
+        0.08
+      ]
+    },
+    {
+      "prediction": [
+        "-3 North",
+        "a North -3 a",
+        "3,000 3,000 North",
+        "North 1998 A. a 20% 3,000",
+        "20% 20% no 3.5 red"
+      ],
+      "gold": [
+        "North 3.5 red year",
+        "3,000 a",
+        "the the blue \n"
+      ],
+      "expected": [
+        0.0,
+        0.23
+      ]
+    },
+    {
+      "prediction": [
+        "year high-speed",
+        "no noanswer (four) an 3.5",
+        "3,000",
+        "the 3 20% March",
+        "blue -3"
+      ],
+      "gold": [
+        "1998 3.5 North the",
+        "3"
+      ],
+      "expected": [
+        0.0,
+        0.19
+      ]
+    },
+    {
+      "prediction": [
+        "March yes yes",
+        "a 3 3 a the",
+        "high-speed A. \n 1998 20%",
+        "a",
+        "high-speed -3"
+      ],
+      "gold": [
+        "South the high-speed North an",
+        "blue 3.0 North North noanswer",
+        "A.",
+        "3.5 North year no",
+        "high-speed 20% 3 1998 year"
+      ],
+      "expected": [
+        0.0,
+        0.55
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 A. -3 the",
+        "North 3 March a South 3.0"
+      ],
+      "gold": [
+        "no high-speed x/y year the no",
+        "high-speed A. 20% March 3.5 March",
+        "a -3 North North",
+        "a blue"
+      ],
+      "expected": [
+        0.0,
+        0.17
+      ]
+    },
+    {
+      "prediction": [
+        "\n 1998 (four) March"
+      ],
+      "gold": [
+        "\n 1998 (four) March"
+      ],
+      "expected": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "prediction": [
+        "3.5 (four)",
+        "A. -3 red noanswer",
+        "noanswer",
+        "3.5 no an a \n the"
+      ],
+      "gold": [
+        "(four) 3,000 high-speed x/y"
+      ],
+      "expected": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "prediction": [
+        "A. 3,000",
+        "a North",
+        "March blue 3.0 blue 3"
+      ],
+      "gold": [
+        "\n 1998 1998",
+        "the",
+        "March no 3.5 an",
+        "3",
+        "red"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "North",
+        "blue 3,000 year year high-speed",
+        "(four)",
+        "A. \n a 3.0"
+      ],
+      "gold": [
+        "-3 North year -3 South",
+        "(four) 3.0",
+        "3.5 20% yes \n",
+        "noanswer high-speed a"
+      ],
+      "expected": [
+        0.0,
+        0.29
+      ]
+    },
+    {
+      "prediction": [
+        "-3 an \n blue year yes",
+        "the noanswer noanswer (four) 3 noanswer"
+      ],
+      "gold": [
+        "3.0",
+        "-3 (four) North A. the"
+      ],
+      "expected": [
+        0.0,
+        0.53
+      ]
+    },
+    {
+      "prediction": [
+        "1998 March A. high-speed a \n"
+      ],
+      "gold": [
+        "\n 3,000 x/y blue",
+        "March no",
+        "yes"
+      ],
+      "expected": [
+        0.0,
+        0.11
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed x/y no 1998",
+        "20% the year no 3,000 -3",
+        "a"
+      ],
+      "gold": [
+        "no blue",
+        "A. March the South blue"
+      ],
+      "expected": [
+        0.0,
+        0.1
+      ]
+    },
+    {
+      "prediction": [
+        "no 20% year 3,000 3.5 3.5",
+        "(four) South March x/y North the",
+        "March 20% year noanswer",
+        "-3 an"
+      ],
+      "gold": [
+        "-3 red an red noanswer",
+        "year"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "1998 3.0 -3 -3",
+        "1998 South",
+        "South 20%",
+        "-3 -3 noanswer \n"
+      ],
+      "gold": [
+        "-3 year noanswer",
+        "no noanswer blue no 3,000",
+        "South noanswer"
+      ],
+      "expected": [
+        0.0,
+        0.32
+      ]
+    },
+    {
+      "prediction": [
+        "North yes",
+        "no 20% -3",
+        "-3"
+      ],
+      "gold": [
+        "March",
+        "North March 3.0 an North 3",
+        "red",
+        "20% no"
+      ],
+      "expected": [
+        0.0,
+        0.32
+      ]
+    },
+    {
+      "prediction": [
+        "high-speed South the \n",
+        "3,000 South",
+        "a -3"
+      ],
+      "gold": [
+        "blue no March high-speed",
+        "yes South March",
+        "a an \n 1998 \n",
+        "blue March 3.5"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "\n North 3.5",
+        "North high-speed (four) high-speed a North",
+        "A. a South",
+        "1998 an noanswer blue A."
+      ],
+      "gold": [
+        "high-speed 3.5",
+        "\n noanswer",
+        "yes",
+        "South"
+      ],
+      "expected": [
+        0.0,
+        0.48
+      ]
+    },
+    {
+      "prediction": [
+        "-3 year year the",
+        "yes 3.0 A. North A. 3.0"
+      ],
+      "gold": [
+        "March noanswer a a -3",
+        "\n red 20% blue yes -3",
+        "20% blue 3 3,000",
+        "noanswer red yes"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer the \n",
+        "\n A. no",
+        "-3",
+        "March 1998 March noanswer"
+      ],
+      "gold": [
+        "South 1998 x/y an (four)",
+        "no \n 3 1998",
+        "3.5 1998",
+        "blue"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "noanswer no 3.5 3.5 high-speed",
+        "a blue yes",
+        "x/y 3,000",
+        "\n 3.0 \n blue"
+      ],
+      "gold": [
+        "March blue",
+        "3,000 year red"
+      ],
+      "expected": [
+        0.0,
+        0.22
+      ]
+    },
+    {
+      "prediction": [
+        "blue 4 March the",
+        "red blue blue",
+        "points",
+        "blue green",
+        "points the",
+        "3 March 3.0 the the red",
+        "North blue",
+        "green red 3.0 the blue",
+        "North blue North South March points",
+        "points points blue blue blue blue",
+        "North",
+        "3 points",
+        "3 3 blue",
+        "4"
+      ],
+      "gold": [
+        "March blue March points 1998",
+        "March 3.0 North red blue South",
+        "red points March North March",
+        "3 green",
+        "the South 1998 points 3 3.0",
+        "3 3 1998",
+        "3.0",
+        "3.0 red North March"
+      ],
+      "expected": [
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "prediction": [
+        "1998 the South blue",
+        "March South 1998 the the the",
+        "red 4 3.0 the",
+        "green green green",
+        "3.0 blue 1998",
+        "the 3 3.0 South the South",
+        "North 3.0 red 3 3.0 green",
+        "March 3 points blue blue",
+        "South March South",
+        "blue 3 green",
+        "points red 3.0"
+      ],
+      "gold": [
+        "North North points March green",
+        "3 4 green",
+        "points 4 blue North 1998",
+        "March",
+        "3.0",
+        "1998 green 3.0 3.0",
+        "March",
+        "1998 March 3.0 North",
+        "green green",
+        "points 4 blue 1998 South",
+        "4",
+        "points"
+      ],
+      "expected": [
+        0.0,
+        0.58
+      ]
+    },
+    {
+      "prediction": [
+        "the South 3.0 South",
+        "the green 3 South 3 green",
+        "4 3 March",
+        "the 3.0 3 blue",
+        "3 3.0 4 red",
+        "the the blue 3.0 red blue",
+        "the blue red",
+        "3",
+        "the 3.0 3.0",
+        "4 points 3 3 North red",
+        "4",
+        "1998 points North the 1998",
+        "blue 4 North blue"
+      ],
+      "gold": [
+        "North blue",
+        "red blue blue North points 4",
+        "1998 North",
+        "1998 blue 1998 1998 4",
+        "4 March March green 4 North",
+        "North green green red green",
+        "March",
+        "blue",
+        "4 the"
+      ],
+      "expected": [
+        0.0,
+        0.43
+      ]
+    },
+    {
+      "prediction": [
+        "3 green North 3 blue points",
+        "3 North",
+        "4 3 green the 3.0 blue",
+        "the",
+        "South 1998 South 1998",
+        "3 1998 South 3.0 4",
+        "blue March 3.0 the",
+        "4",
+        "3.0 March red",
+        "South March March 3 South South",
+        "points green points"
+      ],
+      "gold": [
+        "North points red 4",
+        "green South the red",
+        "the points",
+        "green 1998 the points points the",
+        "South",
+        "North points South red points the",
+        "red green green North 4 1998",
+        "the points blue",
+        "1998 March points",
+        "3 4 points 3.0 3"
+      ],
+      "expected": [
+        0.0,
+        0.39
+      ]
+    },
+    {
+      "prediction": [
+        "blue red North the green",
+        "the",
+        "March points green 1998 red",
+        "March",
+        "South North points points the",
+        "North 3 blue",
+        "green",
+        "March points 3 4",
+        "red the red blue the 3",
+        "1998 1998 the South 4 points"
+      ],
+      "gold": [
+        "red 3.0 3.0 4 1998 green",
+        "South 1998 red blue 3.0 March",
+        "red",
+        "South 4 1998 green 1998",
+        "4",
+        "North 1998 3.0 South South March",
+        "the",
+        "red"
+      ],
+      "expected": [
+        0.0,
+        0.43
+      ]
+    },
+    {
+      "prediction": [
+        "green North",
+        "North points points 4",
+        "points",
+        "4 March March red",
+        "South 4 blue",
+        "4",
+        "3 red 4 South 3 4"
+      ],
+      "gold": [
+        "points green",
+        "North",
+        "March green 3",
+        "South blue South the",
+        "points 1998 South 3 South",
+        "3 1998 points red the",
+        "red 3 blue red points 1998"
+      ],
+      "expected": [
+        0.0,
+        0.38
+      ]
+    },
+    {
+      "prediction": [
+        "South blue the",
+        "points blue",
+        "red red green green blue red",
+        "red",
+        "red South the the North the",
+        "3 South North red blue",
+        "the blue red 3 green",
+        "the",
+        "points blue South the",
+        "points points North",
+        "points 3 4 the March",
+        "the 4 4 3 points"
+      ],
+      "gold": [
+        "3.0",
+        "green blue red the",
+        "red points South 3.0 3.0 blue",
+        "3 points",
+        "4 3",
+        "North blue the",
+        "March",
+        "points South blue 4 3 North"
+      ],
+      "expected": [
+        0.0,
+        0.36
+      ]
+    },
+    {
+      "prediction": [
+        "the red March 1998 3 green",
+        "North 4 red 1998",
+        "North 3.0 4 3",
+        "the South 4 March the",
+        "points blue points red green",
+        "the red blue 3.0 March",
+        "4 the the March",
+        "points 3.0 green"
+      ],
+      "gold": [
+        "North 3.0 points 3 red North",
+        "red blue March 1998",
+        "red 1998 3.0 3.0 green South",
+        "March 4 red South points",
+        "1998 points red",
+        "3",
+        "South 4",
+        "3.0 March March the red South",
+        "March",
+        "blue blue points red green 4",
+        "the red green red blue South",
+        "South red the"
+      ],
+      "expected": [
+        0.0,
+        0.45
+      ]
+    },
+    {
+      "prediction": [
+        "red",
+        "the the South",
+        "1998 blue 3 1998 1998",
+        "points green South",
+        "blue 1998 green March",
+        "North 1998 4",
+        "South 3 points",
+        "green March green March",
+        "green",
+        "green blue points 1998",
+        "points 4 March March",
+        "4 red 1998 1998 the 3"
+      ],
+      "gold": [
+        "North March 4 points",
+        "3.0 North 4 3.0",
+        "4 South 4 March 3",
+        "South 4 the points green South",
+        "4 North the points points blue",
+        "points March",
+        "the",
+        "the 4 March North",
+        "red 3 3 3.0",
+        "March March North points points North",
+        "red 3.0 3"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "North the",
+        "North green 1998 North",
+        "March the red",
+        "South",
+        "3",
+        "1998 the 4 blue",
+        "3 3.0 blue blue",
+        "the"
+      ],
+      "gold": [
+        "4 points 3 the green 3.0",
+        "points red green",
+        "3 3",
+        "1998 1998 March 3.0 blue",
+        "points 4 South points",
+        "red 4 South blue",
+        "points North green North green",
+        "North March green",
+        "green 3.0",
+        "March green the South points",
+        "3 3 1998 green",
+        "points",
+        "the red red",
+        "4 North 1998 March March 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.32
+      ]
+    },
+    {
+      "prediction": [
+        "South red March the 3.0 1998",
+        "South points",
+        "South March 3",
+        "March",
+        "green red South 3.0",
+        "South 1998",
+        "red",
+        "4",
+        "the the",
+        "the South North green",
+        "green points",
+        "1998 4 points 1998 1998 points"
+      ],
+      "gold": [
+        "4 points",
+        "the 3",
+        "the points",
+        "4 3.0 South 4",
+        "March the North 4 4",
+        "1998 North blue North North",
+        "3.0 green North",
+        "1998",
+        "South green North red blue blue",
+        "1998 3.0 points"
+      ],
+      "expected": [
+        0.0,
+        0.43
+      ]
+    },
+    {
+      "prediction": [
+        "blue 4 points points North",
+        "North blue South",
+        "green",
+        "the North green points",
+        "the 3.0 North",
+        "South points North",
+        "3 March 3.0 4",
+        "3.0 points North South 4",
+        "1998 blue points red",
+        "1998"
+      ],
+      "gold": [
+        "points March South North",
+        "4 South March",
+        "1998 3 green",
+        "points 3 3.0 the North 4",
+        "March",
+        "3",
+        "blue North blue 3 the"
+      ],
+      "expected": [
+        0.0,
+        0.39
+      ]
+    },
+    {
+      "prediction": [
+        "3.0 3.0 3.0 3 South",
+        "blue blue 1998 North blue the",
+        "3 green blue",
+        "points 3.0 North points the",
+        "3.0 March March 1998",
+        "3.0 points South the South",
+        "the red the 1998",
+        "the the March",
+        "points 1998 3 South",
+        "March points points 4 3.0 4",
+        "blue 1998",
+        "3.0 red points the 3 1998",
+        "March 1998"
+      ],
+      "gold": [
+        "3.0 South March the the",
+        "3 North the points South",
+        "the green red green 1998 3.0",
+        "points South",
+        "blue red 3 1998 the 3.0",
+        "red points 4 the red",
+        "4",
+        "3.0 red",
+        "4 blue red",
+        "points 4 1998 1998 the red",
+        "South North March",
+        "3.0 3 blue blue March",
+        "red red green"
+      ],
+      "expected": [
+        0.0,
+        0.55
+      ]
+    },
+    {
+      "prediction": [
+        "red North green North 3.0 4",
+        "March",
+        "North",
+        "1998 green South",
+        "blue blue March 1998 points 3.0",
+        "points 3.0 3.0 blue South 3.0",
+        "3 North 4",
+        "1998 March 3.0"
+      ],
+      "gold": [
+        "March",
+        "North blue South 3 North green",
+        "4 March March North the",
+        "3.0 blue March blue 4 green",
+        "North",
+        "points",
+        "4 North"
+      ],
+      "expected": [
+        0.0,
+        0.6
+      ]
+    },
+    {
+      "prediction": [
+        "red blue",
+        "green 4 blue North South",
+        "3.0",
+        "1998 blue 3",
+        "3.0",
+        "3.0 North North blue",
+        "March points 4 1998 North 4",
+        "3 3 green 1998 points 3.0",
+        "red the red",
+        "March North 1998",
+        "3.0 the"
+      ],
+      "gold": [
+        "blue red 3 3.0 green North",
+        "points points North 4 green South",
+        "blue red points points",
+        "the green",
+        "3 green",
+        "South 3.0 South 4 3.0",
+        "red",
+        "green March 3",
+        "3 green",
+        "green"
+      ],
+      "expected": [
+        0.0,
+        0.55
+      ]
+    },
+    {
+      "prediction": [
+        "green",
+        "North green blue 1998",
+        "points the 3.0",
+        "red 3 1998 North the South",
+        "3.0 North the",
+        "points South",
+        "South",
+        "North red points",
+        "green the green points",
+        "3 the 4",
+        "red points 1998 North 1998 March",
+        "points",
+        "green 4 blue 3.0 South"
+      ],
+      "gold": [
+        "blue March",
+        "green points the the South 1998",
+        "4 4 blue points 4 North",
+        "3.0 3 the red 3.0",
+        "green points March South 4",
+        "the 1998 South 1998",
+        "3 the",
+        "South",
+        "March 3.0",
+        "red 1998 3 the",
+        "3 3.0 points March",
+        "South South",
+        "points red 4 4 red South",
+        "the points red 4"
+      ],
+      "expected": [
+        0.0,
+        0.41
+      ]
+    },
+    {
+      "prediction": [
+        "South South 4 3 March",
+        "South 4 3.0 March",
+        "the points green North",
+        "red green blue",
+        "points the blue March",
+        "red",
+        "4 North 1998 North green North"
+      ],
+      "gold": [
+        "3.0 green South",
+        "South red the",
+        "the March red",
+        "March North",
+        "3 3.0 the red",
+        "3 North North March",
+        "March March the 3 1998 3",
+        "3.0 March the North 3.0",
+        "4"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "March",
+        "March red",
+        "March red blue",
+        "blue red South 3.0 4 red",
+        "1998 3.0 4",
+        "the 4",
+        "the the 3.0",
+        "red 1998",
+        "3.0 4 March 3 green"
+      ],
+      "gold": [
+        "3.0 the",
+        "green March South March",
+        "3 green the South North",
+        "red points 3.0 North 3 points",
+        "the March red 3.0 North",
+        "3 North",
+        "red North South 1998 North",
+        "3",
+        "green the",
+        "points 3",
+        "3.0 3.0"
+      ],
+      "expected": [
+        0.0,
+        0.33
+      ]
+    },
+    {
+      "prediction": [
+        "the",
+        "North 4 red",
+        "red March points 4",
+        "green 3.0 3.0 March red",
+        "South the 4",
+        "South 4",
+        "red 1998 South",
+        "points",
+        "the South",
+        "red 1998 the",
+        "blue red the North",
+        "green",
+        "3 points March North"
+      ],
+      "gold": [
+        "March",
+        "1998 North blue",
+        "March red green green 3.0 blue",
+        "3 South 4 1998 blue 1998",
+        "1998 1998",
+        "North",
+        "green green 1998 1998 South",
+        "blue South 3 3"
+      ],
+      "expected": [
+        0.0,
+        0.31
+      ]
+    },
+    {
+      "prediction": [
+        "March the 4 South blue",
+        "4 March",
+        "green red March",
+        "red",
+        "1998 the blue blue 1998 3.0",
+        "4 March green March 3.0 the",
+        "South March green the March",
+        "points South March South"
+      ],
+      "gold": [
+        "4 4 South",
+        "points South 3.0 blue points",
+        "the South green 3",
+        "points North points 3 green March",
+        "green 3.0 blue South blue South",
+        "green red South the 3 red",
+        "points 1998 March red South the",
+        "blue South points",
+        "1998 March points"
+      ],
+      "expected": [
+        0.0,
+        0.29
+      ]
+    }
+  ]
+}

@@ -55,7 +55,7 @@ coverage and sensitivity analysis where necessary.
 | Family | Design | Main result |
 | --- | --- | --- |
 | Principal policies | Same final questions for all five policies. | Correctness gate, calls/tokens/time, reuse/fallback, paired effects. |
-| Predictor comparison | LR/GBT/MLP on identical held-out development candidate rows. | Predictive quality, calibration, fitting time. |
+| Predictor comparison | Logistic regression, random forest, gradient-boosted trees, and MLP on identical held-out development candidate rows. | Predictive quality, calibration, fitting time, prediction overhead, and the validation-selected family. |
 | Feature ablation | Refit 134/136/130-feature variants under matched controls. | Contribution of explicit metadata; registered live or diagnostic scope. |
 | Transfer | Hold out HotpotQA, DROP, or FinQA from every development stage. | Three independent releases evaluated on their target dataset. |
 | Request volume | Predeclared distinct input sequences with startup and request costs. | Cumulative cost and break-even behavior. |
@@ -63,8 +63,11 @@ coverage and sensitivity analysis where necessary.
 | Human assessment | Two independent assessors, blinded registered sample. | Answer/evidence quality, error categories, agreement before reconciliation. |
 | Candidate diagnostics | Extra candidate executions on a preselected final subset. | Retrieval coverage, selection errors, oracle-within-candidates diagnostics. |
 
-Register the live scope of feature ablations and optional LR/GBT policies before
-the freeze. Recorded candidate replay can compare decisions where observations
+Register the live scope of feature ablations and any supplementary policies using
+predictor families other than the validation-selected family before the freeze.
+For the primary feature ablation, keep the selected family fixed and refit and
+retune each feature variant using permitted development data.
+Recorded candidate replay can compare decisions where observations
 exist; it cannot establish live latency, unseen fallback outcomes, or performance
 of unexecuted candidates. Label replay, cached receipts, and live runs distinctly.
 Oracle diagnostics are hindsight analyses, never deployable policies.

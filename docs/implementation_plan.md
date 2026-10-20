@@ -14,10 +14,20 @@ configuration and later packages remain pending.
 | WP04 Planning and library | Add fresh planning/repair, discovery, generalization, independent validation, canonicalization, admission, shared retrieval. | Templates contain no copied answers/evidence; changed-evidence tests pass; admitted main/transfer libraries are frozen; all discovery costs retained; notebooks 04/05 complete. |
 | WP05 Candidate evidence/features | Collect matched candidate outcomes; implement named 140-feature interface and fitting-only transformations. | Candidate IDs and attempt lineage reconcile; negatives/all-zero sets retained; unknowns distinct; training and request-time feature construction agree; notebook 06 begins. |
 | WP06 Selector-data audit | Audit roles, labels, duplicates, feature leakage, rank/support, calibration/threshold scope; lock fitting plan. | A checksummed training-ready population passes audits; one-class/rank limitations have declared resolutions; notebook 06 completes. |
-| WP07 Predictor fitting | Fit LR/GBT/two-layer MLP, calibrate, tune thresholds/cost estimates, refit ablations, build transfer selectors. | Persisted and in-memory predictions agree; comparisons/calibration are measured; all fitted state has allowed lineage; notebook 07 completes. |
+| WP07 Predictor fitting | Compare logistic regression, random forest, gradient-boosted trees, and MLP using matched features and grouped development data; select the final family, calibrate predictions, tune thresholds/cost estimates, refit feature ablations, and build independent transfer selectors. | The declared validation rule determines the selected family; persisted and in-memory predictions agree; calibration and overhead are measured; all fitted state has permitted lineage; notebook 07 completes. |
 | WP08 Integration and freeze | Integrate all five policies/fallback, required experiment scopes, statistics/report views, representative workload pilot, immutable releases. | No gold controls execution; all attempts share limits; protected mode rejects mutable/incomplete assets; workload/precision plan is feasible; notebook 08 completes. |
 | WP09 Protected study | Execute registered main, transfer, ablation, volume, repetition, and human-assessment work. | Every planned job has explicit state; unknowns/completeness disclosed; releases unchanged; paired outcomes reconcile; notebook 09 begins read-only analysis. |
 | WP10 Analysis and release | Compute registered effects/intervals, interpret errors, finish report/demo, reproduce notebooks/artifacts. | Numbers derive from named queries; correctness gates limit claims; independent assessment agreement is retained; clean-checkout reproduction succeeds; notebook 09 completes. |
+
+The principal learned policy is `prediction-reuse`; its name does not prescribe
+a predictor family. Logistic regression, random forest, gradient-boosted trees,
+and MLP share the same candidate observations and 140-feature interface.
+
+Model selection uses development-validation evidence under a declared rule.
+The two-hidden-layer MLP is a starting candidate architecture, not a predetermined
+winner. Primary feature ablations keep the selected family fixed while refitting
+and retuning each feature variant. Transfer selectors use independently permitted
+development data and exclude the target dataset throughout fitting and tuning.
 
 Transfer scope is implemented with library discovery and collection, not added at
 the final stage. Each held-out dataset requires its own library and fitted release.

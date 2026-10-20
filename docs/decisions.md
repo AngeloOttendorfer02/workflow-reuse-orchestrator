@@ -13,7 +13,7 @@ implementation or measured experimental settings.
 | D04 | Use a separate immutable text encoder. | Reproducible task/workflow retrieval and pre-execution representations. |
 | D05 | Use coordinator/retrieval/reasoning/checking roles and DAGs of at most 12 nodes. | Bounded, inspectable collaboration. |
 | D06 | Compare five principal policies. | Separate agent, fixed procedure, fresh planning, similarity, and learned reuse effects. |
-| D07 | Compare LR, GBT, and a two-hidden-layer MLP; keep the configured MLP as the principal learned treatment. | Test whether nonlinear predictor complexity provides value. Model widths and superiority are not assumed. |
+| D07 | Compare logistic regression, random forest, gradient-boosted trees, and MLP on the same 140-feature interface; select the final predictor family using development validation. | Assess predictive performance, calibration, and prediction overhead without assuming a winning family. The two-hidden-layer MLP is a starting candidate architecture. |
 | D08 | Keep a versioned 140-feature main interface. | Match task/workflow representations, metadata, and compatibility under one schema. |
 | D09 | Share candidates, tools, evidence, and cumulative request limits. | Avoid unequal execution permissions and hidden fallback costs. |
 | D10 | Separate source-grouped development roles and freeze final releases. | Prevent source leakage and final-outcome tuning. |
@@ -24,8 +24,12 @@ implementation or measured experimental settings.
 Changing a baseline choice requires a dated entry stating the reason, evidence,
 impacted documents/configuration, affected artifacts, and whether earlier results
 remain comparable. No supervisor agreement or experimental result is implied by
-this local planning baseline. The MLP treatment can be revised before the final
-freeze with an explicit methodological reason and consistent study changes.
+this local planning baseline.
+
+Declare the predictor-selection rule before comparing candidate models. Select
+the final family using permitted development-validation evidence, then freeze
+the selected predictor, calibration, thresholds, and cost-estimation rules before
+protected evaluation. Final outcomes must not influence these choices.
 
 ## Open decisions and blocking gates
 
@@ -40,9 +44,9 @@ freeze with an explicit methodological reason and consistent study changes.
 | O07 | Library size, admission support/success/diversity, candidate eligibility. | Independent validation coverage and measured construction cost. | Library freeze/selector collection. | `study.yaml` |
 | O08 | Exact feature counting, reduction rank/padding, scaling, missingness. | Training-only rank audit and train/serve feature parity. | Predictor fitting. | `learning.yaml` |
 | O09 | Search bounds, class handling, grouped stopping, calibration method/roles. | Audited label support and permitted validation performance. | Final selector fitting. | `learning.yaml` |
-| O10 | Similarity/probability thresholds, tie rules, token-cost estimation. | Development coverage/correctness/resource trade-offs and cost-estimate error. | Integrated release freeze. | `learning.yaml` |
+| O10 | Predictor-family selection rule, similarity/probability thresholds, tie rules, and token-cost estimation. | Development predictive performance, calibration, prediction overhead, coverage/correctness/resource trade-offs, and cost-estimate error. | Model comparison rule before comparing families; selected state before integrated release freeze. | `learning.yaml` |
 | O11 | Dataset-specific correctness margins and statistical design. | Substantive acceptable-loss rationale and development precision analysis. | Final protocol freeze. | `evaluation.yaml` |
-| O12 | Full final population or grouped sample; ablation/optional LR/GBT live scope. | Workload, storage, and precision projections by experiment family. | Final protocol freeze. | `evaluation.yaml` |
+| O12 | Full final population or grouped sample; feature-ablation scope and supplementary live policies using other predictor families. | Workload, storage, and precision projections by experiment family. | Final protocol freeze. | `evaluation.yaml` |
 | O13 | Repetition subset, human rubric/sample, candidate diagnostic subset. | Fixed sampling plan, assessors, adequate category/source support. | Final outcomes are observed. | `evaluation.yaml` |
 | O14 | Cache/warm-up/order/concurrency and hardware measurement policy. | Real-PC runtime pilot and reproducible scheduling plan. | Protected execution. | `evaluation.yaml` |
 
@@ -87,3 +91,4 @@ retain the prior release, create a new one, and document timing and impact.
 | --- | --- | --- |
 | 15 Oct 2026 | Consolidated the workflow-reuse planning baseline into focused documents. | Established scope and ownership before further implementation. |
 | 16 Oct 2026 | C01 integrates existing shared runtime foundations, adds the timetable-aligned commit plan, and excludes local PyCharm settings from tracking. | Runtime inspection and a bounded infrastructure pilot are available; scientific stages remain pending. C02 owns the proposal/predictor alignment. |
+| 20 Oct 2026 | Aligned documentation with the four-family predictor comparison and generic `prediction-reuse` policy. | Removed the predetermined MLP treatment from the written plan; the selected family remains unresolved until development validation. Historical receipt identifiers remain unchanged. |

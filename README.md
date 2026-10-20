@@ -35,10 +35,18 @@ analysis, so a cheaper individual request is not mistaken for a cheaper system.
 | Success-prediction reuse | Predict candidate success, then choose the least token-expensive qualifying graph. |
 
 All methods share one bound generative model, supplied evidence, tool permissions,
-answer contract, and whole-request limits. Logistic regression, gradient-boosted
-trees, and a two-hidden-layer MLP are planned success-predictor comparisons. The
-current study configuration names the MLP as the principal learned policy; its
-advantage over the simpler predictors remains a question for the experiment.
+answer contract, and whole-request limits.
+
+Four candidate workflow-success predictors will be compared: logistic regression,
+random forest, gradient-boosted trees, and a multilayer perceptron. They will use
+the same 140-feature interface and matched development observations. The MLP starts
+with two hidden layers; its widths and other hyperparameters remain development
+choices.
+
+The final predictor family will be selected using a declared development-validation
+rule that considers predictive performance, calibration, and prediction overhead.
+The active learned policy is named `prediction-reuse`, independently of the selected
+predictor family. No model family or performance advantage is assumed in advance.
 
 ## Target system
 

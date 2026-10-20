@@ -22,8 +22,7 @@ structure and instructions. Free-form executable code is not a workflow format.
 | `fixed-workflow` | One graph selected using development evidence is used for every eligible question. | No task-specific replanning; no hidden planner fallback. |
 | `per-question-planning` | Coordinator creates a new graph from the question and supplied context. | Declared malformed-plan repair limit; planning cost is included. |
 | `similarity-reuse` | Select the highest-similarity eligible candidate passing a development-frozen similarity threshold. | If none qualifies or a declared failure is detected, permit one fresh fallback plan. |
-| `prediction-reuse-mlp` | Qualify candidates by calibrated success probability, then minimize estimated token use. | Same candidate pool and fallback rule as similarity reuse. |
-
+| `prediction-reuse` | Use the validation-selected predictor to qualify candidates by calibrated success probability, then minimize estimated token use. | Same candidate pool and fallback rule as similarity reuse. |
 Select the fixed graph on development data and freeze its topology and instructions.
 Do not choose one after looking at final outcomes. A fixed workflow can resolve
 current evidence dynamically, but its collaboration graph stays fixed.
@@ -123,24 +122,51 @@ cost estimates are separate selection inputs, not observed costs of the new requ
 
 ## Predictor fitting and calibration
 
+Four candidate families will estimate whether a workflow produces a correct answer
+for a new question.
+
 | Predictor | Purpose | Planned implementation |
 | --- | --- | --- |
-| Logistic regression | Simple linear probability baseline. | Regularized classifier with fitting-only preprocessing. |
-| Gradient-boosted trees | Nonlinear tabular comparison. | Histogram-based gradient boosting. |
-| MLP | Principal configured success predictor. | Exactly two hidden layers; widths selected on development data. |
+| Logistic regression | Linear probability baseline. | Regularized classifier with fitting-only preprocessing. |
+| Random forest | Nonlinear ensemble comparison. | Tree ensemble with development-tuned capacity and class handling. |
+| Gradient-boosted trees | Nonlinear tabular comparison. | Histogram-based gradient boosting with development-tuned settings. |
+| MLP | Neural nonlinear comparison. | Starting architecture with two hidden layers; widths and other settings selected on development data. |
 
-Use one shared feature/label collection and source-grouped external evaluation.
-Bound the search size, random seeds, iteration budgets, class-handling choices,
-regularization, and stopping rules. Disable or replace automatic internal random
-validation when it would mix source groups. A one-class or insufficient-support
-population blocks normal fitting until a declared resolution is recorded.
+All families use the same named 140-feature interface, candidate observations,
+binary-success rules, and source-grouped development assignments. Preprocessing
+is fitted exclusively on selector-fitting groups. Validation and final examples
+must not influence scaling, imputation, or dimensionality reduction.
 
-Tune hyperparameters using validation groups. Fit the declared calibration on its
-permitted held-out role and compare calibration with Brier score and reliability
-plots. Select thresholds and cost-estimation rules using development information
-only. Save preprocessing, predictor, calibration, feature order/rank, thresholds,
-version identities, and fitting lineage together. Loaded and in-memory prediction
-must agree. The MLP is a study treatment, not a claim that it is the best model.
+Declare the model-selection rule, search budgets, random seeds, class handling,
+iteration limits, and stopping rules before comparing models. Disable or replace
+automatic internal random validation when it would mix source groups. A one-class
+or insufficient-support population blocks normal fitting until a documented
+resolution is applied.
+
+Tune hyperparameters using the declared development-validation groups. Fit
+probability calibration on its permitted held-out role. Evaluate predictive
+performance with Matthews correlation coefficient, calibration with Brier score
+and reliability plots, and computational overhead with fitting time and
+request-time prediction latency. Record class and source-group support alongside
+these measurements.
+
+Select the final predictor family using the declared validation rule. The selected
+family may be logistic regression, random forest, gradient-boosted trees, or MLP.
+No family is predetermined to be the principal predictor.
+
+Tune suitability thresholds and token-cost estimation rules using permitted
+development information only. Record their data roles and keep final outcomes
+outside every fitting, calibration, threshold, and model-selection decision.
+
+Persist preprocessing, feature order and effective rank, predictor family,
+hyperparameters, calibration, thresholds, cost estimates, version identities,
+and fitting lineage together. Loaded and in-memory predictions must agree.
+The released selector performs inference only and cannot fit or silently retune
+state during protected evaluation.
+
+For each transfer fold, repeat fitting and development selection using only the
+permitted datasets and source groups. The held-out dataset must not influence
+transformations, predictor selection, calibration, thresholds, or cost estimates.
 
 ## Learned selection and fallback
 
@@ -163,13 +189,33 @@ fallback, detected-failure fallback, undetected incorrect reuse, and exhausted b
 
 ## Ablations and comparisons
 
-Refit and retune the MLP after removing six workflow metadata columns (134 total),
-four task metadata columns (136), and both groups (130). Keep library, candidate
-retrieval, permitted tasks, and execution permissions matched. These ablations
-remove explicit metadata; embeddings may still encode related properties.
+The main selector uses all 140 features. Evaluate three explicit-metadata ablations:
 
-LR/GBT/MLP predictor comparisons use identical held-out candidate examples. Full
-live policy runs with LR or GBT are a supplementary scope decision to register
-before final evaluation. Transfer uses separately constructed libraries and fitted
-state for each excluded dataset. [Evaluation](evaluation.md) defines the complete
-experiment families and the limits of offline replay claims.
+- Remove six workflow metadata columns: 134 features.
+- Remove four task metadata columns: 136 features.
+- Remove both metadata groups: 130 features.
+
+For the primary feature comparison, keep the validation-selected predictor family
+fixed across the full-feature and ablated variants. Refit preprocessing and the
+predictor, and retune hyperparameters, calibration, and thresholds using the same
+permitted development procedure. This compares feature sets without simultaneously
+changing the model family.
+
+Keep the library, candidate retrieval, permitted tasks, evidence, tools, and
+execution limits matched. These ablations remove explicit metadata; embeddings
+may still encode related task or workflow properties. Any supplementary comparison
+that reselects the predictor family for each feature set must be registered and
+reported separately.
+
+Compare logistic regression, random forest, gradient-boosted trees, and MLP on
+identical held-out development candidate observations. The principal
+`prediction-reuse` policy uses the validation-selected family.
+
+Additional live policy runs using other predictor families are supplementary.
+Register their scope and workload before protected evaluation. Recorded candidate
+replay can support declared diagnostic comparisons, but it cannot establish live
+latency or outcomes for workflows and fallback paths that were not executed.
+
+Transfer uses independently constructed libraries and independently fitted
+selector state for each excluded dataset. [Evaluation](evaluation.md) defines
+the experiment families and the limits of offline replay claims.

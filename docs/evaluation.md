@@ -155,6 +155,104 @@ errors, malformed plans, false checker acceptance/rejection, budget exhaustion,
 generalization leakage, and fallback cost. Trace inspection explains measured
 patterns; it is not a basis to retune the completed final release.
 
+## Implemented answer scoring (C10)
+
+`evaluation/scoring.py` implements evaluator-only metrics and `AnswerScore`
+receipts. The current declarations in `configs/evaluation.yaml` must match the
+implemented name, version, normalization and numerical tolerance; unknown or
+changed declarations fail validation. The overall evaluation protocol remains
+draft until its remaining population, grouping, statistical and release gates.
+
+| Dataset | Binary success for a valid completed answer | Supplementary metric |
+| --- | --- | --- |
+| HotpotQA | Maximum answer EM across permitted reference alternatives equals 1. | Maximum token F1 across those alternatives. |
+| DROP | Complete predicted span group has EM 1 against at least one typed answer group. | Maximum aligned span F1 across primary/validated groups. |
+| FinQA | Finite numerical prediction is within absolute `0.00001` of `exe_ans`, or a categorical yes/no target matches. | Numerical difference; EM/F1 fields are unavailable for this dataset. |
+
+HotpotQA applies the pinned evaluator's case, ASCII-punctuation, article and
+whitespace normalization, multiset token F1 and yes/no/noanswer restrictions.
+Only answer metrics are implemented here; supporting-fact and joint metrics
+remain separate diagnostics. DROP preserves the pinned evaluator's numeric-token
+normalization, hyphen tokenization, number-overlap gate, span-count-sensitive EM,
+global one-to-one maximum F1 alignment and NumPy-compatible two-decimal rounding.
+The alignment implementation uses the standard library and needs no SciPy/NumPy
+runtime dependency. Individual spans of a multi-span answer are jointly required;
+F1 below exact correctness never becomes a positive label. Empty strings are
+invalid submitted answers even where a low-level metric could normalize an
+article-only string to empty text.
+
+The FinQA policy is a versioned thesis answer-level metric. It uses the C09
+execution target, retaining the reported human answer separately. It does not
+accept the two fields as interchangeable alternatives. Decimal comparison uses
+inclusive absolute tolerance with zero relative tolerance. A terminal `%` divides
+the prediction by 100: `26%` matches target `0.26`, while target `26` requires a
+value of `26` in target units. No second, gold-dependent factor-of-100 comparison
+is attempted. Comma-grouped numbers, one leading currency symbol (`$`, `€`, `£`),
+accounting parentheses, Unicode minus and scientific notation are supported.
+Currency markers introduce no conversion; magnitude suffixes such as `million`
+are rejected. Nonfinite values, malformed grouping, prose, multiple numerical
+alternatives and contradictory currency/percentage markers are invalid. Native
+yes/no targets accept only case-insensitive yes/no, not numeric or true/false
+substitutions. Numeric exponents are bounded to magnitude 1,000. This metric
+reports numeric/yes-no answer correctness; executing or comparing reasoning
+programs is a separate diagnostic operation.
+
+### Submission parsing and execution states
+
+`AnswerSubmission` identifies a task/dataset and its known execution state.
+The scorer checks that identity against the evaluator reference. DROP requires
+the C08 typed groups and FinQA requires the C09 distinct execution target; flat
+display references are rejected. Runtime code should pass the final answer field
+from a validated role/attempt result, with completion and failure metadata.
+
+Parser `final-answer-v1` accepts plain final text, a JSON string, or a strict JSON
+object containing only `answer`. DROP additionally accepts a complete string
+array, directly or as JSON. Multi-span strings are not split on commas or `and`.
+Duplicate JSON keys, non-string spans, empty spans, nested answer envelopes and
+extra envelope keys are invalid. Code fences and prose are never repaired or
+searched for a favorable embedded answer; literal text is scored as supplied.
+Limits are 65,536 characters and 128 spans, recorded in the scorer identity.
+HotpotQA and FinQA accept exactly one answer span.
+
+Confirmed failed executions receive label 0 regardless of answer-like text.
+Known truncation reasons (`length`, `max_tokens`, `max_output_tokens`,
+`token_limit`) receive label 0. Accepted complete reasons are absent/null, `stop`,
+`eos`, `eos_token` or `end_turn`; other reasons are invalid output. These checks
+precede parsing/metrics. Invalid final output also receives label 0. A completed
+but incorrect valid answer is `scored` with label 0; CLI success only indicates
+that evaluation produced a receipt.
+
+Unknown effects and started/unfinished executions retain null labels and metrics.
+An `unknown_effect` failure code must retain the unknown state. Such records are
+unavailable for selector-label fitting and remain in completeness accounting;
+their treatment in final population estimates still follows the protected-study
+protocol. The scorer never converts an interrupted effect into a negative
+training example or a free retry. A receipt cannot claim binary success from
+partial F1 or inconsistent correctness fields.
+
+### Source pins and verification
+
+The upstream references are immutable Git revisions; complete byte hashes appear
+in `orchestrator evaluation scorers` and the reviewed fixture metadata:
+
+- [HotpotQA evaluator](https://github.com/hotpotqa/hotpot/blob/3635853403a8735609ee997664e1528f4480762a/hotpot_evaluate_v1.py): revision `3635853403a8735609ee997664e1528f4480762a`.
+- [DROP evaluator](https://github.com/allenai/allennlp-models/blob/b1f372248c17ad12684d344955fbcd98e957e77e/allennlp_models/rc/tools/drop.py): revision `b1f372248c17ad12684d344955fbcd98e957e77e`.
+- [FinQA execution reference](https://github.com/czyssrs/FinQA/blob/9e2006a6ed65279a01d62e92e61c02638c7c358d/code/evaluate/evaluate.py): revision `9e2006a6ed65279a01d62e92e61c02638c7c358d`; it informs target/percentage semantics, while the thesis answer-level tolerance policy is declared above.
+
+Development verification compared 220 HotpotQA and 2,400 DROP generated cases
+against the pinned upstream functions, including span alignment and numerical
+rounding boundaries. Ordinary offline CI checks a retained set of 220 HotpotQA
+and 378 DROP oracle vectors in `tests/fixtures/scoring_reference_cases.json`, plus
+explicit parser, numerical-tolerance, reference-type, execution-state and CLI
+fixtures. These are scorer-validation inputs, not measured model predictions or
+benchmark performance. No upstream network access or model calls occur in CI.
+
+Every receipt records the scorer declaration, parser/label versions, output limits,
+upstream revision/hash and normalized implementation-source hash. Its fingerprint
+binds that complete identity. Source text is hashed with normalized line endings
+for consistent identities across Windows/Linux checkouts. Candidate collections
+and future dataset releases must bind this identity before fitting or scoring.
+
 ## Freeze and reporting
 
 Before final execution, record the code/lockfile, source snapshots and partitions,

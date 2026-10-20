@@ -10,12 +10,17 @@ from typing import cast
 
 from workflow_reuse_orchestrator import __version__
 from workflow_reuse_orchestrator.config import load_study_bundle
-from workflow_reuse_orchestrator.data.drop import normalize_drop
-from workflow_reuse_orchestrator.data.finqa import normalize_finqa
+from workflow_reuse_orchestrator.data.drop import DropEvaluationReference, normalize_drop
+from workflow_reuse_orchestrator.data.finqa import FinqaEvaluationReference, normalize_finqa
 from workflow_reuse_orchestrator.data.hotpotqa import normalize_hotpotqa
 from workflow_reuse_orchestrator.data.prepare import acquire_dataset
 from workflow_reuse_orchestrator.domain.providers import ProviderError
-from workflow_reuse_orchestrator.domain.tasks import DatasetId
+from workflow_reuse_orchestrator.domain.tasks import DatasetId, EvaluationReference
+from workflow_reuse_orchestrator.evaluation.scoring import (
+    AnswerSubmission,
+    score_submission,
+    scorer_identity,
+)
 from workflow_reuse_orchestrator.experiments.pipeline import (
     VALIDATION_LEVELS,
     ValidationLevel,
@@ -57,6 +62,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     normalize.add_argument("--split", choices=("all", "train", "dev", "test"), default="all")
     normalize.add_argument("--raw-root", type=Path, default=Path("data/raw"))
     normalize.add_argument("--output", type=Path, required=True)
+    evaluation = commands.add_parser("evaluation", help="Inspect or apply offline answer scorers.")
+    evaluation_operations = evaluation.add_subparsers(dest="operation", required=True)
+    scorers = evaluation_operations.add_parser(
+        "scorers", help="Show versioned implemented scorer identities."
+    )
+    scorers.add_argument("--config", type=Path)
+    score = evaluation_operations.add_parser(
+        "score", help="Score one explicit submission/reference pair."
+    )
+    score.add_argument("--submission", type=Path, required=True)
+    score.add_argument("--reference", type=Path, required=True)
     pipeline = commands.add_parser(
         "pipeline", help="Inspect study configuration and planned stages."
     )
@@ -106,7 +122,32 @@ def main(argv: Sequence[str] | None = None) -> int:
     inspect.add_argument("--base-url")
     args = parser.parse_args(argv)
     try:
-        if args.command == "data":
+        if args.command == "evaluation":
+            if args.operation == "scorers":
+                bundle = load_study_bundle(args.config)
+                if any(
+                    getattr(bundle.evaluation.scoring, d) is None for d in bundle.study.datasets
+                ):
+                    raise ValueError("Every selected dataset requires a configured scorer.")
+                report = {
+                    "status": "configured",
+                    "scorers": {d: scorer_identity(d) for d in bundle.study.datasets},
+                    "runtime_contacted": False,
+                    "study_bindings_updated": False,
+                }
+            else:
+                submission = AnswerSubmission.model_validate_json(
+                    args.submission.read_text("utf-8")
+                )
+                reference_types: dict[DatasetId, type[EvaluationReference]] = {
+                    "hotpotqa": EvaluationReference,
+                    "drop": DropEvaluationReference,
+                    "finqa": FinqaEvaluationReference,
+                }
+                reference_type = reference_types[submission.dataset_id]
+                reference = reference_type.model_validate_json(args.reference.read_text("utf-8"))
+                report = score_submission(submission, reference).model_dump(mode="json")
+        elif args.command == "data":
             bundle = load_study_bundle(args.config)
             catalog = bundle.datasets.acquisition
             if catalog is None:

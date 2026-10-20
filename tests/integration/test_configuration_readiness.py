@@ -12,6 +12,7 @@ from workflow_reuse_orchestrator.cli import main
 from workflow_reuse_orchestrator.config import load_study_bundle, project_root, read_yaml_mapping
 from workflow_reuse_orchestrator.domain.budgets import RequestBudget
 from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ModelBinding
+from workflow_reuse_orchestrator.evaluation.scoring import scorer_declaration
 from workflow_reuse_orchestrator.experiments.pipeline import check_study
 
 
@@ -135,10 +136,7 @@ def complete_declarations(root: Path) -> None:
     evaluation = read_yaml_mapping(evaluation_path)
     evaluation.update(
         protocol_frozen=True,
-        scoring={
-            dataset: {"name": "fixture", "version": "v1", "normalization_version": "v1"}
-            for dataset in ("hotpotqa", "drop", "finqa")
-        },
+        scoring={dataset: scorer_declaration(dataset) for dataset in ("hotpotqa", "drop", "finqa")},
         correctness_loss_margins={"hotpotqa": 0.02, "drop": 0.02, "finqa": 0.02},
         final_population={
             "snapshot_id": "fixture-snapshot",

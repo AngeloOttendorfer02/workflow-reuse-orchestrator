@@ -16,3 +16,66 @@ partitions:
   grouping: connected_source_groups
   assignment_version: null
   final_evaluation_frozen: false
+
+# Raw-source acquisition is separate from the later normalized snapshot and roles.
+# Published checksums below come from the pinned upstream dataset metadata linked
+# in checksum_reference. FinQA uses an immutable Git commit and records observed
+# SHA-256 values on first acquisition; it does not claim published SHA-256 pins.
+acquisition:
+  schema_version: raw-acquisition-v1
+  hotpotqa:
+    release: hotpotqa-distractor-v1.1
+    homepage: https://hotpotqa.github.io/
+    license: CC-BY-SA-4.0
+    license_url: https://creativecommons.org/licenses/by-sa/4.0/
+    revision: train-v1.1-dev-distractor-v1
+    sources:
+      - filename: hotpot_train_v1.1.json
+        url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_train_v1.1.json
+        download_url: https://huggingface.co/datasets/namlh2004/hotpotqa/resolve/7e54db4656209750ff487f6fdf8e39a66dba136b/hotpot_train_v1.json
+        format: json_array
+        splits: [train]
+        expected_sha256: 26650cf50234ef5fb2e664ed70bbecdfd87815e6bffc257e068efea5cf7cd316
+        expected_bytes: 566426227
+        checksum_reference: https://huggingface.co/datasets/hotpotqa/hotpot_qa/blob/cb440e4e72efe5808fe5df497ffa0b4e8da85c32/dataset_infos.json
+      - filename: hotpot_dev_distractor_v1.json
+        url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json
+        download_url: https://huggingface.co/datasets/RAGLAB/data/resolve/83ec19575bcf252a53a82f68eda4a8921924ca45/eval_datasets/HotPotQA/hotpot_dev_distractor_v1.json
+        format: json_array
+        splits: [dev]
+        expected_sha256: 4e9ecb5c8d3b719f624d66b60f8d56bf227f03914f5f0753d6fa1b359d7104ea
+        expected_bytes: 46320117
+        checksum_reference: https://huggingface.co/datasets/hotpotqa/hotpot_qa/blob/cb440e4e72efe5808fe5df497ffa0b4e8da85c32/dataset_infos.json
+  drop:
+    release: drop-original-2019
+    homepage: https://github.com/allenai/allennlp-website/blob/master/drop.html
+    license: CC-BY-SA-4.0
+    license_url: https://creativecommons.org/licenses/by-sa/4.0/
+    revision: original-train-dev-archive
+    sources:
+      - filename: drop_dataset.zip
+        url: https://s3-us-west-2.amazonaws.com/allennlp/datasets/drop/drop_dataset.zip
+        format: drop_zip
+        splits: [train, dev]
+        expected_sha256: 39d2278a29fd729de301b111a45f434c24834f40df8f4ff116d864589e3249d6
+        expected_bytes: 8308692
+        checksum_reference: https://huggingface.co/datasets/ucinlp/drop/commit/0316ec0360501bc6d7ae126cf5643ac659b3c53d
+  finqa:
+    release: finqa-9e2006a6
+    homepage: https://github.com/czyssrs/FinQA
+    license: MIT-repository
+    license_url: https://github.com/czyssrs/FinQA/blob/9e2006a6ed65279a01d62e92e61c02638c7c358d/LICENSE
+    revision: 9e2006a6ed65279a01d62e92e61c02638c7c358d
+    sources:
+      - filename: train.json
+        url: https://raw.githubusercontent.com/czyssrs/FinQA/9e2006a6ed65279a01d62e92e61c02638c7c358d/dataset/train.json
+        format: json_array
+        splits: [train]
+      - filename: dev.json
+        url: https://raw.githubusercontent.com/czyssrs/FinQA/9e2006a6ed65279a01d62e92e61c02638c7c358d/dataset/dev.json
+        format: json_array
+        splits: [dev]
+      - filename: test.json
+        url: https://raw.githubusercontent.com/czyssrs/FinQA/9e2006a6ed65279a01d62e92e61c02638c7c358d/dataset/test.json
+        format: json_array
+        splits: [test]

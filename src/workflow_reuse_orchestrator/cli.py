@@ -9,7 +9,10 @@ from pathlib import Path
 from typing import cast
 
 from workflow_reuse_orchestrator import __version__
+from workflow_reuse_orchestrator.config import load_study_bundle
+from workflow_reuse_orchestrator.data.prepare import acquire_dataset
 from workflow_reuse_orchestrator.domain.providers import ProviderError
+from workflow_reuse_orchestrator.domain.tasks import DatasetId
 from workflow_reuse_orchestrator.experiments.pipeline import (
     VALIDATION_LEVELS,
     ValidationLevel,
@@ -29,6 +32,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
+    data = commands.add_parser("data", help="Inspect and acquire versioned raw benchmark sources.")
+    data_operations = data.add_subparsers(dest="operation", required=True)
+    for name in ("sources", "acquire"):
+        operation = data_operations.add_parser(name)
+        operation.add_argument("--config", type=Path)
+        if name == "acquire":
+            operation.add_argument(
+                "--dataset", choices=("all", "hotpotqa", "drop", "finqa"), required=True
+            )
+            operation.add_argument(
+                "--split", choices=("all", "train", "dev", "test"), default="all"
+            )
+            operation.add_argument("--raw-root", type=Path)
+            operation.add_argument("--timeout-seconds", type=float, default=60.0)
     pipeline = commands.add_parser(
         "pipeline", help="Inspect study configuration and planned stages."
     )
@@ -78,7 +95,56 @@ def main(argv: Sequence[str] | None = None) -> int:
     inspect.add_argument("--base-url")
     args = parser.parse_args(argv)
     try:
-        if args.command == "runtime":
+        if args.command == "data":
+            bundle = load_study_bundle(args.config)
+            catalog = bundle.datasets.acquisition
+            if catalog is None:
+                raise ValueError("No raw acquisition catalog is configured in datasets.yaml.")
+            if args.operation == "sources":
+                report = {
+                    "status": "configured",
+                    "acquisition": catalog.model_dump(mode="json"),
+                    "runtime_contacted": False,
+                    "data_snapshot_available": False,
+                }
+            else:
+                datasets: list[DatasetId] = (
+                    ["hotpotqa", "drop", "finqa"]
+                    if args.dataset == "all"
+                    else [cast(DatasetId, args.dataset)]
+                )
+                raw_root = args.raw_root or Path("data/raw")
+                if not raw_root.is_absolute():
+                    raw_root = bundle.root / raw_root
+                # Reject an unsupported split for any selected dataset before downloading any.
+                if any(
+                    not any(
+                        args.split == "all" or args.split in s.splits
+                        for s in getattr(catalog, dataset).sources
+                    )
+                    for dataset in datasets
+                ):
+                    raise ValueError(
+                        "The requested native split is not available for every dataset."
+                    )
+                results = [
+                    acquire_dataset(
+                        dataset,
+                        getattr(catalog, dataset),
+                        raw_root,
+                        split=args.split,
+                        timeout_seconds=args.timeout_seconds,
+                        progress=lambda message: print(message, file=sys.stderr),
+                    )
+                    for dataset in datasets
+                ]
+                report = {
+                    "status": "completed",
+                    "datasets": results,
+                    "workflow_execution_available": False,
+                    "study_bindings_updated": False,
+                }
+        elif args.command == "runtime":
             report = (
                 runtime_models(args.base_url)
                 if args.operation == "models"

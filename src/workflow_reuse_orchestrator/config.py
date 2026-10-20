@@ -16,6 +16,7 @@ from pydantic import (
     model_validator,
 )
 
+from workflow_reuse_orchestrator.data.prepare import AcquisitionCatalog
 from workflow_reuse_orchestrator.domain.budgets import RequestBudget
 from workflow_reuse_orchestrator.domain.providers import InferenceProfile, ModelBinding, Sha256
 from workflow_reuse_orchestrator.domain.tasks import DatasetId, Identifier
@@ -147,6 +148,7 @@ class DatasetConfig(Declaration):
     datasets: DatasetReleases
     snapshot_id: Identifier | None
     partitions: PartitionDeclarations
+    acquisition: AcquisitionCatalog | None = None
 
 
 class FeatureDimensions(Declaration):

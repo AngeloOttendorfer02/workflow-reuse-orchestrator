@@ -10,6 +10,7 @@ from typing import cast
 
 from workflow_reuse_orchestrator import __version__
 from workflow_reuse_orchestrator.config import load_study_bundle
+from workflow_reuse_orchestrator.data.drop import normalize_drop
 from workflow_reuse_orchestrator.data.hotpotqa import normalize_hotpotqa
 from workflow_reuse_orchestrator.data.prepare import acquire_dataset
 from workflow_reuse_orchestrator.domain.providers import ProviderError
@@ -47,9 +48,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             operation.add_argument("--raw-root", type=Path)
             operation.add_argument("--timeout-seconds", type=float, default=60.0)
-    normalize = data_operations.add_parser("normalize", help="Normalize acquired HotpotQA offline.")
+    normalize = data_operations.add_parser(
+        "normalize", help="Normalize acquired benchmark data offline."
+    )
     normalize.add_argument("--config", type=Path)
-    normalize.add_argument("--dataset", choices=("hotpotqa",), required=True)
+    normalize.add_argument("--dataset", choices=("hotpotqa", "drop"), required=True)
     normalize.add_argument("--split", choices=("all", "train", "dev"), default="all")
     normalize.add_argument("--raw-root", type=Path, default=Path("data/raw"))
     normalize.add_argument("--output", type=Path, required=True)
@@ -121,8 +124,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                     raw_root = bundle.root / raw_root
                 if not output.is_absolute():
                     output = bundle.root / output
-                report = normalize_hotpotqa(
-                    catalog.hotpotqa,
+                normalizer = normalize_hotpotqa if args.dataset == "hotpotqa" else normalize_drop
+                report = normalizer(
+                    getattr(catalog, args.dataset),
                     raw_root,
                     output,
                     split=args.split,

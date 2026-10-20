@@ -209,3 +209,65 @@ duplicate-ID or malformed-record exclusions. It preserved blank sentence slots i
 49 questions and flagged one question with an out-of-range supporting-fact index.
 These are preparation audits, not experimental correctness results. Scientific
 roles, cross-source leakage checks and final snapshot publication remain C11/C12.
+
+## DROP normalization (C08)
+
+`data normalize --dataset drop` reads only the two fixed train/dev members of the
+verified original archive. ZIP entries are never extracted. A streaming mapping
+reader preserves the native passage keys. Each question receives the entire
+supplied passage, including original whitespace, line breaks, number formatting
+and units. DROP supplies no sentence boundaries: the passage is represented as
+one evidence block at sentence index zero, without inventing a segmentation.
+
+Source identities are `drop:passage:<native_passage_id>`. Paragraph-version IDs
+hash the native passage ID and exact passage text; content hashes separately
+expose identical text for C11's source audit. Questions sharing a native passage
+share the source/version identity. The normalized task ID combines the native
+query ID with a SHA-256 of the passage ID and question text, using only input
+fields. This retains distinct questions when the release reuses a native query
+ID. `native_locations` records native passage/query IDs and their original
+passage/question indexes, separately from model inputs.
+
+`DropEvaluationReference` extends the common evaluator reference with typed
+`answer_groups`. A group is a complete number, single span, multi-span answer, or
+date; values within a multi-span group are jointly required. Separate groups are
+alternative annotations, retaining their primary/validated origin and index.
+Original answer objects, validated alternatives and other question annotations
+remain in evaluator-only `annotations`. Native empty `date: {}` fields are valid
+for number/span answers; absent date components stay empty, and the raw annotation
+is preserved. Number strings are never converted to floats during preparation.
+
+When more than one native answer field is populated, the adapter follows the
+upstream evaluator's number, then spans, then date precedence and records a
+warning. Dates preserve day/month/year components. The inherited `answers` field
+contains display strings, with a multi-span display serialized as one JSON array;
+it must not be treated as the authoritative DROP scoring representation. C10
+must score the complete typed `answer_groups`, not individual span components or
+display strings. The upstream conversion is documented in the
+[AllenAI DROP evaluator](https://github.com/allenai/allennlp-models/blob/main/allennlp_models/rc/tools/drop.py).
+No scorer or binary-label policy is finalized by this adapter commit.
+
+Missing/invalid answer candidates receive warnings when another primary or
+validated candidate is usable. A question with no usable candidate is excluded
+with `no_usable_answers`. Invalid passages/questions/IDs receive stable reasons.
+Per-split counts reconcile `raw = retained + duplicates + malformed`, including
+raw and retained passage totals, answer-type counts and native-query-ID reuse.
+Identical repeated normalized tasks are logged as duplicate exclusions; conflicting
+annotations for the same normalized input stop publication. Native ID reuse for
+different input questions is retained and audited, rather than merged silently.
+
+Full-release structural validation processed 5,565 train passages / 77,409
+questions and 582 dev passages / 9,536 questions. It retained 77,400 train
+questions, excluding nine with empty primary answers and no usable alternatives,
+and all 9,536 dev questions. Dev includes one reused query ID for two distinct
+question strings and one question with multiple populated primary answer fields.
+All 6,147 supplied passage identities remain represented. These are preparation
+counts, not selected scientific-role sizes or experiment results.
+
+The adapter uses the shared staging layout and logical hash routines in
+`data/staging.py`; extracting these routines preserves C07 HotpotQA artifact
+identities. DROP adds `native_locations` to its logical checksum. Inputs and
+typed references have separate read-only, checksummed loaders. Original sources
+are verified before/after reading, and atomic publication, output-collision
+checks, single-writer locking and deterministic rerun behavior match C07. Roles
+and the combined scientific snapshot remain C11/C12 work.

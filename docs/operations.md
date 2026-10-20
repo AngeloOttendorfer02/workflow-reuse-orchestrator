@@ -257,3 +257,46 @@ retained train questions (nine `no_usable_answers` exclusions), and 9,536 raw /
 distinct input-derived task IDs; it is not an extra exclusion. Native train/dev
 names do not assign scientific roles. Snapshot/role/binding flags remain false
 until C11/C12.
+
+## Normalize FinQA offline
+
+Normalize the three acquired native FinQA splits from the project root:
+
+```powershell
+uv run --locked --offline orchestrator data normalize `
+    --dataset finqa `
+    --output data/processed/finqa-staging.sqlite3
+```
+
+Repeat the exact command to verify the existing output. It should report
+`verified_existing` and the same normalization ID, with unchanged output bytes.
+The operation makes no model/network calls and needs no certificate override or
+dependency update. Raw sources remain unchanged. Different input content or split
+selection requires a different output path.
+
+`--split train`, `--split dev` or `--split test` normalizes only that native split;
+for example, use `--split dev --output data/processed/finqa-dev-staging.sqlite3`.
+`--raw-root` defaults to `data/raw`. Relative paths resolve against the configured
+project root. Unavailable or incomplete requested splits fail before publication.
+The `test` choice is supported for FinQA; HotpotQA/DROP still reject unsupported
+native test normalization explicitly.
+
+The audit should show 6,251 retained train, 883 retained dev and 1,147 retained
+test questions for the configured release, with zero malformed or duplicate
+exclusions. Empty reported-answer counts of 48/12/14 are warnings, not dropped
+questions: `exe_ans` remains the distinct gold execution target. Original table
+raggedness and processed/original layout differences are preserved and counted.
+
+The single staging SQLite file contains the shared input/reference/source/audit
+tables plus `table_versions`, `task_tables`, `page_versions`, and
+`native_locations`. `model_table_representation` reports `table_ori`.
+`load_finqa_task(path, task_id, split=...)` loads model-facing input only;
+`load_finqa_reference(...)` explicitly loads execution targets, reported answers,
+programs and native annotations. Both functions are in
+`workflow_reuse_orchestrator.data.finqa`. The evaluator reference's
+`annotation_table_representation` is `table`, preserving the original coordinate
+space of native annotations separately from model-facing original table cells.
+
+No scientific roles are assigned and no study bindings are changed by C09.
+Snapshot/readiness flags remain false until the scorer, source-group and snapshot
+gates are implemented. Keep raw and processed artifacts outside Git.

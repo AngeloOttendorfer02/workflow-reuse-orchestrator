@@ -11,6 +11,7 @@ from typing import cast
 from workflow_reuse_orchestrator import __version__
 from workflow_reuse_orchestrator.config import load_study_bundle
 from workflow_reuse_orchestrator.data.drop import normalize_drop
+from workflow_reuse_orchestrator.data.finqa import normalize_finqa
 from workflow_reuse_orchestrator.data.hotpotqa import normalize_hotpotqa
 from workflow_reuse_orchestrator.data.prepare import acquire_dataset
 from workflow_reuse_orchestrator.domain.providers import ProviderError
@@ -52,8 +53,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         "normalize", help="Normalize acquired benchmark data offline."
     )
     normalize.add_argument("--config", type=Path)
-    normalize.add_argument("--dataset", choices=("hotpotqa", "drop"), required=True)
-    normalize.add_argument("--split", choices=("all", "train", "dev"), default="all")
+    normalize.add_argument("--dataset", choices=("hotpotqa", "drop", "finqa"), required=True)
+    normalize.add_argument("--split", choices=("all", "train", "dev", "test"), default="all")
     normalize.add_argument("--raw-root", type=Path, default=Path("data/raw"))
     normalize.add_argument("--output", type=Path, required=True)
     pipeline = commands.add_parser(
@@ -124,7 +125,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                     raw_root = bundle.root / raw_root
                 if not output.is_absolute():
                     output = bundle.root / output
-                normalizer = normalize_hotpotqa if args.dataset == "hotpotqa" else normalize_drop
+                normalizer = {
+                    "hotpotqa": normalize_hotpotqa,
+                    "drop": normalize_drop,
+                    "finqa": normalize_finqa,
+                }[args.dataset]
                 report = normalizer(
                     getattr(catalog, args.dataset),
                     raw_root,

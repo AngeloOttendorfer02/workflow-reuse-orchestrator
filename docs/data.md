@@ -271,3 +271,75 @@ typed references have separate read-only, checksummed loaders. Original sources
 are verified before/after reading, and atomic publication, output-collision
 checks, single-writer locking and deterministic rerun behavior match C07. Roles
 and the combined scientific snapshot remain C11/C12 work.
+
+## FinQA normalization (C09)
+
+`data normalize --dataset finqa` verifies the acquired native train/dev/test JSON
+files and streams them into an unpartitioned staging artifact. Each task keeps
+all supplied `pre_text` and `post_text` rows in native order, including original
+whitespace, punctuation and blank row positions. Model-facing passages identify
+their pre/post segment; the table belongs between those segments in the native
+page. Empty text segments create no artificial passage. Entirely blank segments
+are retained in page provenance with an audit warning; the supplied table remains
+available to the model.
+
+The model-facing table is `table_ori`. Headers, row order, cell strings, currency
+symbols, negative-number formatting and ragged row lengths are unchanged; no
+padding, column merging or conversion to floats is performed. The native processed
+`table` is preserved separately in `table_versions`. Original and processed tables
+have independent version IDs and coordinate spaces. Gold row annotations and
+programs retain their native processed-table meaning; no positional mapping to
+`table_ori` is invented. The adapter identity explicitly binds the original-table
+input policy.
+
+Task IDs are `finqa:<native_id>`. Native paths of the form
+`company/year/page_N.pdf` define `finqa:report:company/year` report identities and
+separate page identities. All text/table blocks use the report identity as their
+source ID, linking questions on different pages of the same annual report. Page
+variants hash the native filename, both text segments and both table versions.
+The adapter preserves all variants; alias/content audits and scientific role
+assignment remain C11 work. Native dataset splits do not establish report-level
+independence.
+
+`FinqaEvaluationReference` keeps the gold execution target, reported human answer
+and program as distinct fields. The upstream dataset describes `exe_ans` as the
+gold execution result in its
+[README](https://github.com/czyssrs/FinQA/blob/9e2006a6ed65279a01d62e92e61c02638c7c358d/README.md).
+Finite numeric values and native yes/no targets are supported. The canonical
+`answers` tuple contains only the execution target; the human-written `answer`
+does not become an alternative correctness target, because the two fields can
+disagree. Empty human answers remain present and are audited when the execution
+target is usable. Missing/invalid execution targets receive an exclusion reason;
+they are not replaced by a guessed interpretation of the reported answer.
+
+Every QA field other than the question remains in evaluator-only `annotations`,
+including the native execution value, answer, explanation, sequential/nested
+programs, intermediate steps, gold indexes, row annotations, `model_input` and
+retriever outputs. Gold-selected or pre-retrieved snippets never select, truncate
+or order the supplied model context. Programs are retained as data and never
+executed by preparation. Missing reported answers/programs produce audit warnings
+without discarding an otherwise usable execution target. C10 still defines the
+registered numeric/yes-no scoring and binary-success rules.
+
+The shared staging tables are extended with `table_versions`, `task_tables`,
+`page_versions` and `native_locations`. These preserve native report/page/example
+relationships, both table serializations, original text arrays and raw row
+indexes. Their content participates in the logical checksum. Separate read-only,
+checksummed input and evaluator loaders return `TaskInput` and
+`FinqaEvaluationReference`, respectively. Exclusions have stable reasons, native
+IDs, raw indexes and record hashes. Identical repeated native IDs within a split
+are duplicate exclusions; conflicting records stop publication.
+
+Full-release structural validation retained all 6,251 train, 883 dev and 1,147
+test questions, with no duplicate or malformed exclusions. Empty reported answers
+were preserved in 48, 12 and 14 questions respectively because usable execution
+targets exist. Ragged original tables were retained in 1,035 train, 161 dev and
+183 test questions. Across all native splits, preparation records 799 report
+identities and 2,789 page identities/versions. These are preparation audits, not
+scientific-role sizes, correctness measurements or final protected-study results.
+
+Source hashes are verified before and after streaming. Counts reconcile as
+`raw = retained + duplicates + malformed`; report/page counts, answer types,
+table-layout differences and warnings are explicit. Atomic publication, immutable
+output-collision checks and deterministic rerun behavior match C07/C08. Source
+grouping, scorers and frozen snapshot publication remain separate gates.
